@@ -1,0 +1,17 @@
+{
+  "name": "betterboxd",
+  "version": "1.0.0",
+  "description": "movie review web app that utilizes LetterBoxd API",
+  "main": "app.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node app.js",
+    "dev": "nodemon app.js"
+  },
+  "authors": "Mik-Ese, fmhossai, ethangillengg, cheyennegoh, Arne-Hilao, maxbotham, Lucas",
+  "license": "",
+  "dependencies": {
+    "express": "^4.17.2",
+    "nodemon": "^2.0.15"
+  }
+}
