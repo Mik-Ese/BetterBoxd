@@ -1,7 +1,7 @@
 const express = require("express");
 const app = express();
 
-app.post("/post", (req, res) => {
+app.post("/test", (req, res) => {
     console.log("React connected");
     res.redirect("/");
 });
