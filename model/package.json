@@ -11,8 +11,11 @@
   "authors": "Mik-Ese, fmhossai, ethangillengg, cheyennegoh, Arne-Hilao, maxbotham, Lucas",
   "license": "",
   "dependencies": {
+    "body-parser": "^1.19.2",
+    "cors": "^2.8.5",
     "express": "^4.17.2",
     "mongodb": "^4.3.1",
+    "mongoose": "^6.2.2",
     "nodemon": "^2.0.15"
   }
 }
