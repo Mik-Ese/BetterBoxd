@@ -1,18 +1,21 @@
 var mongoose = require("mongoose");
 const { Schema } = mongoose;
 
-const movieSchema = new Schema({
-  // no "_id" field since it is automatically generated
-  title: String,
-  year: Number,
-  ids: [
+const movieSchema = new Schema(
     {
-      trakt: Number,
-      slug: String,
-      imdb: String,
-      tmdb: Number,
+        // no "_id" field since it is automatically generated
+        title: String,
+        year: Number,
+        ids: [
+            {
+                trakt: Number,
+                slug: String,
+                imdb: String,
+                tmdb: Number
+            }
+        ]
     },
-  ],
-});
+    { collection: "movies" }
+);
 
-module.exports = mongoose.model("Movie", movieSchema);
+module.exports = mongoose.model("Movie", movieSchema, "movies");
