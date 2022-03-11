@@ -17,9 +17,13 @@ function App() {
         >
           Learn React
         </a>
-        <form action="../../post" method="post" 
+        <form action="../../test" method="post" 
               className="form">
           <button type="submit">Backend post Connection signal</button>
+        </form>
+        <form action="../../weekly" method="post" 
+              className="form">
+          <button type="submit">API weekly recommended shows</button>
         </form>
       </header>
     </div>
