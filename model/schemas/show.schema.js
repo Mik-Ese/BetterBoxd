@@ -1,4 +1,4 @@
-var mongoose = require("mongoose");
+var mongoose = require('mongoose');
 const { Schema } = mongoose;
 
 const showSchema = new Schema(
@@ -17,7 +17,7 @@ const showSchema = new Schema(
             }
         ]
     },
-    { collection: "shows" }
+    { collection: 'shows' }
 );
 
-module.exports = mongoose.model("Show", showSchema, "shows");
+module.exports = mongoose.model('Show', showSchema, 'shows');

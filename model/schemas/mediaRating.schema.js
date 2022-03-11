@@ -1,4 +1,4 @@
-var mongoose = require("mongoose");
+var mongoose = require('mongoose');
 const { Schema } = mongoose;
 
 const mediaRatingSchema = new Schema({
@@ -21,4 +21,4 @@ const mediaRatingSchema = new Schema({
     ]
 });
 
-module.exports = mongoose.model("MediaRating", mediaRatingSchema);
+module.exports = mongoose.model('MediaRating', mediaRatingSchema);

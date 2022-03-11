@@ -7,6 +7,8 @@ const APIqueries = require('./APIqueries');
 
 const headers = {
     Authorization: `Bearer ${credentials.accessToken}`,
+    // Connection: 'keep-alive',
+    // 'User-Agent': 'NodeJS Axios',
     'Content-type': 'application/json',
     'trakt-api-version': '2',
     'trakt-api-key': credentials.clientId
@@ -32,6 +34,7 @@ app.post('/weekly', (req, res) => {
         .catch(function (error) {
             console.log('Error during GET request:');
             console.log(APIquery);
+            console.log(error);
         });
     res.redirect('/');
 });
