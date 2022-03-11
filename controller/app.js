@@ -2,7 +2,7 @@ const express = require("express");
 const app = express();
 const axios = require('axios');
 
-const credentials = require("./tempCredentials");
+const credentials = require("./credentials");
 const APIqueries = require("./APIqueries");
 const { response } = require("express");
 
