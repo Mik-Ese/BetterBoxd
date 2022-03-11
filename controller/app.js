@@ -5,13 +5,13 @@ const axios = require('axios');
 const credentials = require('./credentials');
 const APIqueries = require('./APIqueries');
 
-const headers = {
-    Authorization: `Bearer ${credentials.accessToken}`,
-    // Connection: 'keep-alive',
-    // 'User-Agent': 'NodeJS Axios',
-    'Content-type': 'application/json',
-    'trakt-api-version': '2',
-    'trakt-api-key': credentials.clientId
+const config = {
+    headers: {
+        Authorization: `Bearer ${credentials.accessToken}`,
+        'Content-type': 'application/json',
+        'trakt-api-version': '2',
+        'trakt-api-key': credentials.clientId
+    }
 };
 
 app.post('/test', (req, res) => {
@@ -22,9 +22,9 @@ app.post('/test', (req, res) => {
 app.post('/weekly', (req, res) => {
     console.log('Recommnded shows [weekly]');
     let data;
-    const APIquery = APIqueries.genRecShowsQuery('weekly');
+    const APIquery = APIqueries.genShowExtended();
     axios
-        .get(APIquery, headers)
+        .get(APIquery, config)
         .then((getResponse) => {
             console.log('GET response:');
             console.log(getResponse.data);
@@ -34,7 +34,9 @@ app.post('/weekly', (req, res) => {
         .catch(function (error) {
             console.log('Error during GET request:');
             console.log(APIquery);
-            console.log(error);
+            console.log(
+                `${error.response.status} - ${error.response.statusText}`
+            );
         });
     res.redirect('/');
 });
