@@ -20,7 +20,7 @@ app.post('/test', (req, res) => {
 app.post('/weekly', (req, res) => {
     console.log('Recommnded shows [weekly]');
     let data;
-    const APIquery = APIqueries.genShowExtended('arcane');
+    const APIquery = APIqueries.genRecShowsQuery('weekly');
     axios
         .get(APIquery, headers)
         .then((getResponse) => {
