@@ -1,4 +1,4 @@
-var mongoose = require("mongoose");
+var mongoose = require('mongoose');
 const { Schema } = mongoose;
 
 const userSchema = new Schema(
@@ -9,7 +9,7 @@ const userSchema = new Schema(
         password: String,
         lists: [{ list_name: String, media_ids: [String] }]
     },
-    { collection: "users" }
+    { collection: 'users' }
 );
 
-module.exports = mongoose.model("User", userSchema, "users");
+module.exports = mongoose.model('User', userSchema, 'users');

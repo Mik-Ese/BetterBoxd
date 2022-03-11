@@ -1,38 +1,40 @@
-const express = require("express");
+const express = require('express');
 const app = express();
 const axios = require('axios');
 
-const credentials = require("./credentials");
-const APIqueries = require("./APIqueries");
-const { response } = require("express");
+const credentials = require('./credentials');
+const APIqueries = require('./APIqueries');
 
 const headers = {
-    'Authorization': `Bearer ${credentials.accessToken}`,
+    Authorization: `Bearer ${credentials.accessToken}`,
     'Content-type': 'application/json',
     'trakt-api-version': '2',
     'trakt-api-key': credentials.clientId
-}
+};
 
-app.post("/test", (req, res) => {
-    console.log("React connected!");
-    res.redirect("/");
+app.post('/test', (req, res) => {
+    console.log('React connected!');
+    res.redirect('/');
 });
 
-app.post("/weekly", (req, res) => {
-    console.log("Recommnded shows [weekly]");
+app.post('/weekly', (req, res) => {
+    console.log('Recommnded shows [weekly]');
     let data;
-    axios.get(APIqueries.getRecShowsWeekly, headers)
-    .then((getResponse) => {
-        console.log("GET response:");
-        console.log(getResponse.data);
-        data = getResponse.data;
-        // response.send(data);
-    })
-    .catch(function (error) {
-        console.log("Error during Weekly Recommended Shows GET request");
-    })
-    res.redirect("/");
-})
+    const APIquery = APIqueries.genRecShowsQuery('weekly');
+    axios
+        .get(APIquery, headers)
+        .then((getResponse) => {
+            console.log('GET response:');
+            console.log(getResponse.data);
+            data = getResponse.data;
+            // response.send(response);
+        })
+        .catch(function (error) {
+            console.log('Error during GET request:');
+            console.log(APIquery);
+        });
+    res.redirect('/');
+});
 
 const PORT = process.env.PORT || 3001;
 
