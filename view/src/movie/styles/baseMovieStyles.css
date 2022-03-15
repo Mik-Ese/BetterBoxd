@@ -1,0 +1,12 @@
+.base-movie-subtitle{
+    font-weight: bold;
+    width: 100%;
+    margin-bottom: 1rem;
+    display: flex;
+}
+.movie-page-root{
+    display: flex;
+    flex-wrap: wrap;
+    padding: 1rem;
+    width: 100%;
+}

@@ -1,5 +1,5 @@
 import NavBar from "./NavBar.js";
-import UserPage from "../user/UserPage";
+import JournalPage from "../journal/JournalPage";
 import MoviePage from "../movie/MoviePage";
 import HomePage from "../home/HomePage";
 import ListPage from "../list/ListPage";
@@ -8,9 +8,8 @@ import { useState } from "react";
 const RootPage = ({ setLoggedIn }) => {
   const [homePageOpen, setHomePageOpen] = useState(true);
   const [listPageOpen, setListPageOpen] = useState(false);
-  const [userPageOpen, setUserPageOpen] = useState(false);
+  const [journalPageOpen, setJournalPageOpen] = useState(false);
   const [moviePageOpen, setMoviePageOpen] = useState(false);
-
   return (
     <div>
       <NavBar
@@ -18,8 +17,12 @@ const RootPage = ({ setLoggedIn }) => {
           setLoggedIn,
           setHomePageOpen,
           setListPageOpen,
-          setUserPageOpen,
+          setJournalPageOpen,
           setMoviePageOpen,
+          homePageOpen,
+          listPageOpen,
+          journalPageOpen,
+          moviePageOpen
         }}
       />
       {homePageOpen ? (
@@ -32,8 +35,8 @@ const RootPage = ({ setLoggedIn }) => {
       ): (
         <></>
       )}
-      {userPageOpen ? (
-        <UserPage/>
+      {journalPageOpen ? (
+        <JournalPage/>
       ): (
         <></>
       )}

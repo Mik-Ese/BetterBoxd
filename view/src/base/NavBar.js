@@ -2,8 +2,12 @@ const NavBar = ({
   setLoggedIn,
   setHomePageOpen,
   setListPageOpen,
-  setUserPageOpen,
+  setJournalPageOpen,
   setMoviePageOpen,
+  homePageOpen,
+  listPageOpen,
+  journalPageOpen,
+  moviePageOpen,
 }) => {
   const logOut = () => {
     setLoggedIn(false);
@@ -11,31 +15,31 @@ const NavBar = ({
   const openHomePage = () => {
     setHomePageOpen(true);
     setMoviePageOpen(false);
-    setUserPageOpen(false);
+    setJournalPageOpen(false);
     setListPageOpen(false);
   };
   const openListPage = () => {
     setHomePageOpen(false);
     setMoviePageOpen(false);
-    setUserPageOpen(false);
+    setJournalPageOpen(false);
     setListPageOpen(true);
   };
-  const openUserPage = () => {
+  const openJournalPage = () => {
     setHomePageOpen(false);
     setMoviePageOpen(false);
-    setUserPageOpen(true);
+    setJournalPageOpen(true);
     setListPageOpen(false);
   };
   const openMoviePage = () => {
     setHomePageOpen(false);
     setMoviePageOpen(true);
-    setUserPageOpen(false);
+    setJournalPageOpen(false);
     setListPageOpen(false);
   };
   return (
     <nav class="navbar navbar-expand-lg navbar-light bg-light">
       <div class="container-fluid">
-        <a class="navbar-brand" style={{cursor: "auto"}}>
+        <a class="navbar-brand" style={{ cursor: "auto" }}>
           BetterBoxd
         </a>
         <button
@@ -51,25 +55,36 @@ const NavBar = ({
         </button>
         <div class="collapse navbar-collapse" id="navbarSupportedContent">
           <ul class="navbar-nav me-auto mb-2 mb-lg-0">
-            <li class="nav-item" onClick={openHomePage} style={{cursor: "pointer"}}>
-              <a class="nav-link active" aria-current="page">
-                Home
-              </a>
+            <li
+              class="nav-item"
+              onClick={openHomePage}
+              style={{ cursor: "pointer" }}
+            >
+              <a class={homePageOpen ? "nav-link active" : "nav-link"}>Home</a>
             </li>
-            <li class="nav-item" onClick={openMoviePage} style={{cursor: "pointer"}}>
-              <a class="nav-link">
+            <li
+              class="nav-item"
+              onClick={openMoviePage}
+              style={{ cursor: "pointer" }}
+            >
+              <a class={moviePageOpen ? "nav-link active" : "nav-link"}>
                 Movies
               </a>
             </li>
-            <li class="nav-item" onClick={openListPage} style={{cursor: "pointer"}}>
-              <a class="nav-link">
-                Lists
-              </a>
+            <li
+              class="nav-item"
+              onClick={openListPage}
+              style={{ cursor: "pointer" }}
+            >
+              <a class={listPageOpen ? "nav-link active" : "nav-link"}>Lists</a>
             </li>
-            <li class="nav-item" onClick={openUserPage} style={{cursor: "pointer"}}>
-              <a class="nav-link">
-                Users
-              </a>
+            <li
+              class="nav-item"
+              onClick={openJournalPage}
+              style={{ cursor: "pointer" }}
+            >
+            
+              <a class={journalPageOpen ? "nav-link active" : "nav-link"}>Journal</a>
             </li>
           </ul>
           <form class="d-flex">
@@ -78,6 +93,7 @@ const NavBar = ({
               type="search"
               placeholder="Search"
               aria-label="Search"
+              
             />
             <button class="btn btn-outline-success" type="submit">
               Search

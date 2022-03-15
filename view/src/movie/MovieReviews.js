@@ -1,11 +1,10 @@
 import { useState } from "react";
-const UserPage = () => {
+const MovieReviews = () => {
   
   return (
     <div>
-      Users
     </div>
   );
 };
 
-export default UserPage;
+export default MovieReviews;
