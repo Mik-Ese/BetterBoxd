@@ -1,27 +1,19 @@
-import logo from './logo.svg';
-import './App.css';
+import logo from "./logo.svg";
+import "./App.css";
+import LoginPage from "./login/LoginPage.js";
+import RootPage from "./base/RootPage.js";
+import { useState } from "react";
 
 function App() {
+  const [loggedIn, setLoggedIn] = useState(true);
+  
   return (
     <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-        <form action="../../post" method="post" 
-              className="form">
-          <button type="submit">Backend post Connection signal</button>
-        </form>
-      </header>
+      {loggedIn ? (
+        <RootPage {...{setLoggedIn}}/>
+      ) : (
+        <LoginPage {...{ loggedIn, setLoggedIn }} />
+      )}
     </div>
   );
 }
