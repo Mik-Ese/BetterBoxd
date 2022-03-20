@@ -40,7 +40,18 @@ const NavBar = ({
     <nav class="navbar navbar-expand-lg navbar-light bg-light">
       <div class="container-fluid">
         <a class="navbar-brand" style={{ cursor: "auto" }}>
-          BetterBoxd
+          <span className="text-primary">B</span>
+          <span className="text-success">e</span>
+          <span className="text-danger">t</span>
+          <span className="text-warning">t</span>
+          <span className="text-info">e</span>
+          <span className="text-primary">r</span>
+          <span className="text-success">B</span>
+          <span className="text-danger">o</span>
+          <span className="text-warning">x</span>
+          <span className="text-info">e</span>
+          <span className="text-primary">d</span>
+          
         </a>
         <button
           class="navbar-toggler"
