@@ -1,4 +1,4 @@
-import { accessToken } from './credentials';
+import { accessToken } from '../credentials';
 
 const oauthConfig = {
     callbackURL: 'https://localhost:3000/oauth2/callback',
