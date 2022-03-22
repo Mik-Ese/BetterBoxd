@@ -2,21 +2,19 @@ const express = require('express');
 const app = express();
 const axios = require('axios');
 const redis = require('redis');
-const APIRoutes = require("./api/APIroutes")
+const APIRoutes = require('./api/APIroutes');
 const credentials = require('./credentials');
 const APIqueries = require('./api/APIqueries');
 const fetchData = require('./fetchData');
 
-app.use(express.json())
 app.use('/api/', APIRoutes);
-
 
 app.post('/test', (req, res) => {
     console.log('React connected!');
     res.redirect('/');
 });
 
-// no caching
+// no caching (use if you haven't setup redis)
 // app.post('/weekly', async (req, res) => {
 //     console.log('Recommnded shows [weekly]');
 //     let data;
@@ -36,11 +34,12 @@ app.post('/weekly', async (req, res) => {
     console.log('Recommnded shows [weekly]');
     try {
         const data = await fetchData.getRecommendShows('weekly');
-        console.log(data)
+        console.log(data);
     } catch (error) {
         console.log('Error during GET request:');
         console.log(error);
     }
+    res.redirect('/');
 });
 
 const PORT = process.env.PORT || 3001;
