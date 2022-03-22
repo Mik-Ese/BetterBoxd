@@ -31,7 +31,6 @@ app.post('/test', (req, res) => {
 // });
 
 app.post('/weekly', async (req, res) => {
-    console.log('Recommnded shows [weekly]');
     try {
         const data = await fetchData.getRecommendShows('weekly');
         console.log(data);

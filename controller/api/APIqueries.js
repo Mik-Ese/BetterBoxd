@@ -71,6 +71,14 @@ function genArtQuery(key, mediaType, id) {
     return `https://webservice.fanart.tv/v3/${mediaType}/${id}?api_key=${key}`;
 }
 
+/**
+ * @param {string} text - movie name
+ * @returns API query string for movie summary
+ */
+function genMovieSearchQuery(text) {
+    return `https://api.trakt.tv/search/movie?query=${text}`;
+}
+
 module.exports = {
     genRecShowsQuery,
     genRecMoviesQuery,
@@ -81,6 +89,7 @@ module.exports = {
     genShowExtendedQuery,
     genMovieExtendedQuery,
     genArtQuery,
+    genMovieSearchQuery,
     getPopShows: 'https://api.trakt.tv/shows/popular',
     getPopMovies: 'https://api.trakt.tv/movies/popular'
 };

@@ -6,7 +6,7 @@ const credentials = require('./credentials');
 const APIqueries = require('./api/APIqueries');
 
 // const redisClient = redis.createClient('localhost', 6379);
-const redisClient = redis.createClient('172.27.223.125', 6379);
+const redisClient = redis.createClient('172.27.221.237', 6379);
 
 const config = {
     headers: {
@@ -103,7 +103,6 @@ async function getMediaArt(mediaType, id, artType) {
             // saving to cache
             redisClient.set(key, JSON.stringify(response.data), {
                 EX: expiry // seconds in a week (expiry)
-                // NX: true    // Only set the key if it does not already exist
             });
             fullResult = response.data;
         }
@@ -171,10 +170,41 @@ async function getMediaArt(mediaType, id, artType) {
 
         return `${mediaType} art type: "${artType}" not found`;
     } catch (error) {
-        return error;
+        throw new Error(error);
     }
 }
+
+/**
+ * @param {String} movieName
+ * @returns
+ */
+async function getMovieSearchResults(movieName) {
+    let expiry = 900; // 15 mins
+    const APIquery = APIqueries.genMovieSearchQuery(movieName.toLowerCase());
+    try {
+        const key = `search${movieName.toLowerCase()}`; // cache key
+
+        // checking cache
+        const cacheResponse = await redisClient.get(key);
+        if (cacheResponse) {
+            return JSON.parse(cacheResponse);
+        } else {
+            // making API request
+            const response = await axios.get(APIquery, config);
+            // saving to cache
+            redisClient.set(key, JSON.stringify(response.data), {
+                EX: expiry
+            });
+
+            return response.data;
+        }
+    } catch (error) {
+        throw new Error(error);
+    }
+}
+
 module.exports = {
     getRecommendShows,
-    getMediaArt
+    getMediaArt,
+    getMovieSearchResults
 };
