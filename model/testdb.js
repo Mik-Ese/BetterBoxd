@@ -11,20 +11,42 @@ const MediaRatingModel = require('./schemas/mediaRating.schema');
 // const testSchema = new mongoose.Schema({name: {type:String, unique:true}}, { collection : 'testMongoose' });   // collection name
 // const testModel = mongoose.model('testMongoose', testSchema, "testMongoose");
 // const client = new mongodb.MongoClient(uri);
-async function readFromCollection() {
-    // const connection = mongoose.connection;
-    const foundMovies = await MovieExtendedModel.find({});
-    console.log(foundMovies);
+async function readFromMovieCollection(model) {
+    try{
+        await mongoose.connect(uri);
+        // const connection = mongoose.connection;
+        const foundMovies = await MovieModel.find({});
+        console.log(foundMovies);
+        await mongoose.connection.close();
+        return foundMovies;
+    }
+    catch(error){
+        console.log(error);
+        return error
+    }
+
 }
-// async function addToCollection() {
-//     let testData = new testModel({ name: "hi" });
-//     await testData.save();
+// async function addToUserList(movie_id) {
+//     await mongoose.connect(uri);
+//     const foundMovies = await UserModel.find({});
+//     console.log(foundMovies);
+//     await mongoose.connection.close();
+
 // }
+async function addToMovieCollection(model, data) {
+    try{
+        await mongoose.connect(uri);
+        let testData = new MovieModel({ name: "hi" });
+        await testData.save();
+        await mongoose.connection.close();
+        return "Successful"
+    }
+    catch(error){
+        console.log(error)
+    }
+}
 async function main() {
-    await mongoose.connect(uri);
     // await addToCollection();
-    await readFromCollection();
-    await mongoose.connection.close();
+    await readFromMovieCollection();
 }
 main();
-// run();
