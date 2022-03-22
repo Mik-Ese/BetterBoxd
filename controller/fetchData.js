@@ -6,7 +6,10 @@ const credentials = require('./credentials');
 const APIqueries = require('./api/APIqueries');
 
 // const redisClient = redis.createClient('localhost', 6379);
-const redisClient = redis.createClient('172.27.221.237', 6379);
+const redisClient = redis.createClient(
+    credentials.redisAddress ? credentials.redisAddress : 'localhost',
+    6379
+);
 
 const config = {
     headers: {

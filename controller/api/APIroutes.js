@@ -24,11 +24,7 @@ router.get('/movie-search-results', async (req, res) => {
     res.send(data);
 });
 
-router.get('/recently-reviewed', async (req, res) => {
-    const {movieName} = req.query;
-    const data = await fetchData.getMovieSearchResults(movieName);
-    res.send(data);
-});
+router.get('/recently-reviewed', async (req, res) => {});
 
 router.post('/add-user', async (req, res) => {});
 router.get('/get-user', async (req, res) => {});
