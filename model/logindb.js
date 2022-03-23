@@ -3,6 +3,8 @@ const uri =
     'mongodb+srv://betterboxd:movie@main.6pjwu.mongodb.net/BetterBoxd?retryWrites=true&w=majority';
 const UserModel = require('./schemas/user.schema');
 
+module.exports = addUser;
+
 async function addUser(user, password, email) {
     try {
         await mongoose.connect(uri);
@@ -38,8 +40,6 @@ async function getUser(name) {
         await mongoose.connect(uri);
         const foundUser = await UserModel.find({username: name});
         console.log(foundUser);
-        console.log('USERNAME: ');
-        console.log(foundUser.at(0).username);
         await mongoose.connection.close();
         return foundUser;
     }
@@ -84,7 +84,13 @@ async function checkLogIn(user, password) {
     }
 }
 
+module.exports = {
+    checkLogIn: checkLogIn,
+    getUser: getUser,
+    addUser: addUser
+};
+
 async function main() {
-    await readFromUserCollection();
+    getUser('MattressButter');
 }
 main();
