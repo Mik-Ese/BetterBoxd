@@ -34,7 +34,7 @@ function genMovieRatingQuery(id) {
  * @param {*} id - Trakt ID, Trakt slug, or IMDB ID
  * @returns API query string for show
  */
-function genShow(id) {
+function genShowQuery(id) {
     return `https://api.trakt.tv/shows/${id}`;
 }
 
@@ -42,7 +42,7 @@ function genShow(id) {
  * @param {*} id - Trakt ID, Trakt slug, or IMDB ID
  * @returns API query string for movie
  */
-function genMovie(id) {
+function genMovieQuery(id) {
     return `https://api.trakt.tv/movies/${id}`;
 }
 
@@ -50,7 +50,7 @@ function genMovie(id) {
  * @param {*} id - Trakt ID, Trakt slug, or IMDB ID
  * @returns API query string for show summary
  */
-function genShowExtended(id) {
+function genShowExtendedQuery(id) {
     return `https://api.trakt.tv/shows/${id}?extended=full`;
 }
 
@@ -58,8 +58,25 @@ function genShowExtended(id) {
  * @param {*} id - Trakt ID, Trakt slug, or IMDB ID
  * @returns API query string for movie summary
  */
-function genMovieExtended(id) {
+function genMovieExtendedQuery(id) {
     return `https://api.trakt.tv/movies/${id}?extended=full`;
+}
+
+/**
+ * @param {*} key - API key from fanart.tv
+ * @param {*} mediaType - "movies" or "tv"
+ * @param {*} id - media ID from TVDB <- MOST COMPATIBLE (NOT IMDB or TMDB)
+ */
+function genArtQuery(key, mediaType, id) {
+    return `https://webservice.fanart.tv/v3/${mediaType}/${id}?api_key=${key}`;
+}
+
+/**
+ * @param {string} text - movie name
+ * @returns API query string for movie summary
+ */
+function genMovieSearchQuery(text) {
+    return `https://api.trakt.tv/search/movie?query=${text}`;
 }
 
 module.exports = {
@@ -67,10 +84,12 @@ module.exports = {
     genRecMoviesQuery,
     genShowRatingQuery,
     genMovieRatingQuery,
-    genShow,
-    genMovie,
-    genShowExtended,
-    genMovieExtended,
+    genShowQuery,
+    genMovieQuery,
+    genShowExtendedQuery,
+    genMovieExtendedQuery,
+    genArtQuery,
+    genMovieSearchQuery,
     getPopShows: 'https://api.trakt.tv/shows/popular',
     getPopMovies: 'https://api.trakt.tv/movies/popular'
 };
