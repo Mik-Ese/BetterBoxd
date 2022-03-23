@@ -1,0 +1,34 @@
+.just-reviewed-image-container{
+    border-radius: .5rem;
+    overflow: hidden;
+    margin-right: .4rem;
+    margin-left: .4rem;
+    cursor: pointer;
+    height: 13rem;
+    width: 9rem;
+    border: 0rem solid rgb(40, 250, 50);
+    transition: border 0.15s linear;
+}
+
+.just--image-container{
+    display: flex;
+    margin-bottom: 1rem;
+}
+.just-reviewed-image-container:hover{
+    border: .3rem solid rgb(40, 250, 50);
+    transition: border 0.15s linear;
+}
+
+.just-reviewed-image{
+    max-height: 13rem;
+    margin-top: 0rem;
+    margin-left: 0rem;
+    transition: margin-left 0.15s linear, margin-top 0.15s linear;
+}
+
+.just-reviewed-image:hover{
+    max-height: 13rem;
+    margin-top: -0.3rem;
+    margin-left: -0.3rem;
+    transition: margin-left 0.15s linear, margin-top 0.15s linear;
+}
