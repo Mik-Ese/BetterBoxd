@@ -1,0 +1,35 @@
+.base-movie-subtitle{
+    margin-top: 2rem;
+    font-weight: bold;
+    width: 100%;
+    margin-bottom: 1rem;
+    display: flex;
+}
+
+.movie-page-root{
+    
+    display: flex;
+    flex-wrap: wrap;
+    padding: 1rem;
+    width: 100%;
+}
+
+.popular-movie-components-container{
+    width: 100%;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+}
+
+.just-reviewed-components-container{
+    display: flex;
+    justify-content: center;
+    width: 100%;
+    flex-wrap: wrap;
+}
+
+.popular-review-components-container{
+    width: 100%;
+    display: flex;
+    flex-wrap: wrap;
+}
