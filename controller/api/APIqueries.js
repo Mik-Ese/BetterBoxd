@@ -90,6 +90,8 @@ module.exports = {
     genMovieExtendedQuery,
     genArtQuery,
     genMovieSearchQuery,
+    getTrendingMovieReviewsQuery:
+        'https://api.trakt.tv/comments/trending/reviews/movies?include_replies=false',
     getPopShows: 'https://api.trakt.tv/shows/popular',
     getPopMovies: 'https://api.trakt.tv/movies/popular'
 };

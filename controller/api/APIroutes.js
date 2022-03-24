@@ -26,6 +26,11 @@ router.get('/movie-search-results', async (req, res) => {
     res.send(data);
 });
 
+router.get('/movie-search-results', async (req, res) => {
+    const data = await fetchData.getTrendingMovieReviews();
+    res.send(data);
+});
+
 router.get('/all-reviews', async (req, res) => {
     let data = await reviewsDB.getAllReviews();
     for (element of data) {

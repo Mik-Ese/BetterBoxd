@@ -13,6 +13,7 @@
   "dependencies": {
     "axios": "^0.26.1",
     "express": "^4.17.2",
+    "mongoose": "^6.2.8",
     "nodemon": "^2.0.15",
     "redis": "^4.0.4"
   }
