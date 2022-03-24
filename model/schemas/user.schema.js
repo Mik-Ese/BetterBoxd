@@ -1,14 +1,12 @@
-var mongoose = require('mongoose');
-const { Schema } = mongoose;
+const mongoose = require('mongoose');
+const connection = require('../util/database');
 
-const userSchema = new Schema(
-    {
-        // no "_id" field since it is automatically generated
-        username: { type: String, unique: true },
-        email_address: { type: String, unique: true },
-        password: String,
-    },
-    { collection: 'users' }
-);
+const user = new mongoose.Schema({
+    // no "_id" field since it is automatically generated
+    username: { type: String, required: true, unique: true },
+    email_address: { type: String, required: true, unique: true },
+    password: { type: String, required: true }
+});
 
-module.exports = mongoose.model('User', userSchema, 'users');
+const User = connection.model('User', user);
+module.exports = User;

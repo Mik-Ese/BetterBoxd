@@ -1,15 +1,17 @@
-const { ObjectId } = require('mongodb');
-var mongoose = require('mongoose');
-const { Schema } = mongoose;
+const mongoose = require('mongoose');
+const connection = require('../util/database');
+const User = require('./user.schema');
 
-const userReviewSchema = new Schema({
-    user_id: String,
-    trakt_id: Number,
-    review_rating: Number,
-    review_description: String,
-    review_likes: Number,
-    review_no_of_comments: Number,
-    review_created_at: Date
-}, { collection: 'reviews'});
+const userReview = new mongoose.Schema({
+    // no "_id" field since it is automatically generated
+    user_id: { type: mongoose.Schema.ObjectId, ref: User, required: true },
+    trakt_id: { type: Number, required: true },
+    rating: { type: Number, required: true },
+    description: { type: String, required: true },
+    no_likes: { type: Number, required: true },
+    no_comments: { type: Number, required: true },
+    created_at: { type: Date, required: true }
+});
 
-module.exports = mongoose.model('reviews', userReviewSchema);
+const UserReview = connection.model('UserReview', userReview);
+module.exports = UserReview;
