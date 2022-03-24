@@ -2,11 +2,11 @@ const User = require('./schemas/user.schema');
 const UserReview = require('./schemas/userReview.schema');
 
 /**
- * @param {*} period - daily, weekly, monthly or yearly
- * @returns API query string for recommended shows
+ * @param {*} review - the review to post
+ * @returns
  */
-function postUserReview(review) {
-    UserReview.insertOne('e');
+async function postUserReview(review) {
+    return await User.insertMany(review);
 }
 
 /**
