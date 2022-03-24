@@ -101,77 +101,83 @@ async function getMediaArt(mediaType, id, artType) {
         } else {
             // making API request
             const response = await axios.get(APIquery, config);
+
+            fullResult = response.data;
+            let result;
+
+            if (fullResult['invalid_fanart']) {
+                result = fullResult['invalid_fanart'];
+            }
+            if (mediaType.toLowerCase() === 'movies') {
+                if (artType.toLowerCase() === 'poster') {
+                    if (fullResult.hasOwnProperty('movieposter')) {
+                        result = fullResult.movieposter[0].url;
+                    }
+                    throw new Error('Could not find any posters');
+                } else if (artType.toLowerCase() === 'logo') {
+                    if (fullResult.hasOwnProperty('hdmovielogo')) {
+                        result = fullResult.hdmovielogo[0].url;
+                    } else if (fullResult.hasOwnProperty('movielogo')) {
+                        result = fullResult.movielogo[0].url;
+                    }
+                    throw new Error('Could not find any logos');
+                } else if (artType.toLowerCase() === 'clearlogo') {
+                    if (fullResult.hasOwnProperty('hdmovieclearlogo')) {
+                        result = fullResult.hdmovieclearlogo[0].url;
+                    } else if (fullResult.hasOwnProperty('movieclearlogo')) {
+                        result = fullResult.movieclearlogo[0].url;
+                    }
+                    throw new Error('Could not find any logos');
+                } else if (artType.toLowerCase() === 'thumbs') {
+                    if (fullResult.hasOwnProperty('moviethumb')) {
+                        result = fullResult.moviethumb[0].url;
+                    }
+                    throw new Error('Could not find any thumbnails');
+                } else if (artType.toLowerCase() === 'bg') {
+                    if (fullResult.hasOwnProperty('moviebackground')) {
+                        result = fullResult.moviebackground[0].url;
+                    }
+                    throw new Error('Could not find any backgrounds');
+                } else if (artType.toLowerCase() === 'banner') {
+                    if (fullResult.hasOwnProperty('moviebanner')) {
+                        result = fullResult.moviebanner[0].url;
+                    }
+                    throw new Error('Could not find any banners');
+                } else if (artType.toLowerCase() === 'disk') {
+                    if (fullResult.hasOwnProperty('moviedisk')) {
+                        result = fullResult.moviedisk[0].url;
+                    }
+                    throw new Error('Could not find any disk art');
+                } else if (artType.toLowerCase() === 'art') {
+                    if (fullResult.hasOwnProperty('hdmovieart')) {
+                        result = fullResult.hdmovieart[0].url;
+                    } else if (fullResult.hasOwnProperty('movieart')) {
+                        result = fullResult.movieart[0].url;
+                    }
+                    throw new Error('Could not find any art');
+                } else if (artType.toLowerCase() === 'clearart') {
+                    if (fullResult.hasOwnProperty('hdmovieclearart')) {
+                        result = fullResult.hdmovieclearart[0].url;
+                    } else if (fullResult.hasOwnProperty('movieclearart')) {
+                        result = fullResult.movieclearart[0].url;
+                    }
+                    throw new Error('Could not find any clear art');
+                }
+            } else {
+                throw new Error(
+                    'Sorry, other types of media have not been implemented'
+                );
+            }
+
             // saving to cache
-            redisClient.set(key, JSON.stringify(response.data), {
+            redisClient.set(key, JSON.stringify(result), {
                 EX: expiry // seconds in a week (expiry)
             });
-            fullResult = response.data;
-        }
-        if (fullResult['invalid_fanart']) {
-            return fullResult['invalid_fanart'];
-        }
-        if (mediaType.toLowerCase() === 'movies') {
-            if (artType.toLowerCase() === 'poster') {
-                if (fullResult.hasOwnProperty('movieposter')) {
-                    return fullResult.movieposter[0].url;
-                }
-                throw new Error('Could not find any posters');
-            } else if (artType.toLowerCase() === 'logo') {
-                if (fullResult.hasOwnProperty('hdmovielogo')) {
-                    return fullResult.hdmovielogo[0].url;
-                } else if (fullResult.hasOwnProperty('movielogo')) {
-                    return fullResult.movielogo[0].url;
-                }
-                throw new Error('Could not find any logos');
-            } else if (artType.toLowerCase() === 'clearlogo') {
-                if (fullResult.hasOwnProperty('hdmovieclearlogo')) {
-                    return fullResult.hdmovieclearlogo[0].url;
-                } else if (fullResult.hasOwnProperty('movieclearlogo')) {
-                    return fullResult.movieclearlogo[0].url;
-                }
-                throw new Error('Could not find any logos');
-            } else if (artType.toLowerCase() === 'thumbs') {
-                if (fullResult.hasOwnProperty('moviethumb')) {
-                    return fullResult.moviethumb[0].url;
-                }
-                throw new Error('Could not find any thumbnails');
-            } else if (artType.toLowerCase() === 'bg') {
-                if (fullResult.hasOwnProperty('moviebackground')) {
-                    return fullResult.moviebackground[0].url;
-                }
-                throw new Error('Could not find any backgrounds');
-            } else if (artType.toLowerCase() === 'banner') {
-                if (fullResult.hasOwnProperty('moviebanner')) {
-                    return fullResult.moviebanner[0].url;
-                }
-                throw new Error('Could not find any banners');
-            } else if (artType.toLowerCase() === 'disk') {
-                if (fullResult.hasOwnProperty('moviedisk')) {
-                    return fullResult.moviedisk[0].url;
-                }
-                throw new Error('Could not find any disk art');
-            } else if (artType.toLowerCase() === 'art') {
-                if (fullResult.hasOwnProperty('hdmovieart')) {
-                    return fullResult.hdmovieart[0].url;
-                } else if (fullResult.hasOwnProperty('movieart')) {
-                    return fullResult.movieart[0].url;
-                }
-                throw new Error('Could not find any art');
-            } else if (artType.toLowerCase() === 'clearart') {
-                if (fullResult.hasOwnProperty('hdmovieclearart')) {
-                    return fullResult.hdmovieclearart[0].url;
-                } else if (fullResult.hasOwnProperty('movieclearart')) {
-                    return fullResult.movieclearart[0].url;
-                }
-                throw new Error('Could not find any clear art');
-            }
-        }
 
-        if (mediaType.toLowerCase() === 'tv') {
-            throw new Error('Sorry, TV shows have not been implemented');
+            return typeof result !== 'undefined'
+                ? result
+                : `${mediaType} art type: "${artType}" not found`;
         }
-
-        return `${mediaType} art type: "${artType}" not found`;
     } catch (error) {
         // throw new Error(error);
 
@@ -332,10 +338,6 @@ async function getMovieSearchResults(movieName) {
         } else {
             // making API request
             const response = await axios.get(APIquery, config);
-            // saving to cache
-            redisClient.set(key, JSON.stringify(response.data), {
-                EX: expiry
-            });
 
             const result = response.data.map(function (entry) {
                 return {
@@ -343,6 +345,62 @@ async function getMovieSearchResults(movieName) {
                     year: entry.movie.year,
                     trakt_id: entry.movie.ids.trakt
                 };
+            });
+
+            // saving to cache
+            redisClient.set(key, JSON.stringify(result), {
+                EX: expiry
+            });
+
+            return result;
+        }
+    } catch (error) {
+        throw new Error(error);
+    }
+}
+
+async function getTrendingMovieReviews() {
+    let expiry = 86400; // 1 day
+    const APIquery = APIqueries.getTrendingMovieReviewsQuery;
+    try {
+        const key = `trendingMovieReviews`; // cache key
+
+        // checking cache
+        const cacheResponse = await redisClient.get(key);
+        if (cacheResponse) {
+            return JSON.parse(cacheResponse);
+        } else {
+            // making API request
+            const response = await axios.get(APIquery, config);
+
+            // broken url at time of push
+            const result = response.data.map(function (entry) {
+                let fanartResponse = getMediaArt(
+                    'movies',
+                    entry.movie.ids.tmdb,
+                    'poster'
+                );
+                return {
+                    // movie info
+                    title: entry.movie.title,
+                    year: entry.movie.year,
+                    url: fanartResponse,
+                    trakt_id: entry.movie.ids.trakt,
+
+                    // review info
+                    comment_id: entry.comment.id,
+                    comment: entry.comment.comment,
+                    spoiler: entry.comment.spoiler, // review contains spoilers (true/false)
+                    likes: entry.comment.likes,
+                    replies: entry.comment.replies,
+                    rating: entry.comment.user_rating, // rating from 1 to 10
+                    author: entry.comment.user.username
+                };
+            });
+
+            // saving to cache
+            redisClient.set(key, JSON.stringify(result), {
+                EX: expiry
             });
 
             return result;
@@ -357,5 +415,6 @@ module.exports = {
     getMediaArt,
     getMovieSearchResults,
     getMovieExtended,
+    getTrendingMovieReviews,
     getPopularShows
 };
