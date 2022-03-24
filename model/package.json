@@ -4,7 +4,7 @@
   "description": "movie review web app that utilizes LetterBoxd API",
   "main": "app.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
+    "test": "jest",
     "start": "node app.js",
     "dev": "nodemon app.js"
   },
@@ -13,6 +13,10 @@
   "dependencies": {
     "express": "^4.17.2",
     "mongodb": "^4.3.1",
+    "mongoose": "^6.2.8",
     "nodemon": "^2.0.15"
+  },
+  "devDependencies": {
+    "jest": "^27.5.1"
   }
 }
