@@ -93,17 +93,17 @@ async function getMediaArt(mediaType, id, artType) {
     const key = `${mediaType}Art_${id}`; // cache key
     try {
         let fullResult;
+        let result;
 
         // checking cache
         const cacheResponse = await redisClient.get(key);
         if (cacheResponse) {
-            fullResult = JSON.parse(cacheResponse);
+            result = JSON.parse(cacheResponse);
         } else {
             // making API request
             const response = await axios.get(APIquery, config);
 
             fullResult = response.data;
-            let result;
 
             if (fullResult['invalid_fanart']) {
                 result = fullResult['invalid_fanart'];
@@ -112,56 +112,65 @@ async function getMediaArt(mediaType, id, artType) {
                 if (artType.toLowerCase() === 'poster') {
                     if (fullResult.hasOwnProperty('movieposter')) {
                         result = fullResult.movieposter[0].url;
+                    } else {
+                        throw new Error('Could not find any posters');
                     }
-                    throw new Error('Could not find any posters');
                 } else if (artType.toLowerCase() === 'logo') {
                     if (fullResult.hasOwnProperty('hdmovielogo')) {
                         result = fullResult.hdmovielogo[0].url;
                     } else if (fullResult.hasOwnProperty('movielogo')) {
                         result = fullResult.movielogo[0].url;
+                    } else {
+                        throw new Error('Could not find any logos');
                     }
-                    throw new Error('Could not find any logos');
                 } else if (artType.toLowerCase() === 'clearlogo') {
                     if (fullResult.hasOwnProperty('hdmovieclearlogo')) {
                         result = fullResult.hdmovieclearlogo[0].url;
                     } else if (fullResult.hasOwnProperty('movieclearlogo')) {
                         result = fullResult.movieclearlogo[0].url;
+                    } else {
+                        throw new Error('Could not find any logos');
                     }
-                    throw new Error('Could not find any logos');
                 } else if (artType.toLowerCase() === 'thumbs') {
                     if (fullResult.hasOwnProperty('moviethumb')) {
                         result = fullResult.moviethumb[0].url;
+                    } else {
+                        throw new Error('Could not find any thumbnails');
                     }
-                    throw new Error('Could not find any thumbnails');
                 } else if (artType.toLowerCase() === 'bg') {
                     if (fullResult.hasOwnProperty('moviebackground')) {
                         result = fullResult.moviebackground[0].url;
+                    } else {
+                        throw new Error('Could not find any backgrounds');
                     }
-                    throw new Error('Could not find any backgrounds');
                 } else if (artType.toLowerCase() === 'banner') {
                     if (fullResult.hasOwnProperty('moviebanner')) {
                         result = fullResult.moviebanner[0].url;
+                    } else {
+                        throw new Error('Could not find any banners');
                     }
-                    throw new Error('Could not find any banners');
                 } else if (artType.toLowerCase() === 'disk') {
                     if (fullResult.hasOwnProperty('moviedisk')) {
                         result = fullResult.moviedisk[0].url;
+                    } else {
+                        throw new Error('Could not find any disk art');
                     }
-                    throw new Error('Could not find any disk art');
                 } else if (artType.toLowerCase() === 'art') {
                     if (fullResult.hasOwnProperty('hdmovieart')) {
                         result = fullResult.hdmovieart[0].url;
                     } else if (fullResult.hasOwnProperty('movieart')) {
                         result = fullResult.movieart[0].url;
+                    } else {
+                        throw new Error('Could not find any art');
                     }
-                    throw new Error('Could not find any art');
                 } else if (artType.toLowerCase() === 'clearart') {
                     if (fullResult.hasOwnProperty('hdmovieclearart')) {
                         result = fullResult.hdmovieclearart[0].url;
                     } else if (fullResult.hasOwnProperty('movieclearart')) {
                         result = fullResult.movieclearart[0].url;
+                    } else {
+                        throw new Error('Could not find any clear art');
                     }
-                    throw new Error('Could not find any clear art');
                 }
             } else {
                 throw new Error(
@@ -173,14 +182,14 @@ async function getMediaArt(mediaType, id, artType) {
             redisClient.set(key, JSON.stringify(result), {
                 EX: expiry // seconds in a week (expiry)
             });
+        }
 
-            return typeof result !== 'undefined'
-                ? result
-                : `${mediaType} art type: "${artType}" not found`;
+        if (typeof result !== 'undefined') {
+            return result;
+        } else {
+            throw new Error(`${mediaType} art type: "${artType}" not found`);
         }
     } catch (error) {
-        // throw new Error(error);
-
         const invalid_fanart =
             'https://cdn.pixabay.com/photo/2017/02/12/21/29/false-2061132_960_720.png';
         redisClient.set(
