@@ -1,0 +1,26 @@
+.home-page-welcome-text {
+  font-size: 2rem;
+  font-weight: 600;
+}
+
+.home-page-welcome-text-container {
+  margin-top: 35rem;
+}
+
+.home-page-sign-up-button {
+  margin-top: 3rem;
+}
+
+.home-page-background-image-container {
+  width: 100%;
+  height: 35rem;
+  margin-top: -35rem;
+  overflow: hidden;
+  z-index: 0;
+  position: absolute;
+}
+
+.home-page-content{
+    position: relative;
+    z-index: 3;
+}
