@@ -2,7 +2,7 @@ const express = require('express');
 const app = express();
 const axios = require('axios');
 const redis = require('redis');
-const credentials = require('./credentials');
+const credentials = require('../credentials');
 const APIqueries = require('./api/APIqueries');
 
 // const redisClient = redis.createClient('localhost', 6379);
@@ -211,13 +211,11 @@ async function getPopularShows(period){
             for(let element of response){
                 const fanartResponse = await getMediaArt("movies", element.movie.ids.tmdb, "poster");
                 element['trakt_id'] = element.movie.ids.trakt;
-                delete element.movie.ids;
                 element = {
                     ...element,
                     "url": fanartResponse
                 }
                 // console.log(element)
-                delete element.ids;
             }
             redisClient.set(key, JSON.stringify(response), {
                 EX: expiry // seconds in a week (expiry)
@@ -230,7 +228,10 @@ async function getPopularShows(period){
         throw new Error(error);
     }
 }
-
+/**
+ * @param {*} id - Trakt ID
+ * @return Object with fields of summart
+ */
 async function getMovieExtended(id){
     const APIquery = `https://api.trakt.tv/movies/${id}?extended=full`
     const movieStats = `https://api.trakt.tv/movies/${id}/stats`
@@ -256,7 +257,6 @@ async function getMovieExtended(id){
                     "trakt_id" : response.ids.trakt,
                     "url": fanartResponse,
                 }
-                delete send_to_UI.ids; // deletes other ids
                 array.push(send_to_UI);
                 redisClient.set(key, JSON.stringify(array), {
                     EX: 604800 // seconds in a week (expiry)
@@ -278,7 +278,6 @@ async function getMovieExtended(id){
                 "trakt_id" : response.ids.trakt,
                 "url": fanartResponse
             }
-            delete send_to_UI.ids;
             const movie = [send_to_UI];
             redisClient.set(key, JSON.stringify(movie), {
                 EX: 604800 // seconds in a week (expiry)

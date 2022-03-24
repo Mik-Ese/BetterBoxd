@@ -3,6 +3,7 @@ const {route} = require('express/lib/application');
 const res = require('express/lib/response');
 const {send} = require('express/lib/response');
 const fetchData = require('../fetchData');
+const reviewsDB = require('../../model/reviewsdb');
 const router = express.Router();
 
 router.get('/get-recommended-shows', async (req, res) => {
@@ -24,7 +25,23 @@ router.get('/movie-search-results', async (req, res) => {
     res.send(data);
 });
 
-router.get('/recently-reviewed', async (req, res) => {});
+router.get('/all-reviews', async (req, res) => {
+    let data = await reviewsDB.getAllReviews();
+    for(element of data){
+        let movie_data = await fetchData.getMovieExtended(element.trakt_id);
+        element = {
+            ...element,
+            ...movie_data
+        }
+    }
+    res.send(data);
+});
+router.get('/get-movie-reviews', async (req, res) => {
+    const {movie_id} = req.query
+    const data = await reviewsDB.readReviewsFromMovie(movie_id);
+    res.send(data);
+});
+
 
 router.post('/add-user', async (req, res) => {});
 router.get('/get-user', async (req, res) => {});
