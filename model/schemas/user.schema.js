@@ -7,7 +7,6 @@ const userSchema = new Schema(
         username: { type: String, unique: true },
         email_address: { type: String, unique: true },
         password: String,
-        lists: [{ list_name: String, media_ids: [String] }]
     },
     { collection: 'users' }
 );

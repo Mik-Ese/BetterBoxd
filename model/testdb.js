@@ -1,6 +1,5 @@
 const mongoose = require('mongoose');
-const uri =
-    'mongodb+srv://betterboxd:movie@main.6pjwu.mongodb.net/BetterBoxd?retryWrites=true&w=majority';
+const uri = credentials.mongo_uri;
 const UserModel = require('./schemas/user.schema');
 const MovieModel = require('./schemas/movie.schema');
 const ShowModel = require('./schemas/show.schema');

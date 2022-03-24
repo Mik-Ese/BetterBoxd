@@ -13,6 +13,6 @@ const movieListSchema = new Schema({
             tmdb: Number
         }
     ]
-});
+}, { collection: 'movie_lists' });
 
 module.exports = mongoose.model('MovieList', movieListSchema);
