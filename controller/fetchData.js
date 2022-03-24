@@ -107,8 +107,8 @@ async function getMediaArt(mediaType, id, artType) {
             });
             fullResult = response.data;
         }
-        if(fullResult["invalid_fanart"]){
-            return fullResult["invalid_fanart"];
+        if (fullResult['invalid_fanart']) {
+            return fullResult['invalid_fanart'];
         }
         if (mediaType.toLowerCase() === 'movies') {
             if (artType.toLowerCase() === 'poster') {
@@ -174,48 +174,65 @@ async function getMediaArt(mediaType, id, artType) {
         return `${mediaType} art type: "${artType}" not found`;
     } catch (error) {
         // throw new Error(error);
-        
-        const invalid_fanart = "https://cdn.pixabay.com/photo/2014/03/25/15/19/cross-296507_1280.png"
-        redisClient.set(key, JSON.stringify([{
-            "invalid_fanart": invalid_fanart
-        }]), {
-            EX: expiry // seconds in a week (expiry)
-        });
+
+        const invalid_fanart =
+            'https://cdn.pixabay.com/photo/2014/03/25/15/19/cross-296507_1280.png';
+        redisClient.set(
+            key,
+            JSON.stringify([
+                {
+                    invalid_fanart: invalid_fanart
+                }
+            ]),
+            {
+                EX: expiry // seconds in a week (expiry)
+            }
+        );
         return invalid_fanart;
     }
 }
 
-async function getPopularShows(period){
-    if((period !== 'weekly') && (period !== 'monthly') && (period !== 'daily') && (period !== 'yearly') && (period !== 'all')){
+async function getPopularShows(period) {
+    if (
+        period !== 'weekly' &&
+        period !== 'monthly' &&
+        period !== 'daily' &&
+        period !== 'yearly' &&
+        period !== 'all'
+    ) {
         return 'invalid parameter';
     }
     let expiry = 0;
-    if(period.toLowerCase() === 'weekly'){
+    if (period.toLowerCase() === 'weekly') {
         expiry = 604800;
     }
-    if(period.toLowerCase() === 'monthly'){
+    if (period.toLowerCase() === 'monthly') {
         expiry = 2592000;
-    }  
-    const APIquery = `https://api.trakt.tv/movies/watched/${period}`
-    
+    }
+    const APIquery = `https://api.trakt.tv/movies/watched/${period}`;
+
     try {
         const key = `popularShows${period.toLowerCase()}`; // cache key
         // checking cache
         const cacheResponse = await redisClient.get(key);
         if (cacheResponse) {
-            return JSON.parse(cacheResponse)
+            return JSON.parse(cacheResponse);
         } else {
             // making API request
-            let {data:response} = await axios.get(APIquery, config);
+            let {data: response} = await axios.get(APIquery, config);
             // saving to cache
-            for(let element of response){
-                const fanartResponse = await getMediaArt("movies", element.movie.ids.tmdb, "poster");
+            for (let element of response) {
+                const fanartResponse = await getMediaArt(
+                    'movies',
+                    element.movie.ids.tmdb,
+                    'poster'
+                );
                 element['trakt_id'] = element.movie.ids.trakt;
                 delete element.movie.ids;
                 element = {
                     ...element,
-                    "url": fanartResponse
-                }
+                    url: fanartResponse
+                };
                 // console.log(element)
                 delete element.ids;
             }
@@ -224,16 +241,16 @@ async function getPopularShows(period){
                 // NX: true    // Only set the key if it does not already exist
             });
 
-            return response
+            return response;
         }
     } catch (error) {
         throw new Error(error);
     }
 }
 
-async function getMovieExtended(id){
-    const APIquery = `https://api.trakt.tv/movies/${id}?extended=full`
-    const movieStats = `https://api.trakt.tv/movies/${id}/stats`
+async function getMovieExtended(id) {
+    const APIquery = `https://api.trakt.tv/movies/${id}?extended=full`;
+    const movieStats = `https://api.trakt.tv/movies/${id}/stats`;
     try {
         const key = `movies`; // cache key
         // checking cache
@@ -242,42 +259,49 @@ async function getMovieExtended(id){
             const array = JSON.parse(cacheResponse);
             let found = false;
             array.forEach((element, index) => {
-                if(element["trakt_id"]=== id){
+                if (element['trakt_id'] === id) {
                     found = index;
                 }
-            })
-            if(found === false){
-                const {data:response} = await axios.get(APIquery, config);
-                const fanartResponse = await getMediaArt("movies", response.ids.tmdb, "poster");
+            });
+            if (found === false) {
+                const {data: response} = await axios.get(APIquery, config);
+                const fanartResponse = await getMediaArt(
+                    'movies',
+                    response.ids.tmdb,
+                    'poster'
+                );
                 // const movieStatsResponse = await axios.get(movieStats, config);
                 // saving to cache
                 const send_to_UI = {
                     ...response,
-                    "trakt_id" : response.ids.trakt,
-                    "url": fanartResponse,
-                }
+                    trakt_id: response.ids.trakt,
+                    url: fanartResponse
+                };
                 delete send_to_UI.ids; // deletes other ids
                 array.push(send_to_UI);
                 redisClient.set(key, JSON.stringify(array), {
                     EX: 604800 // seconds in a week (expiry)
                     // NX: true    // Only set the key if it does not already exist
                 });
-                return send_to_UI
-            }
-            else{
+                return send_to_UI;
+            } else {
                 return array[found];
             }
         } else {
             // making API request
-            const {data:response} = await axios.get(APIquery, config);
-            const fanartResponse = await getMediaArt("movies", response.ids.tmdb, "poster");
+            const {data: response} = await axios.get(APIquery, config);
+            const fanartResponse = await getMediaArt(
+                'movies',
+                response.ids.tmdb,
+                'poster'
+            );
             // const movieStatsResponse = await axios.get(movieStats, config);
             // saving to cache
             const send_to_UI = {
                 ...response,
-                "trakt_id" : response.ids.trakt,
-                "url": fanartResponse
-            }
+                trakt_id: response.ids.trakt,
+                url: fanartResponse
+            };
             delete send_to_UI.ids;
             const movie = [send_to_UI];
             redisClient.set(key, JSON.stringify(movie), {
@@ -285,7 +309,7 @@ async function getMovieExtended(id){
                 // NX: true    // Only set the key if it does not already exist
             });
 
-            return send_to_UI
+            return send_to_UI;
         }
     } catch (error) {
         throw new Error(error);
@@ -314,7 +338,14 @@ async function getMovieSearchResults(movieName) {
                 EX: expiry
             });
 
-            return response.data;
+            return response.data.map(function (entry) {
+                return {
+                    title: entry.movie.title,
+                    year: entry.movie.year,
+                    score: entry.score,
+                    trakt_id: entry.movie.ids.trakt
+                };
+            });
         }
     } catch (error) {
         throw new Error(error);
