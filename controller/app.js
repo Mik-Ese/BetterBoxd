@@ -7,6 +7,9 @@ const credentials = require('../credentials');
 const APIqueries = require('./api/APIqueries');
 const fetchData = require('./fetchData');
 
+app.use(express.json());
+app.use(express.urlencoded());
+
 app.use('/api/', APIRoutes);
 
 app.post('/test', (req, res) => {

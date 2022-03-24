@@ -46,20 +46,6 @@ async function getUser(name) {
     }
 }
 
-async function readFromUserCollection() {
-    try {
-        await mongoose.connect(uri);
-        const foundUsers = await UserModel.find({});
-        console.log(foundUsers);
-        await mongoose.connection.close();
-        return foundUsers;
-    }
-    catch(error) {
-        console.log(error);
-        return error;
-    }
-}
-
 async function checkLogIn(user, password) {
     try {
         await mongoose.connect(uri);
