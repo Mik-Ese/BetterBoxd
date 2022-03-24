@@ -113,55 +113,55 @@ async function getMediaArt(mediaType, id, artType) {
         if (mediaType.toLowerCase() === 'movies') {
             if (artType.toLowerCase() === 'poster') {
                 if (fullResult.hasOwnProperty('movieposter')) {
-                    return fullResult.movieposter;
+                    return fullResult.movieposter[0].url;
                 }
                 throw new Error('Could not find any posters');
             } else if (artType.toLowerCase() === 'logo') {
                 if (fullResult.hasOwnProperty('hdmovielogo')) {
-                    return fullResult.hdmovielogo;
+                    return fullResult.hdmovielogo[0].url;
                 } else if (fullResult.hasOwnProperty('movielogo')) {
-                    return fullResult.movielogo;
+                    return fullResult.movielogo[0].url;
                 }
                 throw new Error('Could not find any logos');
             } else if (artType.toLowerCase() === 'clearlogo') {
                 if (fullResult.hasOwnProperty('hdmovieclearlogo')) {
-                    return fullResult.hdmovieclearlogo;
+                    return fullResult.hdmovieclearlogo[0].url;
                 } else if (fullResult.hasOwnProperty('movieclearlogo')) {
-                    return fullResult.movieclearlogo;
+                    return fullResult.movieclearlogo[0].url;
                 }
                 throw new Error('Could not find any logos');
             } else if (artType.toLowerCase() === 'thumbs') {
                 if (fullResult.hasOwnProperty('moviethumb')) {
-                    return fullResult.moviethumb;
+                    return fullResult.moviethumb[0].url;
                 }
                 throw new Error('Could not find any thumbnails');
             } else if (artType.toLowerCase() === 'bg') {
                 if (fullResult.hasOwnProperty('moviebackground')) {
-                    return fullResult.moviebackground;
+                    return fullResult.moviebackground[0].url;
                 }
                 throw new Error('Could not find any backgrounds');
             } else if (artType.toLowerCase() === 'banner') {
                 if (fullResult.hasOwnProperty('moviebanner')) {
-                    return fullResult.moviebanner;
+                    return fullResult.moviebanner[0].url;
                 }
                 throw new Error('Could not find any banners');
             } else if (artType.toLowerCase() === 'disk') {
                 if (fullResult.hasOwnProperty('moviedisk')) {
-                    return fullResult.moviedisk;
+                    return fullResult.moviedisk[0].url;
                 }
                 throw new Error('Could not find any disk art');
             } else if (artType.toLowerCase() === 'art') {
                 if (fullResult.hasOwnProperty('hdmovieart')) {
-                    return fullResult.hdmovieart;
+                    return fullResult.hdmovieart[0].url;
                 } else if (fullResult.hasOwnProperty('movieart')) {
-                    return fullResult.movieart;
+                    return fullResult.movieart[0].url;
                 }
                 throw new Error('Could not find any art');
             } else if (artType.toLowerCase() === 'clearart') {
                 if (fullResult.hasOwnProperty('hdmovieclearart')) {
-                    return fullResult.hdmovieclearart;
+                    return fullResult.hdmovieclearart[0].url;
                 } else if (fullResult.hasOwnProperty('movieclearart')) {
-                    return fullResult.movieclearart;
+                    return fullResult.movieclearart[0].url;
                 }
                 throw new Error('Could not find any clear art');
             }
@@ -176,7 +176,7 @@ async function getMediaArt(mediaType, id, artType) {
         // throw new Error(error);
 
         const invalid_fanart =
-            'https://cdn.pixabay.com/photo/2014/03/25/15/19/cross-296507_1280.png';
+            'https://cdn.pixabay.com/photo/2017/02/12/21/29/false-2061132_960_720.png';
         redisClient.set(
             key,
             JSON.stringify([

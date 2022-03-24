@@ -16,7 +16,7 @@ router.get('/get-recommended-shows', async (req, res) => {
 router.get('/get-movie-poster', async (req, res) => {
     const {id} = req.query;
     const data = await fetchData.getMediaArt('movies', id, 'poster');
-    res.send(data[0].url);
+    res.send(data);
 });
 
 router.get('/movie-search-results', async (req, res) => {
@@ -27,21 +27,20 @@ router.get('/movie-search-results', async (req, res) => {
 
 router.get('/all-reviews', async (req, res) => {
     let data = await reviewsDB.getAllReviews();
-    for(element of data){
+    for (element of data) {
         let movie_data = await fetchData.getMovieExtended(element.trakt_id);
         element = {
             ...element,
             ...movie_data
-        }
+        };
     }
     res.send(data);
 });
 router.get('/get-movie-reviews', async (req, res) => {
-    const {movie_id} = req.query
+    const {movie_id} = req.query;
     const data = await reviewsDB.readReviewsFromMovie(movie_id);
     res.send(data);
 });
-
 
 router.post('/add-user', async (req, res) => {});
 router.get('/get-user', async (req, res) => {});
