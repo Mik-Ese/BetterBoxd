@@ -6,7 +6,7 @@ const UserReview = require('./schemas/userReview.schema');
  * @returns
  */
 async function postUserReview(review) {
-    return await User.insertMany(review);
+    return await UserReview.insertMany(review);
 }
 
 /**

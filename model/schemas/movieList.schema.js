@@ -1,18 +1,21 @@
-var mongoose = require('mongoose');
-const { Schema } = mongoose;
+const mongoose = require('mongoose');
+const connection = require('../util/database');
+const User = require('./user.schema');
 
-const movieListSchema = new Schema({
-    // no "_id" field since it is automatically generated
-    title: String,
-    userId: String,
-    movieIds: [
-        {
-            trakt: Number,
-            slug: String,
-            imdb: String,
-            tmdb: Number
-        }
-    ]
-}, { collection: 'movie_lists' });
+// const movieId = new mongoose.Schema({
+//     movie_id: {
+//         trakt: Number,
+//         slug: String,
+//         imdb: String,
+//         tmdb: Number
+//     }
+// });
 
-module.exports = mongoose.model('MovieList', movieListSchema);
+const movieList = new mongoose.Schema({
+    title: { type: String, required: true },
+    user_id: { type: mongoose.Schema.ObjectId, ref: User, required: true },
+    trakt_id: { type: Number, required: true }
+});
+
+const MovieList = connection.model('MovieList', movieList);
+module.exports = MovieList;
