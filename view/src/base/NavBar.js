@@ -8,9 +8,13 @@ const NavBar = ({
   listPageOpen,
   journalPageOpen,
   moviePageOpen,
+  loggedIn,
+  setLoggingIn,
+  setSigningUp,
 }) => {
   const logOut = () => {
     setLoggedIn(false);
+    setJournalPageOpen(false);
   };
   const openHomePage = () => {
     setHomePageOpen(true);
@@ -36,6 +40,15 @@ const NavBar = ({
     setJournalPageOpen(false);
     setListPageOpen(false);
   };
+  const logIn = () => {
+    setSigningUp(false);
+    setLoggingIn(true);
+  };
+  const signUp = () => {
+    setLoggingIn(false);
+    setSigningUp(true);
+
+  }
   return (
     <nav class="navbar navbar-expand-lg navbar-light bg-light">
       <div class="container-fluid">
@@ -51,7 +64,6 @@ const NavBar = ({
           <span className="text-warning">x</span>
           <span className="text-info">e</span>
           <span className="text-primary">d</span>
-          
         </a>
         <button
           class="navbar-toggler"
@@ -89,34 +101,47 @@ const NavBar = ({
             >
               <a class={listPageOpen ? "nav-link active" : "nav-link"}>Lists</a>
             </li>
-            <li
-              class="nav-item"
-              onClick={openJournalPage}
-              style={{ cursor: "pointer" }}
-            >
-            
-              <a class={journalPageOpen ? "nav-link active" : "nav-link"}>Journal</a>
-            </li>
+            {loggedIn ? (
+              <li
+                class="nav-item"
+                onClick={openJournalPage}
+                style={{ cursor: "pointer" }}
+              >
+                <a class={journalPageOpen ? "nav-link active" : "nav-link"}>
+                  Journal
+                </a>
+              </li>
+            ) : (
+              <></>
+            )}
           </ul>
           <form class="d-flex">
-            <input
-              class="form-control me-2"
-              type="search"
-              placeholder="Search"
-              aria-label="Search"
-              
-            />
-            <button class="btn btn-outline-success" type="submit">
-              Search
-            </button>
-            <button
-              class="btn btn-outline-success"
-              type="submit"
-              onClick={logOut}
-              style={{ marginLeft: 8, width: 150 }}
-            >
-              Log Out
-            </button>
+            {loggedIn ? (
+              <div
+                class="btn btn-outline-success"
+                onClick={logOut}
+                style={{ marginLeft: 8, width: "7rem" }}
+              >
+                Log Out
+              </div>
+            ) : (
+              <>
+                <div
+                  class="btn btn-outline-success"
+                  onClick={signUp}
+                  style={{ marginLeft: 8, width: "7rem" }}
+                >
+                  Sign Up
+                </div>
+                <div
+                  class="btn btn-outline-success"
+                  onClick={logIn}
+                  style={{ marginLeft: 8, width: "7rem" }}
+                >
+                  Log In
+                </div>
+              </>
+            )}
           </form>
         </div>
       </div>

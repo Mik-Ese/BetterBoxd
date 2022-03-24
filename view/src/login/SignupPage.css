@@ -5,12 +5,11 @@
 }
 
 .username-input-wrapper{
-    margin-top: 1rem;
+    margin-top: .5rem;
 }
 
 .password-input-wrapper{
     margin-top: .5rem;
-    margin-bottom: 1.5rem;
 }
 
 .login-page-back-button-container{
@@ -24,4 +23,12 @@
 .login-page-back-button{
     margin-right: 22rem;
     cursor: pointer;
+}
+
+.confirm-password-input-wrapper{
+    margin-bottom: 2rem;
+    margin-top: -1rem;
+}
+.email-input-wrapper{
+    margin-top: 1rem;
 }

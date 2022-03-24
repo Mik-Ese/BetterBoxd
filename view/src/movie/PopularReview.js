@@ -15,6 +15,10 @@ const PopularReview = ({ reviewData, setMovieSelected }) => {
     }
     return stars;
   };
+  const openComments = () => {
+
+  }
+  
   return (
     <div className="popular-review-container">
       <div className="popular-review-icon" onClick={selectMovie}>
@@ -36,7 +40,7 @@ const PopularReview = ({ reviewData, setMovieSelected }) => {
             {reviewData.authorName}
           </div>
           <div className="popular-review-stars">{createStars()}</div>
-          <div className="popular-review-comments">
+          <div className="popular-review-comments" onClick = {openComments}>
             <div className="popular-review-comment-icon">
               <ModeCommentIcon />
             </div>
