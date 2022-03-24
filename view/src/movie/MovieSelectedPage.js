@@ -101,10 +101,6 @@ const MovieSelectedPage = ({ movieSelected, setMovieSelected }) => {
         >
           <ArrowBackIcon />
         </div>
-        {/* <img
-          className="movie-selected-page-background-image"
-          src={data.backgroundLink}
-        />*/}
       </div>
       <div className="movie-selected-page-content">
         <div className="movie-selected-page-left">

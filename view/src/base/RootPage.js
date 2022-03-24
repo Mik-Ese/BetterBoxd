@@ -4,12 +4,17 @@ import MoviePage from "../movie/MoviePage";
 import HomePage from "../home/HomePage";
 import ListPage from "../list/ListPage";
 import { useState } from "react";
+import LoginPage from "../login/LoginPage";
+import SignupPage from "../login/SignupPage";
 
-const RootPage = ({ setLoggedIn }) => {
+const RootPage = () => {
   const [homePageOpen, setHomePageOpen] = useState(true);
   const [listPageOpen, setListPageOpen] = useState(false);
   const [journalPageOpen, setJournalPageOpen] = useState(false);
   const [moviePageOpen, setMoviePageOpen] = useState(false);
+  const [loggedIn, setLoggedIn] = useState(false);
+  const [loggingIn, setLoggingIn] = useState(false);
+  const [signingUp, setSigningUp] = useState(false);
   return (
     <div>
       <NavBar
@@ -22,28 +27,31 @@ const RootPage = ({ setLoggedIn }) => {
           homePageOpen,
           listPageOpen,
           journalPageOpen,
-          moviePageOpen
+          moviePageOpen,
+          loggedIn,
+          setLoggingIn,
+          setSigningUp,
         }}
       />
-      {homePageOpen ? (
-        <HomePage/>
-      ): (
-        <></>
-      )}
-      {listPageOpen ? (
-        <ListPage/>
-      ): (
-        <></>
-      )}
-      {journalPageOpen ? (
-        <JournalPage/>
-      ): (
-        <></>
-      )}
-      {moviePageOpen ? (
-        <MoviePage/>
-      ): (
-        <></>
+      {loggingIn ? (
+        <>
+          <LoginPage {...{ setLoggedIn, setLoggingIn }} />
+        </>
+      ) : (
+        <>
+          {signingUp ? (
+            <>
+              <SignupPage {...{ setSigningUp }} />
+            </>
+          ) : (
+            <>
+              {homePageOpen ? <HomePage {...{setSigningUp}} /> : <></>}
+              {listPageOpen ? <ListPage {...{ loggedIn }} /> : <></>}
+              {journalPageOpen ? <JournalPage /> : <></>}
+              {moviePageOpen ? <MoviePage /> : <></>}
+            </>
+          )}
+        </>
       )}
     </div>
   );
