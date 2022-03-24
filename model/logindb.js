@@ -1,9 +1,6 @@
 const mongoose = require('mongoose');
-const uri =
-    'mongodb+srv://betterboxd:movie@main.6pjwu.mongodb.net/BetterBoxd?retryWrites=true&w=majority';
+const uri = credentials.mongo_uri;
 const UserModel = require('./schemas/user.schema');
-
-module.exports = addUser;
 
 async function addUser(user, password, email) {
     try {
@@ -85,12 +82,12 @@ async function checkLogIn(user, password) {
 }
 
 module.exports = {
-    checkLogIn: checkLogIn,
-    getUser: getUser,
-    addUser: addUser
+    checkLogIn,
+    getUser,
+    addUser
 };
 
-async function main() {
-    getUser('MattressButter');
-}
-main();
+// async function main() {
+//     getUser('MattressButter');
+// }
+// main();

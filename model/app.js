@@ -1,9 +1,9 @@
 const express = require('express');
 const app = express();
 const { MongoClient, ServerApiVersion } = require('mongodb');
+const credentials = require('../controller/credentials');
 
-const uri =
-    'mongodb+srv://betterboxd:movie@main.6pjwu.mongodb.net/myFirstDatabase?retryWrites=true&w=majority';
+const uri = credentials.mongo_uri;
 const client = new MongoClient(uri, {
     useNewUrlParser: true,
     useUnifiedTopology: true,

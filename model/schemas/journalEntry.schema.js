@@ -14,6 +14,6 @@ const journalEntrySchema = new Schema({
     userId: String,
     rating: Number, //Rating that the user gave to the movie
     content: String //Content of the journal entry
-});
+}, { collection: 'journal_entries'});
 
 module.exports = mongoose.model('JournalEntry', journalEntrySchema);
