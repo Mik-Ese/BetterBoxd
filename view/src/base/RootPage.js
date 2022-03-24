@@ -45,7 +45,7 @@ const RootPage = () => {
             </>
           ) : (
             <>
-              {homePageOpen ? <HomePage /> : <></>}
+              {homePageOpen ? <HomePage {...{setSigningUp}} /> : <></>}
               {listPageOpen ? <ListPage {...{ loggedIn }} /> : <></>}
               {journalPageOpen ? <JournalPage /> : <></>}
               {moviePageOpen ? <MoviePage /> : <></>}
