@@ -9,7 +9,13 @@ const UserRating = require('./schemas/userRating.schema');
  * @returns
  */
 async function postUser(user) {
-    return await User.insertMany(user);
+    try {
+        var res = await User.insertMany(user);
+    } catch (error) {
+        console.log(error);
+        return error;
+    }
+    return res;
 }
 
 /**
@@ -17,7 +23,13 @@ async function postUser(user) {
  * @returns
  */
 async function postUserRating(rating) {
-    return await UserRating.insertMany(rating);
+    try {
+        var res = await UserRating.insertMany(rating);
+    } catch (error) {
+        console.log(error);
+        return error;
+    }
+    return res;
 }
 
 /**
@@ -34,8 +46,13 @@ async function postUserReview(user_id, trakt_id, rating, description) {
         rating: rating,
         description: description
     };
-
-    return await UserReview.insertMany(review);
+    try {
+        var res = await UserReview.insertMany(review);
+    } catch (error) {
+        console.log(error);
+        return error;
+    }
+    return res;
 }
 
 /**
@@ -43,7 +60,32 @@ async function postUserReview(user_id, trakt_id, rating, description) {
  * @returns The user with that id
  */
 async function fetchUser(id) {
-    return await User.findById(id).exec();
+    try {
+        var res = await User.findById(id).exec();
+    } catch (e) {
+        console.log(e);
+        return e;
+    }
+    return res;
+}
+
+/**
+ * @param {String} username - the username that you want to login with
+ * @param {String} password - the password that you want to login with
+ * @returns The user with that id
+ */
+async function loginUser(username, password) {
+    try {
+        var user = await User.find({ username: username, password: password });
+    } catch (e) {
+        console.log(e);
+        return e;
+    }
+
+    if (user.at(0)) {
+        return true;
+    }
+    return false;
 }
 
 /**
@@ -51,7 +93,13 @@ async function fetchUser(id) {
  * @returns All the ratings of that user
  */
 async function fetchUserRatings(user_id) {
-    return await UserRating.find({ user_id: user_id });
+    try {
+        var res = await UserRating.find({ user_id: user_id });
+    } catch (e) {
+        console.log(e);
+        return e;
+    }
+    return res;
 }
 
 /**
@@ -60,7 +108,16 @@ async function fetchUserRatings(user_id) {
  * @returns All the reviews of that user
  */
 async function fetchUserReviews(user_id, password) {
-    return await UserReview.find({ user_id: user_id, password: password });
+    try {
+        var res = await UserReview.find({
+            user_id: user_id,
+            password: password
+        });
+    } catch (e) {
+        console.log(e);
+        return e;
+    }
+    return res;
 }
 
 /**
@@ -68,7 +125,13 @@ async function fetchUserReviews(user_id, password) {
  * @returns All the movie lists of that user
  */
 async function fetchMovieLists(user_id) {
-    return await MovieList.find({ user_id: user_id });
+    try {
+        var res = await MovieList.find({ user_id: user_id });
+    } catch (e) {
+        console.log(e);
+        return e;
+    }
+    return res;
 }
 
 /**
@@ -76,12 +139,19 @@ async function fetchMovieLists(user_id) {
  * @returns All the journal entries of that user
  */
 async function fetchJournalEntries(user_id) {
-    return await JournalEntry.find({ user_id: user_id });
+    try {
+        var res = await JournalEntry.find({ user_id: user_id });
+    } catch (e) {
+        console.log(e);
+        return e;
+    }
+    return res;
 }
 
 module.exports = {
     fetchUser,
     fetchUserReviews,
     postUserReview,
-    postUser
+    postUser,
+    loginUser
 };
