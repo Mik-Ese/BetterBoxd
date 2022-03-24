@@ -337,14 +337,15 @@ async function getMovieSearchResults(movieName) {
                 EX: expiry
             });
 
-            return response.data.map(function (entry) {
+            const result = response.data.map(function (entry) {
                 return {
                     title: entry.movie.title,
                     year: entry.movie.year,
-                    score: entry.score,
                     trakt_id: entry.movie.ids.trakt
                 };
             });
+
+            return result;
         }
     } catch (error) {
         throw new Error(error);

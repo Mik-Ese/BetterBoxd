@@ -3,7 +3,7 @@ const app = express();
 const axios = require('axios');
 const redis = require('redis');
 const APIRoutes = require('./api/APIroutes');
-const credentials = require('./credentials');
+const credentials = require('../credentials');
 const APIqueries = require('./api/APIqueries');
 const fetchData = require('./fetchData');
 
