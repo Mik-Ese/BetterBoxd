@@ -373,30 +373,31 @@ async function getTrendingMovieReviews() {
             // making API request
             const response = await axios.get(APIquery, config);
 
-            // broken url at time of push
-            const result = response.data.map(function (entry) {
-                let fanartResponse = getMediaArt(
-                    'movies',
-                    entry.movie.ids.tmdb,
-                    'poster'
-                );
-                return {
-                    // movie info
-                    title: entry.movie.title,
-                    year: entry.movie.year,
-                    url: fanartResponse,
-                    trakt_id: entry.movie.ids.trakt,
+            const result = await Promise.all(
+                response.data.map(async function (entry) {
+                    let fanartResponse = await getMediaArt(
+                        'movies',
+                        entry.movie.ids.tmdb,
+                        'poster'
+                    );
+                    return {
+                        // movie info
+                        title: entry.movie.title,
+                        year: entry.movie.year,
+                        url: fanartResponse,
+                        trakt_id: entry.movie.ids.trakt,
 
-                    // review info
-                    comment_id: entry.comment.id,
-                    comment: entry.comment.comment,
-                    spoiler: entry.comment.spoiler, // review contains spoilers (true/false)
-                    likes: entry.comment.likes,
-                    replies: entry.comment.replies,
-                    rating: entry.comment.user_rating, // rating from 1 to 10
-                    author: entry.comment.user.username
-                };
-            });
+                        // review info
+                        comment_id: entry.comment.id,
+                        comment: entry.comment.comment,
+                        spoiler: entry.comment.spoiler, // review contains spoilers (true/false)
+                        likes: entry.comment.likes,
+                        replies: entry.comment.replies,
+                        rating: entry.comment.user_rating, // rating from 1 to 10
+                        author: entry.comment.user.username
+                    };
+                })
+            );
 
             // saving to cache
             redisClient.set(key, JSON.stringify(result), {
