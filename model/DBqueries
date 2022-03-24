@@ -56,10 +56,11 @@ async function fetchUserRatings(user_id) {
 
 /**
  * @param {*} user_id - id of the user who's reviews you want to fetch
+ * @param {String} password - the user's password
  * @returns All the reviews of that user
  */
-async function fetchUserReviews(user_id) {
-    return await UserReview.find({ user_id: user_id });
+async function fetchUserReviews(user_id, password) {
+    return await UserReview.find({ user_id: user_id, password: password });
 }
 
 /**
@@ -80,11 +81,7 @@ async function fetchJournalEntries(user_id) {
 
 module.exports = {
     fetchUser,
-    fetchJournalEntries,
     fetchUserReviews,
-    fetchUserRatings,
-    fetchMovieLists,
     postUserReview,
-    postUser,
-    postUserRating
+    postUser
 };
