@@ -15,6 +15,8 @@ const MovieSelectedPage = ({ movieSelected, setMovieSelected }) => {
     director: "Christopher Nolan",
     imgLink:
       "https://cdn.pastemagazine.com/www/system/images/photo_albums/best-movie-posters-2016/large/moonlight-ver2-xlg.jpg?1384968217",
+    backgroundLink:
+      "https://deadline.com/wp-content/uploads/2022/03/batman-5-e1646492922697.jpeg?crop=455px%2C0px%2C4699px%2C2635px&resize=681%2C383",
     description:
       "In his second year of fighting crime, Batman uncovers corruption in Gotham City that connects to his own family while facing a serial killer known as the Riddler.",
     views: 538000,
@@ -86,8 +88,23 @@ const MovieSelectedPage = ({ movieSelected, setMovieSelected }) => {
 
   return (
     <div className="movie-selected-page-container">
-      <div className="movie-selected-page-back-button" onClick={unselectMovie}>
-        <ArrowBackIcon />
+      <div
+        className="movie-selected-page-background-image-container"
+        style={{
+          backgroundSize: "cover",
+          backgroundImage: `linear-gradient(to top, rgba(255,255,255,1), rgba(255,255,255,0.1), rgba(255,255,255,0)), url('${data.backgroundLink}'`,
+        }}
+      >
+        <div
+          className="movie-selected-page-back-button"
+          onClick={unselectMovie}
+        >
+          <ArrowBackIcon />
+        </div>
+        {/* <img
+          className="movie-selected-page-background-image"
+          src={data.backgroundLink}
+        />*/}
       </div>
       <div className="movie-selected-page-content">
         <div className="movie-selected-page-left">
@@ -216,11 +233,11 @@ const Bar = ({ height }) => {
 const Review = ({ reviewData }) => {
   const createStars = () => {
     let stars = [];
-    for(let i = 0; i<reviewData.numStars; i++){
-      stars.push(<StarIcon/>)
+    for (let i = 0; i < reviewData.numStars; i++) {
+      stars.push(<StarIcon />);
     }
     return stars;
-  }
+  };
   return (
     <div className="movie-selected-review-container">
       <div className="popular-review-description-container">
@@ -234,9 +251,7 @@ const Review = ({ reviewData }) => {
           <div className="popular-review-author-name">
             {reviewData.authorName}
           </div>
-          <div className="popular-review-stars">
-            {createStars()}
-          </div>
+          <div className="popular-review-stars">{createStars()}</div>
           <div className="popular-review-comments">
             <div className="popular-review-comment-icon">
               <ModeCommentIcon />

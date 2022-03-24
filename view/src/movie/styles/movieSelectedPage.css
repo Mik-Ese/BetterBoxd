@@ -1,6 +1,6 @@
 .movie-selected-page-back-button{
     cursor: pointer;
-    padding: 1rem;
+    padding: 2rem;
     width: 100%;
     display: flex;
     justify-content: left;
@@ -12,6 +12,8 @@
 
 .movie-selected-page-content{
     display: flex;
+    z-index: 1;
+    margin-top: 34rem;
 }
 
 .movie-selected-page-left{
@@ -192,4 +194,14 @@
 
 .popular-review-stars{
     margin-top: .1rem;
+}
+
+.movie-selected-page-background-image-container{
+    width: 110%;
+    height: 35rem;
+    margin-left: -1rem;
+    margin-right: -1rem;
+    overflow: hidden;
+    position: absolute;
+    z-index: 0;
 }

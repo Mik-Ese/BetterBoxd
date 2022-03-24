@@ -9,6 +9,7 @@ import "./styles/baseMovieStyles.css";
 
 const MoviePage = () => {
   const [movieSelected, setMovieSelected] = useState(null);
+  const [searchResultsOpen, setSearchResultsOpen] = useState(false);
   const [data, setData] = useState({
     popularMovies: [
       {
@@ -113,16 +114,23 @@ const MoviePage = () => {
     }
     return <div className="popular-review-components-container">{reviews}</div>;
   };
-
+  const closeSearchResults = (props) => {
+    if (
+      props.target.className !==
+      "MuiInput-input MuiInputBase-input css-1x51dt5-MuiInputBase-input-MuiInput-input"
+    ) {
+      setSearchResultsOpen(false);
+    }
+  };
   return (
-    <div className="movie-page-root">
+    <div className="movie-page-root" onClick={closeSearchResults}>
       {movieSelected !== null ? (
         <div>
-          <MovieSelectedPage {...{movieSelected, setMovieSelected}}/>
+          <MovieSelectedPage {...{ movieSelected, setMovieSelected }} />
         </div>
       ) : (
         <div className="movie-page-home">
-          <SearchBar />
+          <SearchBar {...{ searchResultsOpen, setSearchResultsOpen, setMovieSelected }} />
           <div className="base-movie-subtitle">POPULAR FILMS THIS WEEK</div>
           {popularMovieFactory(data)}
           <div className="base-movie-subtitle">JUST REVIEWED...</div>
