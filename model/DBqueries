@@ -1,0 +1,90 @@
+const User = require('./schemas/user.schema');
+const UserReview = require('./schemas/userReview.schema');
+const JournalEntry = require('./schemas/journalEntry.schema');
+const MovieList = require('./schemas/movieList.schema');
+const UserRating = require('./schemas/userRating.schema');
+
+/**
+ * @param {*} user - the user to post
+ * @returns
+ */
+async function postUser(user) {
+    return await User.insertMany(user);
+}
+
+/**
+ * @param {*} rating - the rating to post
+ * @returns
+ */
+async function postUserRating(rating) {
+    return await UserRating.insertMany(rating);
+}
+
+/**
+ * @param user_id - the id of the user who is reviewing the movie
+ * @param trakt_id - the id of the movie that is being reviewed
+ * @param {Number} rating - the rating (out of ten) that the user gave
+ * @param {String} description - the description of the user's review
+ * @returns
+ */
+async function postUserReview(user_id, trakt_id, rating, description) {
+    var review = {
+        user_id: user_id,
+        trakt_id: trakt_id,
+        rating: rating,
+        description: description
+    };
+
+    return await UserReview.insertMany(review);
+}
+
+/**
+ * @param {*} id - id of the user to fetch
+ * @returns The user with that id
+ */
+async function fetchUser(id) {
+    return await User.findById(id).exec();
+}
+
+/**
+ * @param {*} user_id - id of the user who's ratings you want to fetch
+ * @returns All the ratings of that user
+ */
+async function fetchUserRatings(user_id) {
+    return await UserRating.find({ user_id: user_id });
+}
+
+/**
+ * @param {*} user_id - id of the user who's reviews you want to fetch
+ * @returns All the reviews of that user
+ */
+async function fetchUserReviews(user_id) {
+    return await UserReview.find({ user_id: user_id });
+}
+
+/**
+ * @param {*} user_id - id of the user who's movie lists you want to fetch
+ * @returns All the movie lists of that user
+ */
+async function fetchMovieLists(user_id) {
+    return await MovieList.find({ user_id: user_id });
+}
+
+/**
+ * @param {*} user_id - id of the user who's journal entries you want to fetch
+ * @returns All the journal entries of that user
+ */
+async function fetchJournalEntries(user_id) {
+    return await JournalEntry.find({ user_id: user_id });
+}
+
+module.exports = {
+    fetchUser,
+    fetchJournalEntries,
+    fetchUserReviews,
+    fetchUserRatings,
+    fetchMovieLists,
+    postUserReview,
+    postUser,
+    postUserRating
+};
