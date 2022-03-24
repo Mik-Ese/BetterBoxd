@@ -1,19 +1,14 @@
-var mongoose = require('mongoose');
-const { Schema } = mongoose;
+const mongoose = require('mongoose');
+const connection = require('../util/database');
+const User = require('./user.schema');
 
-const journalEntrySchema = new Schema({
+const journalEntry = new mongoose.Schema({
     // no "_id" field since it is automatically generated
-    movieIds: [
-        {
-            trakt: Number,
-            slug: String,
-            imdb: String,
-            tmdb: Number
-        }
-    ],
-    userId: String,
-    rating: Number, //Rating that the user gave to the movie
-    content: String //Content of the journal entry
-}, { collection: 'journal_entries'});
+    user_id: { type: mongoose.Schema.ObjectId, ref: User, required: true },
+    trakt_id: { type: Number, required: true },
+    rating: { type: Number, required: true },
+    content: { type: String, required: true }
+});
 
-module.exports = mongoose.model('JournalEntry', journalEntrySchema);
+const JournalEntry = connection.model('JournalEntry', journalEntry);
+module.exports = JournalEntry;
