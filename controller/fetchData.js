@@ -19,6 +19,7 @@ const config = {
         'trakt-api-key': credentials.clientId
     }
 };
+
 (async () => {
     redisClient.on('ready', function () {
         console.log('Redis Client ready');
@@ -426,5 +427,5 @@ module.exports = {
     getMovieSearchResults,
     getMovieExtended,
     getTrendingMovieReviews,
-    getPopularShows
+    getPopularMovies
 };

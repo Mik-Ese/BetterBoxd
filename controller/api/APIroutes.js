@@ -3,8 +3,6 @@ const {route} = require('express/lib/application');
 const res = require('express/lib/response');
 const {send} = require('express/lib/response');
 const fetchData = require('../fetchData');
-const reviewsDB = require('../../model/reviewsdb');
-const loginDB = require('../../model/logindb');
 const router = express.Router();
 
 router.get('/get-recommended-shows', async (req, res) => {

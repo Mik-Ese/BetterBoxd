@@ -6,10 +6,12 @@ const APIRoutes = require('./api/APIroutes');
 const credentials = require('../credentials');
 const APIqueries = require('./api/APIqueries');
 const fetchData = require('./fetchData');
+const cors = require('cors');
 
 app.use(express.json());
 app.use(express.urlencoded());
 
+app.use(cors());
 app.use('/api/', APIRoutes);
 
 app.post('/test', (req, res) => {
