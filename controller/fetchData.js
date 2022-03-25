@@ -426,5 +426,5 @@ module.exports = {
     getMovieSearchResults,
     getMovieExtended,
     getTrendingMovieReviews,
-    getPopularShows
+    getPopularMovies
 };
