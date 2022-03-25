@@ -26,7 +26,7 @@ router.get('/movie-search-results', async (req, res) => {
     res.send(data);
 });
 
-router.get('/movie-search-results', async (req, res) => {
+router.get('/trending-movie-reviews', async (req, res) => {
     const data = await fetchData.getTrendingMovieReviews();
     res.send(data);
 });
