@@ -4,7 +4,7 @@ const res = require('express/lib/response');
 const {send} = require('express/lib/response');
 const fetchData = require('../fetchData');
 const reviewsDB = require('../../model/reviewsdb');
-const loginDB = require("../../model/logindb")
+const loginDB = require('../../model/logindb');
 const router = express.Router();
 
 router.get('/get-recommended-shows', async (req, res) => {
@@ -51,23 +51,20 @@ router.get('/get-movie-reviews', async (req, res) => {
 router.post('/add-user', async (req, res) => {
     const {username, password} = req.body;
 });
-router.get('/validate-login', async(req, res) => {
+router.get('/validate-login', async (req, res) => {
     const {username, password} = req.query;
     const result = await loginDB.checkLogIn(username, password);
-    if(result){
+    if (result) {
         res.send({
-            "validate": true 
-        })
-    }
-    else{
+            validate: true
+        });
+    } else {
         res.send({
-            "validate": false 
-        })
+            validate: false
+        });
     }
-})
-router.get('/get-user', async (req, res) => {
-
 });
+router.get('/get-user', async (req, res) => {});
 router.post('/add-list', async (req, res) => {});
 router.put('/add-media-list', async (req, res) => {});
 router.put('/remove-media-list', async (req, res) => {});
