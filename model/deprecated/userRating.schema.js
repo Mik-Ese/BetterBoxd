@@ -1,6 +1,6 @@
 const mongoose = require('mongoose');
 const connection = require('../util/database');
-const User = require('./user.schema');
+const User = require('../schemas/user.schema');
 
 const userRating = new mongoose.Schema({
     user_id: { type: mongoose.Schema.ObjectId, ref: User, required: true },

@@ -1,9 +1,18 @@
 const express = require('express');
+const DBqueries = require('../../model/DBqueries');
 const {route} = require('express/lib/application');
 const res = require('express/lib/response');
 const {send} = require('express/lib/response');
 const fetchData = require('../fetchData');
 const router = express.Router();
+
+router.get('/login', async (req, res) => {
+    const {username, password} = req.query;
+    console.log(username + password);
+    const data = await DBqueries.loginUser(username, password);
+    console.log(data);
+    res.send(data);
+});
 
 router.get('/get-recommended-shows', async (req, res) => {
     const {period} = req.query;
