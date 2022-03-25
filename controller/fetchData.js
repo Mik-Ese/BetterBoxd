@@ -142,7 +142,9 @@ async function getMediaArt(mediaType, id, artType) {
                     if (fullResult.hasOwnProperty('moviebackground')) {
                         result = fullResult.moviebackground[0].url;
                     } else {
-                        throw new Error('Could not find any backgrounds');
+                        result =
+                            'https://cdn.pixabay.com/photo/2016/10/20/18/35/earth-1756274_960_720.jpg';
+                        // throw new Error('Could not find any backgrounds');
                     }
                 } else if (artType.toLowerCase() === 'banner') {
                     if (fullResult.hasOwnProperty('moviebanner')) {
@@ -338,13 +340,21 @@ async function getMovieSearchResults(movieName) {
             // making API request
             const response = await axios.get(APIquery, config);
 
-            const result = response.data.map(function (entry) {
-                return {
-                    title: entry.movie.title,
-                    year: entry.movie.year,
-                    trakt_id: entry.movie.ids.trakt
-                };
-            });
+            const result = await Promise.all(
+                response.data.map(async function (entry) {
+                    let poster = await getMediaArt(
+                        'movies',
+                        entry.movie.ids.tmdb,
+                        'poster'
+                    );
+                    return {
+                        title: entry.movie.title,
+                        year: entry.movie.year,
+                        trakt_id: entry.movie.ids.trakt,
+                        poster
+                    };
+                })
+            );
 
             // saving to cache
             redisClient.set(key, JSON.stringify(result), {
@@ -539,10 +549,8 @@ async function getMoviePage(id) {
         if (cacheResponse) {
             return JSON.parse(cacheResponse);
         } else {
-            // making API request
-            // const response = await axios.get(APIquery, config);
-
             const movieExtended = await getMovieExtended(id);
+            const background = await getMediaArt('movies', id, 'bg');
             const people = await getMoviePeople(id);
             const ratingDistribution = await getMovieRatingDistribution(id);
             const stats = await getMovieStats(id);
@@ -550,6 +558,7 @@ async function getMoviePage(id) {
 
             const result = {
                 movieExtended,
+                background,
                 people: {
                     cast: people.cast,
                     directing: people.crew.directing

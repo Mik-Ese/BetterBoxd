@@ -75,7 +75,6 @@ router.get('/all-reviews', async (req, res) => {
 //     res.send(data);
 // });
 
-// WIP - DO NOT USE
 router.get('/get-movie-page', async (req, res) => {
     const {id} = req.query;
     const data = await fetchData.getMoviePage(id);
