@@ -24,7 +24,7 @@ router.get('/get-popular-movies', async (req, res) => {
     res.send(data);
 });
 
-router.get('/movie-search-results', async (req, res) => {
+router.get('/movie-search', async (req, res) => {
     const {movieName} = req.query;
     const data = await fetchData.getMovieSearchResults(movieName);
     res.send(data);
