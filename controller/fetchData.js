@@ -195,11 +195,7 @@ async function getMediaArt(mediaType, id, artType) {
             'https://cdn.pixabay.com/photo/2017/02/12/21/29/false-2061132_960_720.png';
         redisClient.set(
             key,
-            JSON.stringify([
-                {
-                    invalid_fanart: invalid_fanart
-                }
-            ]),
+            JSON.stringify(invalid_fanart),
             {
                 EX: expiry // seconds in a week (expiry)
             }
@@ -247,7 +243,7 @@ async function getPopularMovies(period) {
                 element['url'] = fanartResponse;
                 // console.log(element)
             }
-            redisClient.set(key, JSON.stringify(element), {
+            redisClient.set(key, JSON.stringify(response), {
                 EX: expiry // seconds in a week (expiry)
                 // NX: true    // Only set the key if it does not already exist
             });
