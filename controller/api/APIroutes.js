@@ -14,6 +14,18 @@ router.get('/login', async (req, res) => {
     res.send(data);
 });
 
+router.post('/register-user', async (req, res) => {
+    const { username, password, email } = req.query;
+    var user = {
+        username: username,
+        email_address: email,
+        password: password
+    };
+    const data = await DBqueries.postUser(user);
+    console.log(data);
+    res.send(data);
+});
+
 router.get('/get-recommended-shows', async (req, res) => {
     const { period } = req.query;
     const data = await fetchData.getRecommendShows(period);
