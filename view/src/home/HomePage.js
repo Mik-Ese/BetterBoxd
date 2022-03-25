@@ -6,8 +6,9 @@ const HomePage = ({ setSigningUp }) => {
       <div
         className="home-page-background-image-container"
         style={{
+          marginTop: "-25rem",
           backgroundSize: "cover",
-          backgroundImage: `linear-gradient(to top, rgba(255,255,255,1), rgba(255,255,255,0.1), rgba(255,255,255,0)), url('https://deadline.com/wp-content/uploads/2022/03/batman-5-e1646492922697.jpeg?crop=455px%2C0px%2C4699px%2C2635px&resize=681%2C383')`,
+          backgroundImage: `linear-gradient(to top, rgba(255,255,255,1), rgba(255,255,255,0.1), rgba(255,255,255,0)), url('https://media.newyorker.com/photos/617726db3a9f1e32755a7aee/master/pass/Brody-Dispatch.jpg')`
         }}
       />
       <div className="home-page-content">
@@ -19,7 +20,7 @@ const HomePage = ({ setSigningUp }) => {
           <div className="home-page-welcome-text">the ones you loved.</div>
         </div>
         <div
-          className="btn btn-outline-success home-page-sign-up-button"
+          className="btn btn-lg  btn-outline-light p-2 home-page-sign-up-button"
           onClick={() => {
             setSigningUp(true);
           }}
