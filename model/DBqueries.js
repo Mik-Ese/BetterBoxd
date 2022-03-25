@@ -72,7 +72,7 @@ async function getJournalEntries(user_id) {
     var status = 'good';
 
     try {
-        var entries = await JournalEntry.find({
+        var res = await JournalEntry.find({
             user_id: user_id
         });
     } catch (e) {
@@ -83,9 +83,21 @@ async function getJournalEntries(user_id) {
         };
     }
 
-    for (entry of entries) {
-        let tmdb_id = await fetchData.getMovieExtended(entry.trakt_id).ids.tmdb;
-        entry.url = await fetchData.getMediaArt('movies', tmdb_id, 'poster');
+    const entries = [];
+    for (entry of res) {
+        let tmdb_id = (await fetchData.getMovieExtended(entry.trakt_id)).ids
+            .tmdb;
+
+        let j = {
+            user_id: entry.user_id,
+            trakt_id: entry.trakt_id,
+            description: entry.description,
+            no_likes: entry.no_likes,
+            no_comments: entry.no_comments,
+            created_at: entry.created_at
+        };
+        j.url = await fetchData.getMediaArt('movies', tmdb_id, 'poster');
+        entries.push(j);
     }
 
     return { entries: entries, status: status };
