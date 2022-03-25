@@ -49,6 +49,22 @@ async function main() {
     }
     console.log('users added!');
 
+    let journalEntries = [
+        {
+            user_id: '623d53a6af3cbb8ba46783c2',
+            trakt_id: '224301',
+            description: 'best animation of an anime movie'
+        },
+        {
+            user_id: '623d53a6af3cbb8ba46783c2',
+            trakt_id: '225063',
+            description: 'saddest anime love story'
+        }
+    ];
+    console.log('adding journal entries...');
+    await JournalEntry.insertMany(journalEntries);
+    console.log('journal entries added!');
+
     process.exit(0);
 }
 
