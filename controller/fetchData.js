@@ -91,7 +91,7 @@ async function getMediaArt(mediaType, id, artType) {
         mediaType,
         id
     );
-    const key = `${mediaType}Art_${id}`; // cache key
+    const key = `${mediaType}_${artType}_${id}`; // cache key
     try {
         let fullResult;
         let result;
@@ -193,6 +193,7 @@ async function getMediaArt(mediaType, id, artType) {
             throw new Error(`${mediaType} art type: "${artType}" not found`);
         }
     } catch (error) {
+        // console.log(error);
         const invalid_fanart =
             // 'https://cdn.pixabay.com/photo/2017/02/12/21/29/false-2061132_960_720.png';
             'https://images.fanart.tv/fanart/et-the-extra-terrestrial-5cdab3aa028c5.jpg';
@@ -551,7 +552,11 @@ async function getMoviePage(id) {
             return JSON.parse(cacheResponse);
         } else {
             const movieExtended = await getMovieExtended(id);
-            const background = await getMediaArt('movies', id, 'bg');
+            const background = await getMediaArt(
+                'movies',
+                movieExtended.ids.tmdb,
+                'bg'
+            );
             const people = await getMoviePeople(id);
             const ratingDistribution = await getMovieRatingDistribution(id);
             const stats = await getMovieStats(id);
