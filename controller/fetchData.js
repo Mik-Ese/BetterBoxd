@@ -243,7 +243,7 @@ async function getPopularMovies(period) {
                 element['url'] = fanartResponse;
                 // console.log(element)
             }
-            redisClient.set(key, JSON.stringify(element), {
+            redisClient.set(key, JSON.stringify(response), {
                 EX: expiry // seconds in a week (expiry)
                 // NX: true    // Only set the key if it does not already exist
             });
