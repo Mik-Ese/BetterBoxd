@@ -9,7 +9,7 @@ const JournalPage = () => {
         <h1 className="display-1 Journal-Review-Text text-primary">
 
           <span className="text-primary"> Your </span>  <span className="text-warning"> Movie </span>
-          <span className="text-success"> Review </span>
+          <span className="text-success"> Journal </span>
 
         </h1>
       </div>
