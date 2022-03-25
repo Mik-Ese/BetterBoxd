@@ -6,6 +6,13 @@ const { send } = require('express/lib/response');
 const fetchData = require('../fetchData');
 const router = express.Router();
 
+router.post('/post-journal-entry', async (req, res) => {
+    console.log(req.body);
+    const data = await DBqueries.postJournalEntry(req.body);
+    console.log(data);
+    res.send(data);
+});
+
 router.post('/post-movie-list', async (req, res) => {
     console.log(req.body);
     const data = await DBqueries.postList(req.body);

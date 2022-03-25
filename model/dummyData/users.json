@@ -1,37 +1,37 @@
 [
-        {
-            username: 'greatredswarm',
-            email_address: 'greatredswarm@betterboxd.com',
-            password: 'password',
-        },
-        {
-            username: 'ame_yuki',
-            email_address: 'ameyuki@betterboxd.com',
-            password: 'password',
-        },
-        {
-            username: 'mik',
-            email_address: 'mik@betterboxd.com',
-            password: 'password',
-        },
-        {
-            username: 'moomoomilkholic',
-            email_address: 'moomoomilkholic@betterboxd.com',
-            password: 'password',
-        },
-        {
-            username: 'spongebob',
-            email_address: 'spongebob@betterboxd.com',
-            password: 'password',
-        },
-        {
-            username: 'maximus',
-            email_address: 'maximus@betterboxd.com',
-            password: 'password',
-        },
-        {
-            username: 'MattressButter',
-            email_address: 'mrmattress@betterboxd.com',
-            password: 'password',
-        }
-    ];
+    {
+        "username": "greatredswarm",
+        "email_address": "greatredswarm@betterboxd.com",
+        "password": "password"
+    },
+    {
+        "username": "ame_yuki",
+        "email_address": "ameyuki@betterboxd.com",
+        "password": "password"
+    },
+    {
+        "username": "mik",
+        "email_address": "mik@betterboxd.com",
+        "password": "password"
+    },
+    {
+        "username": "moomoomilkholic",
+        "email_address": "moomoomilkholic@betterboxd.com",
+        "password": "password"
+    },
+    {
+        "username": "spongebob",
+        "email_address": "spongebob@betterboxd.com",
+        "password": "password"
+    },
+    {
+        "username": "maximus",
+        "email_address": "maximus@betterboxd.com",
+        "password": "password"
+    },
+    {
+        "username": "MattressButter",
+        "email_address": "mrmattress@betterboxd.com",
+        "password": "password"
+    }
+]

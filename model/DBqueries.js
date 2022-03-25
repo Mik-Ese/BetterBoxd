@@ -123,6 +123,26 @@ async function postList(list) {
     };
 }
 
+/**
+ * @param {*} entry - the journal entry to post
+ * @returns the journal entry posted, along with a status
+ */
+async function postJournalEntry(entry) {
+    var status = 'good';
+
+    try {
+        var res = await JournalEntry.create(entry);
+    } catch (error) {
+        console.log(error);
+        status = error;
+    }
+
+    return {
+        list: res,
+        status: status
+    };
+}
+
 // /**
 //  * @param {*} rating - the rating to post
 //  * @returns
@@ -241,5 +261,6 @@ module.exports = {
     postUser,
     loginUser,
     postList,
-    getJournalEntries
+    getJournalEntries,
+    postJournalEntry
 };
