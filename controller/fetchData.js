@@ -194,7 +194,8 @@ async function getMediaArt(mediaType, id, artType) {
         }
     } catch (error) {
         const invalid_fanart =
-            'https://cdn.pixabay.com/photo/2017/02/12/21/29/false-2061132_960_720.png';
+            // 'https://cdn.pixabay.com/photo/2017/02/12/21/29/false-2061132_960_720.png';
+            'https://images.fanart.tv/fanart/et-the-extra-terrestrial-5cdab3aa028c5.jpg';
         redisClient.set(key, JSON.stringify(invalid_fanart), {
             EX: expiry // seconds in a week (expiry)
         });
