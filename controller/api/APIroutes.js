@@ -20,6 +20,12 @@ router.get('/get-movie-poster', async (req, res) => {
     res.send(data);
 });
 
+router.get('/get-popular-movies', async (req, res) => {
+    const {period} = req.query;
+    const data = await fetchData.getPopularMovies(period);
+    res.send(data);
+});
+
 router.get('/movie-search-results', async (req, res) => {
     const {movieName} = req.query;
     const data = await fetchData.getMovieSearchResults(movieName);
@@ -42,7 +48,15 @@ router.get('/all-reviews', async (req, res) => {
     }
     res.send(data);
 });
+
 router.get('/get-movie-reviews', async (req, res) => {
+    const {movie_id} = req.query;
+    const data = await reviewsDB.readReviewsFromMovie(movie_id);
+    res.send(data);
+});
+
+// WIP - DO NOT USE
+router.get('/get-movie-page', async (req, res) => {
     const {movie_id} = req.query;
     const data = await reviewsDB.readReviewsFromMovie(movie_id);
     res.send(data);

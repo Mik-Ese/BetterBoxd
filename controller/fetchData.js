@@ -207,7 +207,7 @@ async function getMediaArt(mediaType, id, artType) {
     }
 }
 
-async function getPopularShows(period) {
+async function getPopularMovies(period) {
     if (
         period !== 'weekly' &&
         period !== 'monthly' &&
@@ -227,7 +227,7 @@ async function getPopularShows(period) {
     const APIquery = `https://api.trakt.tv/movies/watched/${period}`;
 
     try {
-        const key = `popularShows${period.toLowerCase()}`; // cache key
+        const key = `popularMovies${period.toLowerCase()}`; // cache key
         // checking cache
         const cacheResponse = await redisClient.get(key);
         if (cacheResponse) {
