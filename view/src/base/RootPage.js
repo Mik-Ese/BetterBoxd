@@ -15,6 +15,8 @@ const RootPage = () => {
   const [loggedIn, setLoggedIn] = useState(false);
   const [loggingIn, setLoggingIn] = useState(false);
   const [signingUp, setSigningUp] = useState(false);
+  const [user, setUser] = useState(null);
+
   return (
     <div>
       <NavBar
@@ -35,13 +37,13 @@ const RootPage = () => {
       />
       {loggingIn ? (
         <>
-          <LoginPage {...{ setLoggedIn, setLoggingIn }} />
+          <LoginPage {...{ setLoggedIn, setLoggingIn, setUser }} />
         </>
       ) : (
         <>
           {signingUp ? (
             <>
-              <SignupPage {...{ setSigningUp }} />
+              <SignupPage {...{ setSigningUp, setUser, setLoggedIn }} />
             </>
           ) : (
             <>
