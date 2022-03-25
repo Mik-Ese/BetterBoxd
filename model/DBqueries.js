@@ -2,6 +2,7 @@ const User = require('./schemas/user.schema');
 const JournalEntry = require('./schemas/journalEntry.schema');
 const MovieList = require('./schemas/movieList.schema');
 const bcrypt = require('bcryptjs');
+const fetchData = require('../controller/fetchData');
 // const UserReview = require('./schemas/userReview.schema');
 // const UserRating = require('./schemas/userRating.schema');
 
@@ -42,7 +43,6 @@ async function loginUser(username, password) {
     try {
         var user = await User.findOne({
             username: username
-            // password: password
         });
     } catch (e) {
         console.log(e);
@@ -62,6 +62,33 @@ async function loginUser(username, password) {
     } else {
         return { user: user, status: 'good' };
     }
+}
+
+/**
+ * @param {String} user_id - the user who's journal entries you want to view
+ * @returns the user's journal entries
+ */
+async function getJournalEntries(user_id) {
+    var status = 'good';
+
+    try {
+        var entries = await JournalEntry.find({
+            user_id: user_id
+        });
+    } catch (e) {
+        console.log(e);
+        return {
+            entries: null,
+            status: e
+        };
+    }
+
+    for (entry of entries) {
+        let tmdb_id = await fetchData.getMovieExtended(entry.trakt_id).ids.tmdb;
+        entry.url = await fetchData.getMediaArt('movies', tmdb_id, 'poster');
+    }
+
+    return { entries: entries, status: status };
 }
 
 /**
@@ -200,5 +227,7 @@ module.exports = {
     // fetchUserReviews,
     // postUserReview,
     postUser,
-    loginUser
+    loginUser,
+    postList,
+    getJournalEntries
 };
