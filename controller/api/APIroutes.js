@@ -14,11 +14,12 @@ router.get('/login', async (req, res) => {
     res.send(data);
 });
 
-router.get('/register-user', async (req, res) => {
-    const { username, password, email } = req.query;
+router.post('/register-user', async (req, res) => {
+    const { username, password, email_address } = req.body;
+    console.log(req.body);
     var user = {
         username: username,
-        email_address: email,
+        email_address: email_address,
         password: password
     };
     const data = await DBqueries.postUser(user);

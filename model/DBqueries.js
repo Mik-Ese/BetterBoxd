@@ -64,6 +64,26 @@ async function loginUser(username, password) {
     }
 }
 
+/**
+ * @param {*} list - the list to post
+ * @returns the list object posted, along with a status
+ */
+async function postList(list) {
+    var status = 'good';
+
+    try {
+        var res = await MovieList.create(list);
+    } catch (error) {
+        console.log(error);
+        status = error;
+    }
+
+    return {
+        list: res,
+        status: status
+    };
+}
+
 // /**
 //  * @param {*} rating - the rating to post
 //  * @returns

@@ -13,8 +13,9 @@ const User = require('./user.schema');
 
 const movieList = new mongoose.Schema({
     title: { type: String, required: true },
-    user_id: { type: mongoose.Schema.ObjectId, ref: User, required: true },
-    trakt_id: { type: Number, required: true }
+    user_id: { type: mongoose.Schema.ObjectId, ref: User, required: false },
+    trakt_ids: { type: [Number], required: true },
+    description: { type: String, required: true }
 });
 
 const MovieList = connection.model('MovieList', movieList);
