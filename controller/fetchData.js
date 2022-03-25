@@ -244,13 +244,10 @@ async function getPopularMovies(period) {
                     'poster'
                 );
                 element['trakt_id'] = element.movie.ids.trakt;
-                element = {
-                    ...element,
-                    url: fanartResponse
-                };
+                element['url'] = fanartResponse;
                 // console.log(element)
             }
-            redisClient.set(key, JSON.stringify(response), {
+            redisClient.set(key, JSON.stringify(element), {
                 EX: expiry // seconds in a week (expiry)
                 // NX: true    // Only set the key if it does not already exist
             });
