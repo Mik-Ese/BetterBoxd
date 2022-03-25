@@ -193,13 +193,9 @@ async function getMediaArt(mediaType, id, artType) {
     } catch (error) {
         const invalid_fanart =
             'https://cdn.pixabay.com/photo/2017/02/12/21/29/false-2061132_960_720.png';
-        redisClient.set(
-            key,
-            JSON.stringify(invalid_fanart),
-            {
-                EX: expiry // seconds in a week (expiry)
-            }
-        );
+        redisClient.set(key, JSON.stringify(invalid_fanart), {
+            EX: expiry // seconds in a week (expiry)
+        });
         return invalid_fanart;
     }
 }
@@ -260,7 +256,7 @@ async function getPopularMovies(period) {
  */
 async function getMovieExtended(id) {
     const APIquery = APIqueries.genMovieExtendedQuery(id);
-    const movieStats = genMovieStatsQuery(id);
+    const movieStats = APIqueries.genMovieStatsQuery(id);
     try {
         const key = `movieExtended_${id}`; // cache key
         // checking cache
@@ -534,11 +530,7 @@ async function getMoviePeople(id) {
 
 async function getMoviePage(id) {
     let expiry = 86400; // 1 day
-    const movieExtended = getMovieExtended(id);
-    const people = getMoviePeople(id);
-    const ratingDis = getMovieRatingDistribution(id);
-    const stats = getMovieStats(id);
-    const comments = getMovieComments(id);
+
     try {
         const key = `moviePage_${id}`; // cache key
 
@@ -548,12 +540,21 @@ async function getMoviePage(id) {
             return JSON.parse(cacheResponse);
         } else {
             // making API request
-            const response = await axios.get(APIquery, config);
+            // const response = await axios.get(APIquery, config);
+
+            const movieExtended = await getMovieExtended(id);
+            const people = await getMoviePeople(id);
+            const ratingDistribution = await getMovieRatingDistribution(id);
+            const stats = await getMovieStats(id);
+            const comments = await getMovieComments(id);
 
             const result = {
                 movieExtended,
-                people,
-                ratingDis,
+                people: {
+                    cast: people.cast,
+                    directing: people.crew.directing
+                },
+                ratingDistribution,
                 stats,
                 comments
             };
@@ -566,6 +567,7 @@ async function getMoviePage(id) {
             return result;
         }
     } catch (error) {
+        console.log(error);
         throw new Error(error);
     }
 }

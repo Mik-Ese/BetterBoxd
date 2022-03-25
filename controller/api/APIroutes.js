@@ -1,13 +1,13 @@
 const express = require('express');
 const DBqueries = require('../../model/DBqueries');
-const { route } = require('express/lib/application');
+const {route} = require('express/lib/application');
 const res = require('express/lib/response');
-const { send } = require('express/lib/response');
+const {send} = require('express/lib/response');
 const fetchData = require('../fetchData');
 const router = express.Router();
 
 router.get('/login', async (req, res) => {
-    const { username, password } = req.query;
+    const {username, password} = req.query;
     console.log(username + password);
     const data = await DBqueries.loginUser(username, password);
     console.log(data);
@@ -15,7 +15,7 @@ router.get('/login', async (req, res) => {
 });
 
 router.get('/register-user', async (req, res) => {
-    const { username, password, email } = req.query;
+    const {username, password, email} = req.query;
     var user = {
         username: username,
         email_address: email,
@@ -27,26 +27,26 @@ router.get('/register-user', async (req, res) => {
 });
 
 router.get('/get-recommended-shows', async (req, res) => {
-    const { period } = req.query;
+    const {period} = req.query;
     const data = await fetchData.getRecommendShows(period);
     res.send(data);
 });
 
 // for test purposes
 router.get('/get-movie-poster', async (req, res) => {
-    const { id } = req.query;
+    const {id} = req.query;
     const data = await fetchData.getMediaArt('movies', id, 'poster');
     res.send(data);
 });
 
 router.get('/get-popular-movies', async (req, res) => {
-    const { period } = req.query;
+    const {period} = req.query;
     const data = await fetchData.getPopularMovies(period);
     res.send(data);
 });
 
 router.get('/movie-search', async (req, res) => {
-    const { movieName } = req.query;
+    const {movieName} = req.query;
     const data = await fetchData.getMovieSearchResults(movieName);
     res.send(data);
 });
@@ -68,24 +68,24 @@ router.get('/all-reviews', async (req, res) => {
     res.send(data);
 });
 
-router.get('/get-movie-reviews', async (req, res) => {
-    const { movie_id } = req.query;
-    const data = await reviewsDB.readReviewsFromMovie(movie_id);
-    res.send(data);
-});
+// router.get('/get-movie-reviews', async (req, res) => {
+//     const {movie_id} = req.query;
+//     const data = await reviewsDB.readReviewsFromMovie(movie_id);
+//     res.send(data);
+// });
 
 // WIP - DO NOT USE
 router.get('/get-movie-page', async (req, res) => {
-    const { movie_id } = req.query;
-    const data = await reviewsDB.readReviewsFromMovie(movie_id);
+    const {id} = req.query;
+    const data = await fetchData.getMoviePage(id);
     res.send(data);
 });
 
 router.post('/add-user', async (req, res) => {
-    const { username, password } = req.body;
+    const {username, password} = req.body;
 });
 router.get('/validate-login', async (req, res) => {
-    const { username, password } = req.query;
+    const {username, password} = req.query;
     const result = await loginDB.checkLogIn(username, password);
     if (result) {
         res.send({
