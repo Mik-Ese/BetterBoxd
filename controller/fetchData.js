@@ -263,10 +263,10 @@ async function getPopularMovies(period) {
  * @return Object with fields of summart
  */
 async function getMovieExtended(id) {
-    const APIquery = `https://api.trakt.tv/movies/${id}?extended=full`;
-    const movieStats = `https://api.trakt.tv/movies/${id}/stats`;
+    const APIquery = APIqueries.genMovieExtendedQuery(id);
+    const movieStats = genMovieStatsQuery(id);
     try {
-        const key = `movies`; // cache key
+        const key = `movieExtended_${id}`; // cache key
         // checking cache
         const cacheResponse = await redisClient.get(key);
         if (cacheResponse) {
@@ -418,11 +418,143 @@ async function getTrendingMovieReviews() {
     }
 }
 
+async function getMovieRatingDistribution(id) {
+    let expiry = 259200; // 3 days
+    const APIquery = APIqueries.genMovieRatingDistributionQuery(id);
+    try {
+        const key = `movieRatingDis_$${id}`; // cache key
+
+        // checking cache
+        const cacheResponse = await redisClient.get(key);
+        if (cacheResponse) {
+            return JSON.parse(cacheResponse);
+        } else {
+            // making API request
+            const response = await axios.get(APIquery, config);
+
+            // saving to cache
+            redisClient.set(key, JSON.stringify(response.data), {
+                EX: expiry
+            });
+
+            return response.data;
+        }
+    } catch (error) {
+        throw new Error(error);
+    }
+}
+
+async function getMovieComments(id) {
+    let expiry = 86400; // 1 day
+    const APIquery = APIqueries.genMovieCommentsQuery(id);
+    try {
+        const key = `movieComments_$${id}`; // cache key
+
+        // checking cache
+        const cacheResponse = await redisClient.get(key);
+        if (cacheResponse) {
+            return JSON.parse(cacheResponse);
+        } else {
+            // making API request
+            const response = await axios.get(APIquery, config);
+
+            const result = await Promise.all(
+                response.data.map(async function (entry) {
+                    return {
+                        comment_id: entry.id,
+                        comment: entry.comment,
+                        spoiler: entry.spoiler, // review contains spoilers (true/false)
+                        likes: entry.likes,
+                        replies: entry.replies,
+                        rating: entry.user_rating, // rating from 1 to 10
+                        author: entry.user.username
+                    };
+                })
+            );
+
+            // saving to cache
+            redisClient.set(key, JSON.stringify(result), {
+                EX: expiry
+            });
+
+            return result;
+        }
+    } catch (error) {
+        throw new Error(error);
+    }
+}
+
+async function getMovieStats(id) {
+    let expiry = 86400; // 1 day
+    const APIquery = APIqueries.genMovieStatsQuery(id);
+    try {
+        const key = `movieStats_$${id}`; // cache key
+
+        // checking cache
+        const cacheResponse = await redisClient.get(key);
+        if (cacheResponse) {
+            return JSON.parse(cacheResponse);
+        } else {
+            // making API request
+            const response = await axios.get(APIquery, config);
+
+            // saving to cache
+            redisClient.set(key, JSON.stringify(response.data), {
+                EX: expiry
+            });
+
+            return response.data;
+        }
+    } catch (error) {
+        throw new Error(error);
+    }
+}
+
+async function getMoviePage(id) {
+    let expiry = 86400; // 1 day
+    const movieExtended = getMovieExtended(id);
+    const comments = getMovieComments(id);
+    const ratingDis = getMovieRatingDistribution(id);
+    const stats = getMovieStats(id);
+    try {
+        const key = `moviePage_$${id}`; // cache key
+
+        // checking cache
+        const cacheResponse = await redisClient.get(key);
+        if (cacheResponse) {
+            return JSON.parse(cacheResponse);
+        } else {
+            // making API request
+            const response = await axios.get(APIquery, config);
+
+            const result = {
+                movieExtended,
+                comments,
+                ratingDis,
+                stats
+            };
+
+            // saving to cache
+            redisClient.set(key, JSON.stringify(result), {
+                EX: expiry
+            });
+
+            return result;
+        }
+    } catch (error) {
+        throw new Error(error);
+    }
+}
+
 module.exports = {
     getRecommendShows,
     getMediaArt,
     getMovieSearchResults,
     getMovieExtended,
     getTrendingMovieReviews,
-    getPopularMovies
+    getPopularMovies,
+    getMovieRatingDistribution,
+    getMovieComments,
+    getMovieStats,
+    getMoviePage
 };

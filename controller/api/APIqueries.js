@@ -79,6 +79,30 @@ function genMovieSearchQuery(text) {
     return `https://api.trakt.tv/search/movie?query=${text}`;
 }
 
+/**
+ * @param {string} id - Trakt ID, Trakt slug, or IMDB ID
+ * @returns API query string for movie rating distribution
+ */
+function genMovieRatingDistributionQuery(id) {
+    return `https://api.trakt.tv/movies/${id}/ratings`;
+}
+
+/**
+ * @param {string} id - Trakt ID, Trakt slug, or IMDB ID
+ * @returns API query string for a movie's comments
+ */
+function genMovieCommentsQuery(id) {
+    return `https://api.trakt.tv/movies/${id}/comments/likes`;
+}
+
+/**
+ * @param {string} id - Trakt ID, Trakt slug, or IMDB ID
+ * @returns API query string for a movie's stats
+ */
+function genMovieStatsQuery(id) {
+    return `https://api.trakt.tv/movies/${id}/stats`;
+}
+
 module.exports = {
     genRecShowsQuery,
     genRecMoviesQuery,
@@ -90,6 +114,9 @@ module.exports = {
     genMovieExtendedQuery,
     genArtQuery,
     genMovieSearchQuery,
+    genMovieRatingDistributionQuery,
+    genMovieCommentsQuery,
+    genMovieStatsQuery,
     getTrendingMovieReviewsQuery:
         'https://api.trakt.tv/comments/trending/reviews/movies?include_replies=false',
     getPopShows: 'https://api.trakt.tv/shows/popular',
