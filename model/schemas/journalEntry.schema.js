@@ -7,7 +7,10 @@ const journalEntry = new mongoose.Schema({
     user_id: { type: mongoose.Schema.ObjectId, ref: User, required: true },
     trakt_id: { type: Number, required: true },
     rating: { type: Number, required: true },
-    content: { type: String, required: true }
+    description: { type: String, required: true },
+    no_likes: { type: Number, default: 0 },
+    no_comments: { type: Number, default: 0 },
+    created_at: { type: Date, default: Date.now }
 });
 
 const JournalEntry = connection.model('JournalEntry', journalEntry);
