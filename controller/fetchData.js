@@ -195,11 +195,7 @@ async function getMediaArt(mediaType, id, artType) {
             'https://cdn.pixabay.com/photo/2017/02/12/21/29/false-2061132_960_720.png';
         redisClient.set(
             key,
-            JSON.stringify([
-                {
-                    invalid_fanart: invalid_fanart
-                }
-            ]),
+            JSON.stringify(invalid_fanart),
             {
                 EX: expiry // seconds in a week (expiry)
             }
@@ -247,7 +243,7 @@ async function getPopularMovies(period) {
                 element['url'] = fanartResponse;
                 // console.log(element)
             }
-            redisClient.set(key, JSON.stringify(element), {
+            redisClient.set(key, JSON.stringify(response), {
                 EX: expiry // seconds in a week (expiry)
                 // NX: true    // Only set the key if it does not already exist
             });
@@ -422,7 +418,7 @@ async function getMovieRatingDistribution(id) {
     let expiry = 259200; // 3 days
     const APIquery = APIqueries.genMovieRatingDistributionQuery(id);
     try {
-        const key = `movieRatingDis_$${id}`; // cache key
+        const key = `movieRatingDis_${id}`; // cache key
 
         // checking cache
         const cacheResponse = await redisClient.get(key);
@@ -448,7 +444,7 @@ async function getMovieComments(id) {
     let expiry = 86400; // 1 day
     const APIquery = APIqueries.genMovieCommentsQuery(id);
     try {
-        const key = `movieComments_$${id}`; // cache key
+        const key = `movieComments_${id}`; // cache key
 
         // checking cache
         const cacheResponse = await redisClient.get(key);
@@ -488,7 +484,33 @@ async function getMovieStats(id) {
     let expiry = 86400; // 1 day
     const APIquery = APIqueries.genMovieStatsQuery(id);
     try {
-        const key = `movieStats_$${id}`; // cache key
+        const key = `movieStats_${id}`; // cache key
+
+        // checking cache
+        const cacheResponse = await redisClient.get(key);
+        if (cacheResponse) {
+            return JSON.parse(cacheResponse);
+        } else {
+            // making API request
+            const response = await axios.get(APIquery, config);
+
+            // saving to cache
+            redisClient.set(key, JSON.stringify(response.data), {
+                EX: expiry
+            });
+
+            return response.data;
+        }
+    } catch (error) {
+        throw new Error(error);
+    }
+}
+
+async function getMoviePeople(id) {
+    let expiry = 604800; // 7 days
+    const APIquery = APIqueries.genMoviePeopleQuery(id);
+    try {
+        const key = `moviePeople_${id}`; // cache key
 
         // checking cache
         const cacheResponse = await redisClient.get(key);
@@ -513,11 +535,12 @@ async function getMovieStats(id) {
 async function getMoviePage(id) {
     let expiry = 86400; // 1 day
     const movieExtended = getMovieExtended(id);
-    const comments = getMovieComments(id);
+    const people = getMoviePeople(id);
     const ratingDis = getMovieRatingDistribution(id);
     const stats = getMovieStats(id);
+    const comments = getMovieComments(id);
     try {
-        const key = `moviePage_$${id}`; // cache key
+        const key = `moviePage_${id}`; // cache key
 
         // checking cache
         const cacheResponse = await redisClient.get(key);
@@ -529,9 +552,10 @@ async function getMoviePage(id) {
 
             const result = {
                 movieExtended,
-                comments,
+                people,
                 ratingDis,
-                stats
+                stats,
+                comments
             };
 
             // saving to cache
@@ -556,5 +580,6 @@ module.exports = {
     getMovieRatingDistribution,
     getMovieComments,
     getMovieStats,
+    getMoviePeople,
     getMoviePage
 };
