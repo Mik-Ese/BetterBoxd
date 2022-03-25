@@ -103,6 +103,14 @@ function genMovieStatsQuery(id) {
     return `https://api.trakt.tv/movies/${id}/stats`;
 }
 
+/**
+ * @param {string} id - Trakt ID, Trakt slug, or IMDB ID
+ * @returns API query string for a movie's cast and crew
+ */
+function genMoviePeopleQuery(id) {
+    return `https://api.trakt.tv/movies/${id}/people`;
+}
+
 module.exports = {
     genRecShowsQuery,
     genRecMoviesQuery,
@@ -117,6 +125,7 @@ module.exports = {
     genMovieRatingDistributionQuery,
     genMovieCommentsQuery,
     genMovieStatsQuery,
+    genMoviePeopleQuery,
     getTrendingMovieReviewsQuery:
         'https://api.trakt.tv/comments/trending/reviews/movies?include_replies=false',
     getPopShows: 'https://api.trakt.tv/shows/popular',
