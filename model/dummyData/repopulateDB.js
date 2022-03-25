@@ -61,6 +61,8 @@ async function main() {
             description: 'saddest anime love story'
         }
     ];
+
+    await journalEntries.deleteMany({});
     console.log('adding journal entries...');
     await JournalEntry.insertMany(journalEntries);
     console.log('journal entries added!');
