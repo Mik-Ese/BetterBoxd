@@ -186,7 +186,7 @@ async function getMediaArt(mediaType, id, artType) {
                     }
                 } else if (artType.toLowerCase() === 'bg') {
                     if (fullResult.hasOwnProperty('moviebackground')) {
-                        result = fullResult.moviebackground[i].url;
+                        result = fullResult.moviebackground[0].url;
                     } else {
                         // default bg
                         result =
@@ -512,7 +512,7 @@ async function getTrendingMovieReviews() {
 }
 async function getMostWatchedMovies() {
     let expiry = 604800; // 1 week
-    const APIquery = `https://api.trakt.tv/movies/watched/weekly`
+    const APIquery = `https://api.trakt.tv/movies/watched/weekly`;
     try {
         const key = `getMostWatchedMovies`; // cache key
 
@@ -536,7 +536,7 @@ async function getMostWatchedMovies() {
                         title: entry.movie.title,
                         year: entry.movie.year,
                         url: fanartResponse,
-                        trakt_id: entry.movie.ids.trakt,
+                        trakt_id: entry.movie.ids.trakt
                     };
                 })
             );
