@@ -1,64 +1,64 @@
-.movie-selected-page-back-button{
+.movie-selected-page-back-button {
     cursor: pointer;
     padding: 2rem;
     width: 100%;
     display: flex;
     justify-content: left;
 }
-.movie-selected-page-container{
+.movie-selected-page-container {
     display: flex;
     flex-wrap: wrap;
 }
 
-.movie-selected-page-content{
+.movie-selected-page-content {
     display: flex;
     z-index: 1;
     margin-top: 34rem;
 }
 
-.movie-selected-page-left{
+.movie-selected-page-left {
     width: 40%;
     overflow: hidden;
     padding: 1rem;
 }
 
-.movie-selected-page-right{
+.movie-selected-page-right {
     width: 60%;
     overflow: hidden;
     padding: 1rem;
     padding-left: 2rem;
 }
 
-.movie-selected-page-heading{
+.movie-selected-page-heading {
     display: flex;
     justify-content: left;
 }
 
-.movie-selected-page-title{
+.movie-selected-page-title {
     font-size: 2rem;
     font-weight: 800;
 }
 
-.movie-selected-page-year{
+.movie-selected-page-year {
     font-size: 1rem;
     margin-top: 1rem;
-    margin-left: .5rem;
+    margin-left: 0.5rem;
 }
 
-.movie-selected-page-director{
+.movie-selected-page-director {
     font-size: 1.3rem;
     font-weight: 600;
-    margin-top: .65rem;
-    margin-left: .3rem;
+    margin-top: 0.65rem;
+    margin-left: 0.3rem;
 }
-.movie-selected-page-directed-by-text{
+.movie-selected-page-directed-by-text {
     font-size: 1.3rem;
     font-weight: 250;
-    margin-top: .65rem;
+    margin-top: 0.65rem;
     margin-left: 1rem;
 }
 
-.movie-selected-page-description{
+.movie-selected-page-description {
     display: flex;
     justify-content: left;
     text-align: left;
@@ -66,30 +66,29 @@
     font-size: 1rem;
 }
 
-.movie-selected-page-cast{
+.movie-selected-page-cast {
     font-size: 1.3rem;
     font-weight: 600;
     display: flex;
-    margin-bottom: .4rem;
+    margin-bottom: 0.4rem;
 }
 
-.movie-selected-page-reviews{
-
+.movie-selected-page-reviews {
 }
 
-.movie-selected-page-bar-graph-container{
+.movie-selected-page-bar-graph-container {
     width: 100%;
     margin-top: 8rem;
     display: flex;
 }
-.movie-selected-page-bar-graph-bar{
-    border-radius: .3rem;
+.movie-selected-page-bar-graph-bar {
+    border-radius: 0.3rem;
     width: 1.5rem;
     background-color: rgb(182, 255, 180);
-    margin-right: .1rem;
+    margin-right: 0.1rem;
 }
 
-.movie-selected-page-bar-graph-one-star{
+.movie-selected-page-bar-graph-one-star {
     display: flex;
     width: 3rem;
     margin-top: -1.2rem;
@@ -97,106 +96,109 @@
     flex-wrap: wrap;
 }
 
-
-.movie-selected-page-bar-graph-ten-stars{
+.movie-selected-page-bar-graph-ten-stars {
     display: flex;
     width: 8rem;
-    margin-top: .4rem;
+    margin-top: 0.4rem;
     margin-left: 1rem;
     flex-wrap: wrap;
 }
 
-.movie-selected-page-bars-container{
+.movie-selected-page-bars-container {
     width: 100%;
 }
 
-.movie-selected-page-average-rating{
+.movie-selected-page-average-rating {
     margin-top: -6.5rem;
     font-size: 2.2rem;
     font-weight: 500;
 }
 
-.movie-selected-page-rating-container{
+.movie-selected-page-rating-container {
     margin-top: 2rem;
     width: 28.5rem;
 }
 
-.movie-selected-page-rating-heading{
+.movie-selected-page-rating-heading {
     display: flex;
-    margin-bottom: .3rem;
+    margin-bottom: 0.3rem;
     justify-content: space-between;
     width: 28.5rem;
 }
 
-.movie-selected-page-rating-title{
+.movie-selected-page-rating-title {
     font-size: 1.3rem;
     font-weight: 600;
 }
 
-.movie-selected-page-total-ratings{
+.movie-selected-page-total-ratings {
     font-size: 1.3rem;
     font-weight: 600;
 }
 
-.movie-selected-page-cast-list{
+.movie-selected-page-cast-list {
     display: flex;
     flex-wrap: wrap;
 }
 
-.movie-selected-page-cast-item{
-    margin-right: .4rem;
+.movie-selected-page-cast-item {
+    margin-right: 0.4rem;
     background-color: rgb(238, 238, 238);
-    border-radius: .3rem;
-    padding-left: .5rem;
-    padding-right: .5rem;
-    padding-top: .2rem;
-    padding-bottom: .2rem;
+    border-radius: 0.3rem;
+    padding-left: 0.5rem;
+    padding-right: 0.5rem;
+    padding-top: 0.2rem;
+    padding-bottom: 0.2rem;
+    margin-bottom: 0.5rem;
 }
 
-.movie-selected-page-image-details{
-    margin-top: .5rem;
+.movie-selected-page-image-details {
+    margin-top: 0.5rem;
     display: flex;
     justify-content: center;
 }
 
-.movie-selected-page-icon{
-    margin-top: -.1rem;
+.movie-selected-page-icon {
+    margin-top: -0.1rem;
     margin-left: 1rem;
-    margin-right: .2rem;
+    margin-right: 0.2rem;
 }
 
-.movie-selected-page-image-container{
-    border-radius: .5rem;
+.movie-selected-page-image-container {
+    border-radius: 0.5rem;
     overflow: hidden;
 }
+.movie-selected-page-image {
+    max-width: 100%;
+}
 
-.movie-selected-page-review-divider{
+.movie-selected-page-review-divider {
     margin-top: 1rem !important;
     margin-bottom: 1rem !important;
 }
 
-.movie-selected-page-review-title{
+.movie-selected-page-review-title {
     display: flex;
     font-size: 1.3rem;
     font-weight: 600;
     margin-bottom: 1rem;
 }
 
-.movie-selected-review-container{
+.movie-selected-review-container {
     margin-left: -1rem;
     margin-bottom: 2rem;
 }
 
-.popular-review-description{
-    margin-top: .5rem;
-    margin-bottom: .5rem;
+.popular-review-description {
+    margin-top: 0.5rem;
+    margin-bottom: 0.5rem;
 }
 
-.popular-review-stars{
-    margin-top: .1rem;
+.popular-review-stars {
+    margin-top: 0.1rem;
 }
 
-.movie-selected-page-background-image-container{
+.movie-selected-page-background-image-container {
     width: 100%;
     margin-top: -1rem;
     height: 35rem;
