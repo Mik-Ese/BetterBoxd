@@ -6,7 +6,8 @@ import JustReviewed from './JustReviewed';
 import Divider from '@mui/material/Divider';
 import MovieSelectedPage from './MovieSelectedPage';
 import './styles/baseMovieStyles.css';
-const baseURL = '127.0.0.1:3001';
+import { baseURL } from '../consts/consts.js';
+import CircularProgress from '@mui/material/CircularProgress';
 
 const MoviePage = () => {
     const [movieSelected, setMovieSelected] = useState(null);
@@ -88,6 +89,9 @@ const MoviePage = () => {
             }
         ]
     });
+    const [popularReviews, setPopularReviews] = useState([]);
+    const [popularMovies, setPopularMovies] = useState([]);
+    const [isLoading, setIsLoading] = useState(true);
     const getPopularMovies = () => {
         const requestOptions = {
             method: 'GET',
@@ -95,20 +99,63 @@ const MoviePage = () => {
                 'Content-Type': 'application/json'
             }
         };
-        fetch(`http://localhost:3001/api/get-popular-movies?period=weekly`, requestOptions)
+        fetch(`${baseURL}/get-popular-movies?period=weekly`, requestOptions)
+            .then((response) => response.json())
+            .then((data) => {
+                var newPopMovies = [];
+                data.map((data) => {
+                    newPopMovies.push({
+                        imgLink: data.url,
+                        numViews: data.watcher_count,
+                        numLists: 3,
+                        numLikes: 3,
+                        movieID: data.trakt_id
+                    });
+                });
+                setIsLoading(false);
+                setPopularMovies(newPopMovies);
+            })
+            .catch((error) => {
+                console.log(error);
+            });
+    };
+
+    const getPopularReviews = () => {
+        const requestOptions = {
+            method: 'GET',
+            headers: {
+                'Content-Type': 'application/json'
+            }
+        };
+        fetch(`${baseURL}/trending-movie-reviews`, requestOptions)
             .then((response) => response.json())
             .then((data) => {
                 console.log(data);
+                var newPopReviews = [];
+                data.map((data) => {
+                    newPopReviews.push({
+                        authorName: data.author,
+                        imgLink: data.url,
+                        title: data.title,
+                        year: data.year,
+                        numStars: data.rating,
+                        numComments: data.replies,
+                        description: data.comment,
+                        numLikes: data.likes,
+                        movieID: data.trakt_id
+                    });
+                });
+                setPopularReviews(newPopReviews);
             })
             .catch((error) => {
-              //console.log(error);
+                console.log(error);
             });
     };
-    const popularMovieFactory = (data) => {
-        getPopularMovies();
+
+    const popularMovieFactory = () => {
         var movies = [];
-        for (var i = 0; i < data.popularMovies.length; i++) {
-            var movieData = data.popularMovies[i];
+        for (var i = 0; i < popularMovies.length && i < 6 /*temporary*/; i++) {
+            var movieData = popularMovies[i];
             movies.push(<PopularMovie {...{ movieData, setMovieSelected }} />);
         }
         return (
@@ -116,7 +163,7 @@ const MoviePage = () => {
         );
     };
 
-    const justReviewedFactory = (data) => {
+    const justReviewedFactory = () => {
         var reviews = [];
         for (var i = 0; i < data.justReviewed.length; i++) {
             var reviewData = data.justReviewed[i];
@@ -129,12 +176,23 @@ const MoviePage = () => {
         );
     };
 
-    const popularReviewFactory = (data) => {
+    const popularReviewFactory = () => {
         var reviews = [];
-        for (var i = 0; i < data.popularReviews.length; i++) {
-            var reviewData = data.popularReviews[i];
+        for (var i = 0; i < popularReviews.length; i++) {
+            var reviewData = popularReviews[i];
             reviews.push(
-                <PopularReview {...{ reviewData, setMovieSelected }} />
+                <>
+                    <div
+                        style={{
+                            width: '100%',
+                            marginBottom: '.5rem',
+                            marginTop: '-.5rem'
+                        }}
+                    >
+                        <Divider />
+                    </div>
+                    <PopularReview {...{ reviewData, setMovieSelected }} />
+                </>
             );
         }
         return (
@@ -149,34 +207,56 @@ const MoviePage = () => {
             setSearchResultsOpen(false);
         }
     };
+    const makeQueries = () => {
+        if (popularReviews.length === 0) {
+            getPopularReviews();
+        }
+        if (popularMovies.length === 0) {
+            getPopularMovies();
+        }
+    };
     return (
         <div className="movie-page-root" onClick={closeSearchResults}>
-            {movieSelected !== null ? (
-                <div>
-                    <MovieSelectedPage
-                        {...{ movieSelected, setMovieSelected }}
+            {isLoading ? (
+                <>
+                    <CircularProgress
+                        fontSize="large"
+                        style={{ marginTop: '25%', marginLeft: '48%' }}
                     />
-                </div>
+                    {makeQueries()}
+                </>
             ) : (
-                <div className="movie-page-home">
-                    <SearchBar
-                        {...{
-                            searchResultsOpen,
-                            setSearchResultsOpen,
-                            setMovieSelected
-                        }}
-                    />
-                    <div className="base-movie-subtitle">
-                        POPULAR FILMS THIS WEEK
-                    </div>
-                    {popularMovieFactory(data)}
-                    <div className="base-movie-subtitle">JUST REVIEWED...</div>
-                    {justReviewedFactory(data)}
-                    <div className="base-movie-subtitle">
-                        POPULAR REVIEWS THIS WEEK
-                    </div>
-                    {popularReviewFactory(data)}
-                </div>
+                <>
+                    {movieSelected !== null ? (
+                        <div>
+                            <MovieSelectedPage
+                                {...{ movieSelected, setMovieSelected }}
+                            />
+                        </div>
+                    ) : (
+                        <div className="movie-page-home">
+                            <SearchBar
+                                {...{
+                                    searchResultsOpen,
+                                    setSearchResultsOpen,
+                                    setMovieSelected
+                                }}
+                            />
+                            <div className="base-movie-subtitle">
+                                POPULAR FILMS THIS WEEK
+                            </div>
+                            {popularMovieFactory()}
+                            <div className="base-movie-subtitle">
+                                JUST REVIEWED...
+                            </div>
+                            {justReviewedFactory()}
+                            <div className="base-movie-subtitle">
+                                POPULAR REVIEWS THIS WEEK
+                            </div>
+                            {popularReviewFactory()}
+                        </div>
+                    )}
+                </>
             )}
         </div>
     );
