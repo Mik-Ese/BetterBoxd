@@ -26,12 +26,23 @@
   margin-bottom: 0.5rem;
 }
 
+.list-item-info {
+  display: inline-block;
+  text-align: left;
+}
+
 .list-item-title {
+  display: inline-block;
   font-size: 1.5rem;
   text-align: left;
 }
 
-.list-item-social {
+.list-item-title:hover {
+  cursor: pointer;
+  color: grey;
+}
+
+.list-item-meta {
   text-align: left;
   margin-top: 0.25ch;
   margin-bottom: 0.25ch;

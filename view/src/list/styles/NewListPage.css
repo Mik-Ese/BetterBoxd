@@ -7,11 +7,18 @@
   display: inline-flex;
 }
 
+.back-arrow :hover {
+  cursor: pointer;
+  color: grey;
+}
+
 .icon-bar {
   width: 80vw;
   margin: auto;
-  margin-top: 0.5rem;
-  align-items: left;
+  margin-top: 1rem;
   display:flex;
-  justify-content:left;
+}
+
+.title {
+  font-size: 2rem;
 }
