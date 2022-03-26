@@ -1,0 +1,19 @@
+.movie-poster {
+  width: 5.4rem;
+  height: 8rem;
+  object-fit: cover;
+  border-radius: 0.25rem;
+  position: relative;
+  display: inline-block;
+}
+
+.delete-poster {
+  display: inline-block;
+  vertical-align: top;
+  margin-left: -0.1rem;
+}
+
+.movie-poster-wrapper {
+  display: inline-block;
+  margin: 0.2rem;
+}
