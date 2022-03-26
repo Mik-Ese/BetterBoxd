@@ -1,12 +1,13 @@
-import ListItem from "./ListItem.js";
-import ListSelectedPage from "./ListSelectedPage.js";
-import NewListPage from "./NewListPage.js";
-import "./styles/ListPage.css";
+import ListItem from './ListItem.js';
+import ListSelectedPage from './ListSelectedPage.js';
+import NewListPage from './NewListPage.js';
+import './styles/ListPage.css';
 import AddCircleIcon from '@mui/icons-material/AddCircle';
+import { baseURL } from '../consts/consts.js';
 
-import { useState } from "react";
-const ListPage = () => {
-
+import { useState } from 'react';
+const ListPage = ({ user, loggedIn }) => {
+  
   const [listSelected, setListSelected] = useState(null);
   const [newListOpen, setNewListOpen] = useState(false);
 
@@ -60,52 +61,82 @@ const ListPage = () => {
             movieID: "",
           },
         ]
-      },
-    ],
-  };
+    };
+    //call this function somewhere so it gets executed once when the page loads
+    //likely using useEffect()
+    const getListEntries = () => {
+        console.log(user);
+        const requestOptions = {
+            method: 'GET',
+            headers: {
+                'Content-Type': 'application/json'
+            }
+        };
+        fetch(`${baseURL}/get-all-movie-lists`, requestOptions)
+            .then((response) => response.json())
+            .then((data) => {
+                console.log(data);
+                //map 'data' to your list entries here.
+            })
+            .catch((error) => {
+                console.log(error);
+            });
+    };
 
-  const listItemFactory = (data) => {
-    var listItemContents = [];
-    listItemContents.push(<hr className="divider" />);
-    for (var i = 0; i < data.listItem.length; i++) {
-      var listData = data.listItem[i];
-      listItemContents.push(<ListItem {...{listData, setListSelected}}/>);
-      listItemContents.push(<hr className="divider" />);
-    }
-    return <div className="list-item-components-container">{listItemContents}</div>;
-  };
+    const listItemFactory = (data) => {
+        var listItemContents = [];
+        listItemContents.push(<hr className="divider" />);
+        for (var i = 0; i < data.listItem.length; i++) {
+            var listData = data.listItem[i];
+            listItemContents.push(
+                <ListItem {...{ listData, setListSelected }} />
+            );
+            listItemContents.push(<hr className="divider" />);
+        }
+        return (
+            <div className="list-item-components-container">
+                {listItemContents}
+            </div>
+        );
+    };
 
-  const openNewList = () => {
-    setNewListOpen(true);
-  }
+    const openNewList = () => {
+        setNewListOpen(true);
+    };
 
-  return (
-    <div className="list-page-root">
-      {listSelected != null ? (
-        <div>
-          <ListSelectedPage {...{ listSelected, setListSelected }} />
+    return (
+        <div className="list-page-root">
+            {listSelected != null ? (
+                <div>
+                    <ListSelectedPage {...{ listSelected, setListSelected }} />
+                </div>
+            ) : (
+                <div>
+                    {newListOpen ? (
+                        <div>
+                            <NewListPage
+                                {...{ newListOpen, setNewListOpen, user }}
+                            />
+                        </div>
+                    ) : (
+                        <div className="list-page-home">
+                            {!loggedIn ? (
+                                <></>
+                            ) : (
+                                <div
+                                    className="add-list-button"
+                                    onClick={openNewList}
+                                >
+                                    <AddCircleIcon /> Add List
+                                </div>
+                            )}
+                            <div>{listItemFactory(data)}</div>
+                        </div>
+                    )}
+                </div>
+            )}
         </div>
-      ) : (
-        <div>
-        {newListOpen ? (
-          <div>
-            <NewListPage {...{ newListOpen, setNewListOpen }} />
-          </div>
-        ) : (
-          <div className="list-page-home">
-            <div
-              className="add-list-button"
-              onClick={openNewList}
-            >
-              <AddCircleIcon /> Add List
-            </ div>
-            <div>{listItemFactory(data)}</div>
-          </div>
-        )}
-        </div>
-      )}
-    </div>
-  );
+    );
 };
 
 export default ListPage;

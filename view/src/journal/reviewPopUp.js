@@ -38,7 +38,7 @@ export default function AlertDialogSlide({ setReviewPageOpen, user }) {
             body: JSON.stringify({
                 description: /*description here,*/ 'temp',
                 user_id: user._id,
-                movie: /*selected movie ID here*/ 'temp'
+                trakt_id: /*selected movie ID here*/ 'temp'
             })
         };
         fetch(`${baseURL}/post-journal-entry`, requestOptions)
