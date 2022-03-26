@@ -421,6 +421,48 @@ async function getTrendingMovieReviews() {
         throw new Error(error);
     }
 }
+async function getMostWatchedMovies() {
+    let expiry = 604800; // 1 week
+    const APIquery = `https://api.trakt.tv/movies/watched/weekly`
+    try {
+        const key = `getMostWatchedMovies`; // cache key
+
+        // checking cache
+        const cacheResponse = await redisClient.get(key);
+        if (cacheResponse) {
+            return JSON.parse(cacheResponse);
+        } else {
+            // making API request
+            const response = await axios.get(APIquery, config);
+
+            const result = await Promise.all(
+                response.data.map(async function (entry) {
+                    let fanartResponse = await getMediaArt(
+                        'movies',
+                        entry.movie.ids.tmdb,
+                        'poster'
+                    );
+                    return {
+                        // movie info
+                        title: entry.movie.title,
+                        year: entry.movie.year,
+                        url: fanartResponse,
+                        trakt_id: entry.movie.ids.trakt,
+                    };
+                })
+            );
+
+            // saving to cache
+            redisClient.set(key, JSON.stringify(result), {
+                EX: expiry
+            });
+
+            return result;
+        }
+    } catch (error) {
+        throw new Error(error);
+    }
+}
 
 async function getMovieRatingDistribution(id) {
     let expiry = 259200; // 3 days
@@ -598,5 +640,6 @@ module.exports = {
     getMovieComments,
     getMovieStats,
     getMoviePeople,
-    getMoviePage
+    getMoviePage,
+    getMostWatchedMovies
 };

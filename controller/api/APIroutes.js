@@ -6,6 +6,10 @@ const { send } = require('express/lib/response');
 const fetchData = require('../fetchData');
 const router = express.Router();
 
+router.get('/get-all-movie-lists', async(req, res) => {
+    const data = await DBqueries.getMovieLists();
+    res.send(data);
+})
 router.post('/post-journal-entry', async (req, res) => {
     console.log(req.body);
     const data = await DBqueries.postJournalEntry(req.body);
@@ -68,49 +72,19 @@ router.get('/trending-movie-reviews', async (req, res) => {
     res.send(data);
 });
 
-router.get('/all-reviews', async (req, res) => {
-    let data = await reviewsDB.getAllReviews();
-    for (element of data) {
-        let movie_data = await fetchData.getMovieExtended(element.trakt_id);
-        element = {
-            ...element,
-            ...movie_data
-        };
-    }
-    res.send(data);
-});
-
-// router.get('/get-movie-reviews', async (req, res) => {
-//     const {movie_id} = req.query;
-//     const data = await reviewsDB.readReviewsFromMovie(movie_id);
-//     res.send(data);
-// });
-
 router.get('/get-movie-page', async (req, res) => {
     const { id } = req.query;
     const data = await fetchData.getMoviePage(id);
     res.send(data);
 });
 
-router.post('/add-user', async (req, res) => {
-    const { username, password } = req.body;
-});
-router.get('/validate-login', async (req, res) => {
-    const { username, password } = req.query;
-    const result = await loginDB.checkLogIn(username, password);
-    if (result) {
-        res.send({
-            validate: true
-        });
-    } else {
-        res.send({
-            validate: false
-        });
-    }
-});
-router.get('/get-user', async (req, res) => {});
-router.post('/add-list', async (req, res) => {});
-router.put('/add-media-list', async (req, res) => {});
-router.put('/remove-media-list', async (req, res) => {});
+router.get('/get-most-watched-movies', async(req, res) => {
+    const data = await fetchData.getMostWatchedMovies();
+    res.send(data);
+})
+
+
+
+
 
 module.exports = router;
