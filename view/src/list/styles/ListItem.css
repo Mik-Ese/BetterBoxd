@@ -2,8 +2,7 @@
   width: 2.7rem;
   height: 4rem;
   object-fit: cover;
-  border-radius: 0.1rem;
-  filter: drop-shadow(0, 0, 20rem, black);
+  border-radius: 0.15rem;
   position: relative;
 }
 
@@ -12,7 +11,7 @@
   height: 8.25rem;
   display: inline-grid;
   grid-template-columns: repeat(2, [colstart] 1fr);
-  grid-gap: 0.25rem;
+  grid-gap: 0.20rem;
   border-radius: 0.1rem;
   justify-self: right;
   align-self: center;

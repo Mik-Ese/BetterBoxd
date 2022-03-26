@@ -1,9 +1,7 @@
-import "./ListItem.css";
+import "./styles/ListItem.css";
 
-const ListItem = ({
-  listData
-}) => {
-  
+const ListItem = ({listData}) => {
+
   const thumbnailFactory = (imagePaths) => {
     var thumbnailContents = [];
     var j = 0;

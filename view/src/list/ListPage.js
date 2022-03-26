@@ -1,13 +1,15 @@
 import ListItem from "./ListItem.js";
-import "./ListPage.css";
+import ListSelectedPage from "./ListSelectedPage.js";
+import NewListPage from "./NewListPage.js";
+import "./styles/ListPage.css";
+import AddCircleIcon from '@mui/icons-material/AddCircle';
+import Button from '@mui/material/Button';
 
 import { useState } from "react";
-import { mobileStepperClasses } from "@mui/material";
 const ListPage = () => {
 
-  // fetch(
-  //   GET
-  // )  
+  const [listSelected, setListSelected] = useState(null);
+  const [newListOpen, setNewListOpen] = useState(false);
 
   const data = {
     listItem: [
@@ -79,9 +81,35 @@ const ListPage = () => {
     return <div className="list-item-components-container">{listItemContents}</div>;
   };
 
+  const openNewList = () => {
+    setNewListOpen(true);
+  }
+
   return (
     <div className="list-page-root">
-      {listItemFactory(data)}
+      {listSelected != null ? (
+        <div>
+          <ListSelectedPage {...{ listSelected, setListSelected }} />
+        </div>
+      ) : (
+        <div>
+        {newListOpen ? (
+          <div>
+            <NewListPage {...{ newListOpen, setNewListOpen }} />
+          </div>
+        ) : (
+          <div className="list-page-home">
+            <div
+              className="add-list-button"
+              onClick={openNewList}
+            >
+              <AddCircleIcon /> Add List
+            </ div>
+            <div>{listItemFactory(data)}</div>
+          </div>
+        )}
+        </div>
+      )}
     </div>
   );
 };
