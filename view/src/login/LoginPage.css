@@ -1,7 +1,7 @@
 .login-page-title{
+    margin-top: 5rem;
     font-size: 3rem;
     font-weight: bold;
-    margin-top: 2rem;
 }
 
 .username-input-wrapper{
@@ -11,4 +11,17 @@
 .password-input-wrapper{
     margin-top: .5rem;
     margin-bottom: 1.5rem;
+}
+
+.login-page-back-button-container{
+    position: absolute;
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    margin-top: 6.6rem;
+}
+
+.login-page-back-button{
+    margin-right: 22rem;
+    cursor: pointer;
 }
