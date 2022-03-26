@@ -3,8 +3,9 @@ import MovieSelection from "./MovieSelection";
 
 import { useState } from "react";
 import TextField from "@mui/material/TextField";
+import ArrowBackIcon from '@mui/icons-material/ArrowBack';
 
-const NewListPage = ({ newListPage, setNewListPage }) => {
+const NewListPage = ({ newListOpen, setNewListOpen }) => {
   
   const [listTitle, setListTitle] = useState("");
   const [summary, setSummary] = useState("");
@@ -15,9 +16,17 @@ const NewListPage = ({ newListPage, setNewListPage }) => {
   const onSummaryChange = (event) => {
     setSummary(event.target.value);
   }
+  const closeNewList = () => {
+    setNewListOpen(false);
+  }
 
   return (
     <div>
+      <div className="icon-bar">
+        <div className="back-arrow" onClick={closeNewList}>
+          <ArrowBackIcon/>
+        </div>
+      </div>
       <div className="input-wrapper">
         <TextField
           className="list-title-input"

@@ -2,3 +2,16 @@
   margin-top: 0.25rem;
   margin-bottom: 0.25rem;
 }
+
+.back-arrow {
+  display: inline-flex;
+}
+
+.icon-bar {
+  width: 80vw;
+  margin: auto;
+  margin-top: 0.5rem;
+  align-items: left;
+  display:flex;
+  justify-content:left;
+}
