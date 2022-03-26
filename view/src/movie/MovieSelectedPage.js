@@ -8,7 +8,9 @@ import AutoAwesomeMosaicIcon from '@mui/icons-material/AutoAwesomeMosaic';
 import VisibilityIcon from '@mui/icons-material/Visibility';
 import ModeCommentIcon from '@mui/icons-material/ModeComment';
 import { baseURL } from '../consts/consts.js';
+
 const MovieSelectedPage = ({ movieSelected, setMovieSelected }) => {
+    const [loading, setLoading] = useState(true);
     const [data, setData] = useState({
         title: '',
         director: '',
@@ -82,6 +84,7 @@ const MovieSelectedPage = ({ movieSelected, setMovieSelected }) => {
                     }),
                     ratings: ratingDist
                 });
+                setLoading(false);
             })
             .catch((error) => {
                 console.log(error);
@@ -117,99 +120,110 @@ const MovieSelectedPage = ({ movieSelected, setMovieSelected }) => {
     }, [movieSelected]);
     return (
         <div className="movie-selected-page-container">
-            <div
-                className="movie-selected-page-background-image-container"
-                style={{
-                    backgroundSize: 'cover',
-                    backgroundImage: `linear-gradient(to top, rgba(255,255,255,1), rgba(255,255,255,0.1), rgba(255,255,255,0)), url('${data.backgroundLink}'`
-                }}
-            >
-                <div
-                    className="movie-selected-page-back-button"
-                    onClick={unselectMovie}
-                >
-                    <ArrowBackIcon />
-                </div>
-            </div>
-            <div className="movie-selected-page-content">
-                <div className="movie-selected-page-left">
-                    <div className="movie-selected-page-image-container">
-                        <img
-                            className="movie-selected-page-image"
-                            src={data.imgLink}
-                        />
-                    </div>
-                    <div className="movie-selected-page-image-details">
-                        <div className="movie-selected-page-icon">
-                            <VisibilityIcon />
-                        </div>
-                        <div className="movie-selected-page-detail-number">
-                            {Math.round(data.views / 1000) / 10}k
-                        </div>
-                        <div className="movie-selected-page-icon">
-                            <AutoAwesomeMosaicIcon />
-                        </div>
-                        <div classNmae="movie-selected-page-detail-number">
-                            {Math.round(data.lists / 1000) / 10}k
-                        </div>
-                        <div className="movie-selected-page-icon">
-                            <FavoriteIcon />
-                        </div>
-                        <div classNmae="movie-selected-page-detail-number">
-                            {Math.round(data.likes / 1000) / 10}k
+            {loading ? (
+                <></>
+            ) : (
+                <>
+                    <div
+                        className="movie-selected-page-background-image-container"
+                        style={{
+                            backgroundSize: 'cover',
+                            backgroundImage: `linear-gradient(to top, rgba(255,255,255,1), rgba(255,255,255,0.1), rgba(255,255,255,0)), url('${data.backgroundLink}'`
+                        }}
+                    >
+                        <div
+                            className="movie-selected-page-back-button"
+                            onClick={unselectMovie}
+                        >
+                            <ArrowBackIcon />
                         </div>
                     </div>
-                </div>
-                <div className="movie-selected-page-right">
-                    <div className="movie-selected-page-heading">
-                        <div className="movie-selected-page-title">
-                            {data.title}
-                        </div>
-                        <div className="movie-selected-page-year">
-                            {data.year}
-                        </div>
-                        <div className="movie-selected-page-directed-by-text">
-                            Directed by
-                        </div>
-                        <div className="movie-selected-page-director">
-                            {data.director}
-                        </div>
-                    </div>
-                    <div className="movie-selected-page-description">
-                        {data.description}
-                    </div>
-                    <Divider
-                        style={{ marginTop: '1.5rem', marginBottom: '.5rem' }}
-                    />
-                    <div className="movie-selected-page-cast-container">
-                        <div className="movie-selected-page-cast">CAST</div>
-                        <div className="movie-selected-page-cast-list">
-                            {createCast()}
-                        </div>
-                    </div>
-
-                    <div className="movie-selected-page-rating-container">
-                        <div className="movie-selected-page-rating-heading">
-                            <div className="movie-selected-page-rating-title">
-                                RATINGS
+                    <div className="movie-selected-page-content">
+                        <div className="movie-selected-page-left">
+                            <div className="movie-selected-page-image-container">
+                                <img
+                                    className="movie-selected-page-image"
+                                    src={data.imgLink}
+                                />
                             </div>
-                            <div className="movie-selected-page-total-ratings">
-                                {totalRatings} total ratings
+                            <div className="movie-selected-page-image-details">
+                                <div className="movie-selected-page-icon">
+                                    <VisibilityIcon />
+                                </div>
+                                <div className="movie-selected-page-detail-number">
+                                    {Math.round(data.views / 1000) / 10}k
+                                </div>
+                                <div className="movie-selected-page-icon">
+                                    <AutoAwesomeMosaicIcon />
+                                </div>
+                                <div classNmae="movie-selected-page-detail-number">
+                                    {Math.round(data.lists / 1000) / 10}k
+                                </div>
+                                <div className="movie-selected-page-icon">
+                                    <FavoriteIcon />
+                                </div>
+                                <div classNmae="movie-selected-page-detail-number">
+                                    {Math.round(data.likes / 1000) / 10}k
+                                </div>
                             </div>
                         </div>
-                        <Divider />
-                        <BarGraph {...{ data }} />
-                    </div>
-                    <Divider className="movie-selected-page-review-divider" />
-                    <div className="movie-selected-page-reviews">
-                        <div className="movie-selected-page-review-title">
-                            REVIEWS
-                        </div>
+                        <div className="movie-selected-page-right">
+                            <div className="movie-selected-page-heading">
+                                <div className="movie-selected-page-title">
+                                    {data.title}
+                                </div>
+                                <div className="movie-selected-page-year">
+                                    {data.year}
+                                </div>
+                                <div className="movie-selected-page-directed-by-text">
+                                    Directed by
+                                </div>
+                                <div className="movie-selected-page-director">
+                                    {data.director}
+                                </div>
+                            </div>
+                            <div className="movie-selected-page-description">
+                                {data.description}
+                            </div>
+                            <Divider
+                                style={{
+                                    marginTop: '1.5rem',
+                                    marginBottom: '.5rem'
+                                }}
+                            />
+                            <div className="movie-selected-page-cast-container">
+                                <div className="movie-selected-page-cast">
+                                    CAST
+                                </div>
+                                <div className="movie-selected-page-cast-list">
+                                    {createCast()}
+                                </div>
+                            </div>
 
-                        {createReviews()}
+                            <div className="movie-selected-page-rating-container">
+                                <div className="movie-selected-page-rating-heading">
+                                    <div className="movie-selected-page-rating-title">
+                                        RATINGS
+                                    </div>
+                                    <div className="movie-selected-page-total-ratings">
+                                        {totalRatings} total ratings
+                                    </div>
+                                </div>
+                                <Divider />
+                                <BarGraph {...{ data }} />
+                            </div>
+                            <Divider className="movie-selected-page-review-divider" />
+                            <div className="movie-selected-page-reviews">
+                                <div className="movie-selected-page-review-title">
+                                    REVIEWS
+                                </div>
+
+                                {createReviews()}
+                            </div>
+                        </div>
                     </div>
-                </div>
-            </div>
+                </>
+            )}
         </div>
     );
 };
