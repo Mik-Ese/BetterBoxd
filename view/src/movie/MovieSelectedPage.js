@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import './styles/movieSelectedPage.css';
 import ArrowBackIcon from '@mui/icons-material/ArrowBack';
 import StarIcon from '@mui/icons-material/Star';
@@ -7,78 +7,86 @@ import FavoriteIcon from '@mui/icons-material/Favorite';
 import AutoAwesomeMosaicIcon from '@mui/icons-material/AutoAwesomeMosaic';
 import VisibilityIcon from '@mui/icons-material/Visibility';
 import ModeCommentIcon from '@mui/icons-material/ModeComment';
-
+import { baseURL } from '../consts/consts.js';
 const MovieSelectedPage = ({ movieSelected, setMovieSelected }) => {
     const [data, setData] = useState({
-        title: 'The Batman',
-        year: '2022',
-        director: 'Christopher Nolan',
-        imgLink:
-            'https://cdn.pastemagazine.com/www/system/images/photo_albums/best-movie-posters-2016/large/moonlight-ver2-xlg.jpg?1384968217',
-        backgroundLink:
-            'https://deadline.com/wp-content/uploads/2022/03/batman-5-e1646492922697.jpeg?crop=455px%2C0px%2C4699px%2C2635px&resize=681%2C383',
-        description:
-            'In his second year of fighting crime, Batman uncovers corruption in Gotham City that connects to his own family while facing a serial killer known as the Riddler.',
-        views: 538000,
-        lists: 110000,
-        likes: 247000,
-        cast: ['Robert Pattison', 'Zoe Kravitz', 'Paul Dano', 'Jeffrey Wright'],
-        reviews: [
-            {
-                authorImg:
-                    'https://cdn.pastemagazine.com/www/system/images/photo_albums/best-movie-posters-2016/large/moonlight-ver2-xlg.jpg?1384968217',
-                authorName: 'james',
-                numStars: 4,
-                numComments: 18,
-                description:
-                    'miriam talmiriam talking about boysking about boysmiriam talking about boysmiriam talking about boysmiriam talking about boys',
-                numLikes: 6201
-            },
-            {
-                authorImg:
-                    'https://cdn.pastemagazine.com/www/system/images/photo_albums/best-movie-posters-2016/large/moonlight-ver2-xlg.jpg?1384968217',
-                authorName: 'james',
-                numStars: 2,
-                numComments: 18,
-                description:
-                    'miriam talmiriam talking about boysking about boysmiriam talking about boysmiriam talking about boysmiriam talking about boys',
-                numLikes: 6201
-            },
-            {
-                authorImg:
-                    'https://cdn.pastemagazine.com/www/system/images/photo_albums/best-movie-posters-2016/large/moonlight-ver2-xlg.jpg?1384968217',
-                authorName: 'james',
-                numStars: 7,
-                numComments: 18,
-                description:
-                    'miriam talmiriam talking about boysking about boysmiriam talking about boysmiriam talking about boysmiriam talking about boys',
-                numLikes: 6201
-            }
-        ],
-        ratings: [10, 20, 30, 40, 80, 100, 150, 190, 180, 120]
+        title: '',
+        director: '',
+        imgLink: '',
+        backgroundLink: '',
+        description: '',
+        views: '',
+        lists: '',
+        likes: '',
+        cast: [],
+        reviews: [],
+        ratings: []
     });
 
     var totalRatings = 0;
     for (var i = 0; i < 10; i++) {
         totalRatings += data.ratings[i];
     }
-    /*const getPopularReviews = () => {
+    const getMovieInfo = () => {
         const requestOptions = {
             method: 'GET',
             headers: {
                 'Content-Type': 'application/json'
             }
         };
-        fetch(`${baseURL}/get-movie-page?id=${}`, requestOptions)
+        fetch(`${baseURL}/get-movie-page?id=${movieSelected}`, requestOptions)
             .then((response) => response.json())
             .then((data) => {
-                console.log(data);
-                var newMovieReviews = [];
+                let director = 'No Director';
+                var cast = [];
+                console.log(data.people.directing.length);
+                for (var i = 0; i < data.people.directing.length; i++) {
+                    console.log(data.people.directing);
+                    if (data.people.directing[i].job === 'Director') {
+                        director = data.people.directing[i].person.name;
+                    }
+                }
+                for (var i = 0; i < data.people.cast.length && i < 8; i++) {
+                    cast.push(data.people.cast[i].person.name);
+                }
+                let ratingDist = [];
+                ratingDist.push(data.ratingDistribution.distribution['1']);
+                ratingDist.push(data.ratingDistribution.distribution['2']);
+                ratingDist.push(data.ratingDistribution.distribution['3']);
+                ratingDist.push(data.ratingDistribution.distribution['4']);
+                ratingDist.push(data.ratingDistribution.distribution['5']);
+                ratingDist.push(data.ratingDistribution.distribution['6']);
+                ratingDist.push(data.ratingDistribution.distribution['7']);
+                ratingDist.push(data.ratingDistribution.distribution['8']);
+                ratingDist.push(data.ratingDistribution.distribution['9']);
+                ratingDist.push(data.ratingDistribution.distribution['10']);
+
+                setData({
+                    title: data.movieExtended.title,
+                    director: director,
+                    imgLink: data.movieExtended.url,
+                    backgroundLink: data.background,
+                    description: data.movieExtended.overview,
+                    views: data.stats.watchers,
+                    lists: data.stats.lists,
+                    likes: data.stats.votes,
+                    cast: cast,
+                    reviews: data.comments.map((comment) => {
+                        return {
+                            authorName: comment.author,
+                            numStars: comment.rating,
+                            description: comment.comment,
+                            numLikes: comment.likes,
+                            numComments: comment.replies
+                        };
+                    }),
+                    ratings: ratingDist
+                });
             })
             .catch((error) => {
                 console.log(error);
             });
-    };*/
+    };
     const createCast = () => {
         var cast = [];
         for (var i = 0; i < data.cast.length; i++) {
@@ -104,6 +112,9 @@ const MovieSelectedPage = ({ movieSelected, setMovieSelected }) => {
         setMovieSelected(null);
     };
 
+    useEffect(() => {
+        getMovieInfo();
+    }, [movieSelected]);
     return (
         <div className="movie-selected-page-container">
             <div
