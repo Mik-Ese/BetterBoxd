@@ -61,7 +61,10 @@ const ListPage = ({ user, loggedIn }) => {
             movieID: "",
           },
         ]
-    };
+      }
+    ]
+  };
+
     //call this function somewhere so it gets executed once when the page loads
     //likely using useEffect()
     const getListEntries = () => {
