@@ -51,18 +51,20 @@ const JournalPage = ({ user }) => {
                 'Content-Type': 'application/json'
             }
         };
-        fetch(`${baseURL}/get-all-movie-lists`, requestOptions)
+        fetch(
+            `${baseURL}/get-journal-entries?user_id=${user._id}`,
+            requestOptions
+        )
             .then((response) => response.json())
             .then((data) => {
                 console.log(data);
-                //map 'data' to your list entries here.
+                //map 'data' to your journal entries here.
             })
             .catch((error) => {
                 console.log(error);
             });
     };
 
-    getJournalEntries();
     const [threeJournalReviews, setThreeJournalReviews] = useState([
         [JournalReviews[0]],
         [JournalReviews[1]],

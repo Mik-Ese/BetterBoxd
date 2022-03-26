@@ -6,7 +6,7 @@ import AddCircleIcon from '@mui/icons-material/AddCircle';
 import { baseURL } from '../consts/consts.js';
 
 import { useState } from 'react';
-const ListPage = ({ user }) => {
+const ListPage = ({ user, loggedIn }) => {
     const [listSelected, setListSelected] = useState(null);
     const [newListOpen, setNewListOpen] = useState(false);
 
@@ -65,6 +65,26 @@ const ListPage = ({ user }) => {
             }
         ]
     };
+    //call this function somewhere so it gets executed once when the page loads
+    //likely using useEffect()
+    const getListEntries = () => {
+        console.log(user);
+        const requestOptions = {
+            method: 'GET',
+            headers: {
+                'Content-Type': 'application/json'
+            }
+        };
+        fetch(`${baseURL}/get-all-movie-lists`, requestOptions)
+            .then((response) => response.json())
+            .then((data) => {
+                console.log(data);
+                //map 'data' to your list entries here.
+            })
+            .catch((error) => {
+                console.log(error);
+            });
+    };
 
     const listItemFactory = (data) => {
         var listItemContents = [];
@@ -103,12 +123,16 @@ const ListPage = ({ user }) => {
                         </div>
                     ) : (
                         <div className="list-page-home">
-                            <div
-                                className="add-list-button"
-                                onClick={openNewList}
-                            >
-                                <AddCircleIcon /> Add List
-                            </div>
+                            {!loggedIn ? (
+                                <></>
+                            ) : (
+                                <div
+                                    className="add-list-button"
+                                    onClick={openNewList}
+                                >
+                                    <AddCircleIcon /> Add List
+                                </div>
+                            )}
                             <div>{listItemFactory(data)}</div>
                         </div>
                     )}
