@@ -112,65 +112,154 @@ async function getMediaArt(mediaType, id, artType) {
             if (mediaType.toLowerCase() === 'movies') {
                 if (artType.toLowerCase() === 'poster') {
                     if (fullResult.hasOwnProperty('movieposter')) {
-                        result = fullResult.movieposter[0].url;
+                        for (
+                            let i = 0;
+                            i < fullResult.movieposter.length;
+                            i++
+                        ) {
+                            if (fullResult.movieposter[i].lang === 'en') {
+                                result = fullResult.movieposter[i].url;
+                                break;
+                            }
+                        }
                     } else {
                         throw new Error('Could not find any posters');
                     }
                 } else if (artType.toLowerCase() === 'logo') {
                     if (fullResult.hasOwnProperty('hdmovielogo')) {
-                        result = fullResult.hdmovielogo[0].url;
+                        for (
+                            let i = 0;
+                            i < fullResult.hdmovielogo.length;
+                            i++
+                        ) {
+                            if (fullResult.hdmovielogo[i].lang === 'en') {
+                                result = fullResult.hdmovielogo[i].url;
+                                break;
+                            }
+                        }
                     } else if (fullResult.hasOwnProperty('movielogo')) {
-                        result = fullResult.movielogo[0].url;
+                        for (let i = 0; i < fullResult.movielogo.length; i++) {
+                            if (fullResult.movielogo[i].lang === 'en') {
+                                result = fullResult.movielogo[i].url;
+                                break;
+                            }
+                        }
                     } else {
                         throw new Error('Could not find any logos');
                     }
                 } else if (artType.toLowerCase() === 'clearlogo') {
                     if (fullResult.hasOwnProperty('hdmovieclearlogo')) {
-                        result = fullResult.hdmovieclearlogo[0].url;
+                        for (
+                            let i = 0;
+                            i < fullResult.hdmovieclearlogo.length;
+                            i++
+                        ) {
+                            if (fullResult.hdmovieclearlogo[i].lang === 'en') {
+                                result = fullResult.hdmovieclearlogo[i].url;
+                                break;
+                            }
+                        }
                     } else if (fullResult.hasOwnProperty('movieclearlogo')) {
-                        result = fullResult.movieclearlogo[0].url;
+                        for (
+                            let i = 0;
+                            i < fullResult.movieclearlogo.length;
+                            i++
+                        ) {
+                            if (fullResult.movieclearlogo[i].lang === 'en') {
+                                result = fullResult.movieclearlogo[i].url;
+                                break;
+                            }
+                        }
                     } else {
                         throw new Error('Could not find any logos');
                     }
                 } else if (artType.toLowerCase() === 'thumbs') {
                     if (fullResult.hasOwnProperty('moviethumb')) {
-                        result = fullResult.moviethumb[0].url;
+                        for (let i = 0; i < fullResult.moviethumb.length; i++) {
+                            if (fullResult.moviethumb[i].lang === 'en') {
+                                result = fullResult.moviethumb[i].url;
+                                break;
+                            }
+                        }
                     } else {
                         throw new Error('Could not find any thumbnails');
                     }
                 } else if (artType.toLowerCase() === 'bg') {
                     if (fullResult.hasOwnProperty('moviebackground')) {
-                        result = fullResult.moviebackground[0].url;
+                        result = fullResult.moviebackground[i].url;
                     } else {
+                        // default bg
                         result =
                             'https://cdn.pixabay.com/photo/2016/10/20/18/35/earth-1756274_960_720.jpg';
-                        // throw new Error('Could not find any backgrounds');
                     }
                 } else if (artType.toLowerCase() === 'banner') {
                     if (fullResult.hasOwnProperty('moviebanner')) {
-                        result = fullResult.moviebanner[0].url;
+                        for (
+                            let i = 0;
+                            i < fullResult.moviebanner.length;
+                            i++
+                        ) {
+                            if (fullResult.moviebanner[i].lang === 'en') {
+                                result = fullResult.moviebanner[i].url;
+                                break;
+                            }
+                        }
                     } else {
                         throw new Error('Could not find any banners');
                     }
                 } else if (artType.toLowerCase() === 'disk') {
                     if (fullResult.hasOwnProperty('moviedisk')) {
-                        result = fullResult.moviedisk[0].url;
+                        for (let i = 0; i < fullResult.moviedisk.length; i++) {
+                            if (fullResult.moviedisk[i].lang === 'en') {
+                                result = fullResult.moviedisk[i].url;
+                                break;
+                            }
+                        }
                     } else {
                         throw new Error('Could not find any disk art');
                     }
                 } else if (artType.toLowerCase() === 'art') {
                     if (fullResult.hasOwnProperty('hdmovieart')) {
+                        for (let i = 0; i < fullResult.hdmovieart.length; i++) {
+                            if (fullResult.hdmovieart[i].lang === 'en') {
+                                result = fullResult.hdmovieart[i].url;
+                                break;
+                            }
+                        }
                         result = fullResult.hdmovieart[0].url;
                     } else if (fullResult.hasOwnProperty('movieart')) {
-                        result = fullResult.movieart[0].url;
+                        for (let i = 0; i < fullResult.movieart.length; i++) {
+                            if (fullResult.movieart[i].lang === 'en') {
+                                result = fullResult.movieart[i].url;
+                                break;
+                            }
+                        }
                     } else {
                         throw new Error('Could not find any art');
                     }
                 } else if (artType.toLowerCase() === 'clearart') {
                     if (fullResult.hasOwnProperty('hdmovieclearart')) {
-                        result = fullResult.hdmovieclearart[0].url;
+                        for (
+                            let i = 0;
+                            i < fullResult.hdmovieclearart.length;
+                            i++
+                        ) {
+                            if (fullResult.hdmovieclearart[i].lang === 'en') {
+                                result = fullResult.hdmovieclearart[i].url;
+                                break;
+                            }
+                        }
                     } else if (fullResult.hasOwnProperty('movieclearart')) {
-                        result = fullResult.movieclearart[0].url;
+                        for (
+                            let i = 0;
+                            i < fullResult.movieclearart.length;
+                            i++
+                        ) {
+                            if (fullResult.movieclearart[i].lang === 'en') {
+                                result = fullResult.movieclearart[i].url;
+                                break;
+                            }
+                        }
                     } else {
                         throw new Error('Could not find any clear art');
                     }
@@ -183,7 +272,7 @@ async function getMediaArt(mediaType, id, artType) {
 
             // saving to cache
             redisClient.set(key, JSON.stringify(result), {
-                EX: expiry // seconds in a week (expiry)
+                EX: expiry
             });
         }
 
