@@ -1,0 +1,10 @@
+.back-arrow {
+  display: inline-flex;
+}
+
+.icon-bar {
+  width: 80vw;
+  margin: auto;
+  margin-top: 1rem;
+  display: flex;
+}

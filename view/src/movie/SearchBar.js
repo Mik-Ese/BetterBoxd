@@ -22,7 +22,7 @@ const SearchBar = ({
     useEffect(() => {
         const delayDebounceFn = setTimeout(() => {
             makeSearch();
-        }, 300);
+        }, 150);
 
         return () => clearTimeout(delayDebounceFn);
     }, [search]);
@@ -38,6 +38,7 @@ const SearchBar = ({
             setSearch(props.target.value);
         }
     };
+
     const openSearchResults = (props) => {
         if (search !== '') {
             setSearchResultsOpen(true);
