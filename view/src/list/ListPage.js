@@ -15,7 +15,7 @@ const ListPage = () => {
       {
         listTitle: "The Title",
         user: "username123",
-        description: "This is the summary of the movie list I realkdjkfiwen jhdf sdfos fhf shfsi ksjfh zsfgo oofa  lis ls  fi kshf sw sgwyiud iush js iu iuh ku  h v  f  uhu sd i i  sdfishfieh fiu esdoie",
+        description: "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Risus quis varius quam quisque id. Sit amet justo donec enim diam vulputate ut. Ultricies tristique nulla aliquet enim tortor at auctor urna nunc. Nam libero justo laoreet sit amet cursus sit. Ullamcorper velit sed ullamcorper morbi. Ullamcorper eget nulla facilisi etiam dignissim diam. Sed ullamcorper morbi tincidunt ornare massa eget. Tincidunt ornare massa eget egestas purus viverra accumsan. Cras ornare arcu dui vivamus. Ultrices mi tempus imperdiet nulla malesuada pellentesque. Sit amet porttitor eget dolor morbi non. Metus aliquam eleifend mi in nulla. Amet mauris commodo quis imperdiet massa tincidunt.",
         movies: [
           {
             movieTitle: "Shrek",
@@ -32,7 +32,7 @@ const ListPage = () => {
       {
         listTitle: "Another Title",
         user: "username456",
-        description: "This is the other summary of the movie list I realkdjkfiwen jhdf sdfos fhf shfsi ksjfh zsfgo oofa  lis ls  fi kshf sw sgwyiud iush js iu iuh ku  h v  f  uhu sd i i  sdfishfieh fiu esdoie",
+        description: "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Risus quis varius quam quisque id. Sit amet justo donec enim diam vulputate ut. Ultricies tristique nulla aliquet enim tortor at auctor urna nunc. Nam libero justo laoreet sit amet cursus sit. Ullamcorper velit sed ullamcorper morbi. Ullamcorper eget nulla facilisi etiam dignissim diam. Sed ullamcorper morbi tincidunt ornare massa eget. Tincidunt ornare massa eget egestas purus viverra accumsan. Cras ornare arcu dui vivamus. Ultrices mi tempus imperdiet nulla malesuada pellentesque. Sit amet porttitor eget dolor morbi non. Metus aliquam eleifend mi in nulla. Amet mauris commodo quis imperdiet massa tincidunt.",
         movies: [
           {
             movieTitle: "Pulp Fiction",
