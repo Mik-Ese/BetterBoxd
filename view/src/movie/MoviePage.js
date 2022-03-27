@@ -89,6 +89,7 @@ const MoviePage = () => {
             }
         ]
     });
+    const [makingQueries, setMakingQueries] = useState(false);
     const [popularReviews, setPopularReviews] = useState([]);
     const [popularMovies, setPopularMovies] = useState([]);
     const [isLoading, setIsLoading] = useState(true);
@@ -208,11 +209,10 @@ const MoviePage = () => {
         }
     };
     const makeQueries = () => {
-        if (popularReviews.length === 0) {
+        if (makingQueries === false) {
             getPopularReviews();
-        }
-        if (popularMovies.length === 0) {
             getPopularMovies();
+            setMakingQueries(true);
         }
     };
     return (

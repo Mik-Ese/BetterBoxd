@@ -8,6 +8,15 @@ import AutoAwesomeMosaicIcon from '@mui/icons-material/AutoAwesomeMosaic';
 import VisibilityIcon from '@mui/icons-material/Visibility';
 import ModeCommentIcon from '@mui/icons-material/ModeComment';
 import { baseURL } from '../consts/consts.js';
+import CircularProgress from '@mui/material/CircularProgress';
+import Button from '@mui/material/Button';
+import Dialog from '@mui/material/Dialog';
+import DialogActions from '@mui/material/DialogActions';
+import DialogContent from '@mui/material/DialogContent';
+import DialogContentText from '@mui/material/DialogContentText';
+import DialogTitle from '@mui/material/DialogTitle';
+import Slide from '@mui/material/Slide';
+import * as React from 'react';
 
 const MovieSelectedPage = ({ movieSelected, setMovieSelected }) => {
     const [loading, setLoading] = useState(true);
@@ -106,7 +115,14 @@ const MovieSelectedPage = ({ movieSelected, setMovieSelected }) => {
         var reviews = [];
         for (var i = 0; i < data.reviews.length; i++) {
             let reviewData = data.reviews[i];
-            reviews.push(<Review {...{ reviewData }} />);
+            reviews.push(
+                <>
+                    <Review {...{ reviewData }} />
+                    <Divider
+                        style={{ marginTop: '-1.5rem', marginBottom: '.5rem' }}
+                    />
+                </>
+            );
         }
         return reviews;
     };
@@ -119,112 +135,118 @@ const MovieSelectedPage = ({ movieSelected, setMovieSelected }) => {
         getMovieInfo();
     }, [movieSelected]);
     return (
-        <div className="movie-selected-page-container">
+        <>
             {loading ? (
-                <></>
-            ) : (
                 <>
-                    <div
-                        className="movie-selected-page-background-image-container"
-                        style={{
-                            backgroundSize: 'cover',
-                            backgroundImage: `linear-gradient(to top, rgba(255,255,255,1), rgba(255,255,255,0.1), rgba(255,255,255,0)), url('${data.backgroundLink}'`
-                        }}
-                    >
-                        <div
-                            className="movie-selected-page-back-button"
-                            onClick={unselectMovie}
-                        >
-                            <ArrowBackIcon />
-                        </div>
-                    </div>
-                    <div className="movie-selected-page-content">
-                        <div className="movie-selected-page-left">
-                            <div className="movie-selected-page-image-container">
-                                <img
-                                    className="movie-selected-page-image"
-                                    src={data.imgLink}
-                                />
-                            </div>
-                            <div className="movie-selected-page-image-details">
-                                <div className="movie-selected-page-icon">
-                                    <VisibilityIcon />
-                                </div>
-                                <div className="movie-selected-page-detail-number">
-                                    {Math.round(data.views / 1000) / 10}k
-                                </div>
-                                <div className="movie-selected-page-icon">
-                                    <AutoAwesomeMosaicIcon />
-                                </div>
-                                <div classNmae="movie-selected-page-detail-number">
-                                    {Math.round(data.lists / 1000) / 10}k
-                                </div>
-                                <div className="movie-selected-page-icon">
-                                    <FavoriteIcon />
-                                </div>
-                                <div classNmae="movie-selected-page-detail-number">
-                                    {Math.round(data.likes / 1000) / 10}k
-                                </div>
-                            </div>
-                        </div>
-                        <div className="movie-selected-page-right">
-                            <div className="movie-selected-page-heading">
-                                <div className="movie-selected-page-title">
-                                    {data.title}
-                                </div>
-                                <div className="movie-selected-page-year">
-                                    {data.year}
-                                </div>
-                                <div className="movie-selected-page-directed-by-text">
-                                    Directed by
-                                </div>
-                                <div className="movie-selected-page-director">
-                                    {data.director}
-                                </div>
-                            </div>
-                            <div className="movie-selected-page-description">
-                                {data.description}
-                            </div>
-                            <Divider
-                                style={{
-                                    marginTop: '1.5rem',
-                                    marginBottom: '.5rem'
-                                }}
-                            />
-                            <div className="movie-selected-page-cast-container">
-                                <div className="movie-selected-page-cast">
-                                    CAST
-                                </div>
-                                <div className="movie-selected-page-cast-list">
-                                    {createCast()}
-                                </div>
-                            </div>
-
-                            <div className="movie-selected-page-rating-container">
-                                <div className="movie-selected-page-rating-heading">
-                                    <div className="movie-selected-page-rating-title">
-                                        RATINGS
-                                    </div>
-                                    <div className="movie-selected-page-total-ratings">
-                                        {totalRatings} total ratings
-                                    </div>
-                                </div>
-                                <Divider />
-                                <BarGraph {...{ data }} />
-                            </div>
-                            <Divider className="movie-selected-page-review-divider" />
-                            <div className="movie-selected-page-reviews">
-                                <div className="movie-selected-page-review-title">
-                                    REVIEWS
-                                </div>
-
-                                {createReviews()}
-                            </div>
-                        </div>
-                    </div>
+                    <CircularProgress
+                        fontSize="large"
+                        style={{ marginTop: '25%', marginLeft: '48%' }}
+                    />
                 </>
+            ) : (
+                <div className="movie-selected-page-container">
+                    <>
+                        <div
+                            className="movie-selected-page-background-image-container"
+                            style={{
+                                backgroundSize: 'cover',
+                                backgroundImage: `linear-gradient(to top, rgba(255,255,255,1), rgba(255,255,255,0.1), rgba(255,255,255,0)), url('${data.backgroundLink}'`
+                            }}
+                        >
+                            <div
+                                className="movie-selected-page-back-button"
+                                onClick={unselectMovie}
+                            >
+                                <ArrowBackIcon style={{fontSize: "3rem", color: "white", stroke: "black"}}/>
+                            </div>
+                        </div>
+                        <div className="movie-selected-page-content">
+                            <div className="movie-selected-page-left">
+                                <div className="movie-selected-page-image-container">
+                                    <img
+                                        className="movie-selected-page-image"
+                                        src={data.imgLink}
+                                    />
+                                </div>
+                                <div className="movie-selected-page-image-details">
+                                    <div className="movie-selected-page-icon">
+                                        <VisibilityIcon />
+                                    </div>
+                                    <div className="movie-selected-page-detail-number">
+                                        {Math.round(data.views / 1000) / 10}k
+                                    </div>
+                                    <div className="movie-selected-page-icon">
+                                        <AutoAwesomeMosaicIcon />
+                                    </div>
+                                    <div classNmae="movie-selected-page-detail-number">
+                                        {Math.round(data.lists / 1000) / 10}k
+                                    </div>
+                                    <div className="movie-selected-page-icon">
+                                        <FavoriteIcon />
+                                    </div>
+                                    <div classNmae="movie-selected-page-detail-number">
+                                        {Math.round(data.likes / 1000) / 10}k
+                                    </div>
+                                </div>
+                            </div>
+                            <div className="movie-selected-page-right">
+                                <div className="movie-selected-page-heading">
+                                    <div className="movie-selected-page-title">
+                                        {data.title}
+                                    </div>
+                                    <div className="movie-selected-page-year">
+                                        {data.year}
+                                    </div>
+                                    <div className="movie-selected-page-directed-by-text">
+                                        Directed by
+                                    </div>
+                                    <div className="movie-selected-page-director">
+                                        {data.director}
+                                    </div>
+                                </div>
+                                <div className="movie-selected-page-description">
+                                    {data.description}
+                                </div>
+                                <Divider
+                                    style={{
+                                        marginTop: '1.5rem',
+                                        marginBottom: '.5rem'
+                                    }}
+                                />
+                                <div className="movie-selected-page-cast-container">
+                                    <div className="movie-selected-page-cast">
+                                        CAST
+                                    </div>
+                                    <div className="movie-selected-page-cast-list">
+                                        {createCast()}
+                                    </div>
+                                </div>
+
+                                <div className="movie-selected-page-rating-container">
+                                    <div className="movie-selected-page-rating-heading">
+                                        <div className="movie-selected-page-rating-title">
+                                            RATINGS
+                                        </div>
+                                        <div className="movie-selected-page-total-ratings">
+                                            {totalRatings} total ratings
+                                        </div>
+                                    </div>
+                                    <Divider />
+                                    <BarGraph {...{ data }} />
+                                </div>
+                                <Divider className="movie-selected-page-review-divider" />
+                                <div className="movie-selected-page-reviews">
+                                    <div className="movie-selected-page-review-title">
+                                        REVIEWS
+                                    </div>
+                                    {createReviews()}
+                                </div>
+                            </div>
+                        </div>
+                    </>
+                </div>
             )}
-        </div>
+        </>
     );
 };
 
@@ -292,20 +314,22 @@ const Review = ({ reviewData }) => {
     const createStars = () => {
         let stars = [];
         for (let i = 0; i < reviewData.numStars; i++) {
-            stars.push(<StarIcon />);
+            stars.push(<StarIcon sx={{ color: 'rgb(255, 200, 85)' }} />);
         }
         return stars;
     };
+    var temp = '';
+    reviewData.description.length > 400
+        ? (temp = reviewData.description.substring(0, 400) + '...')
+        : (temp = reviewData.description);
+    const [commentOpen, setCommentOpen] = useState(false);
+    const [description, setDescription] = useState(temp);
+
+    const comment = reviewData.description;
     return (
         <div className="movie-selected-review-container">
             <div className="popular-review-description-container">
                 <div className="popular-review-info">
-                    <div className="popular-review-author-image-container">
-                        <img
-                            className="popular-review-author-image"
-                            src={reviewData.authorImg}
-                        />
-                    </div>
                     <div className="popular-review-author-name">
                         {reviewData.authorName}
                     </div>
@@ -319,9 +343,20 @@ const Review = ({ reviewData }) => {
                         </div>
                     </div>
                 </div>
-                <div className="popular-review-description">
-                    {reviewData.description}
+                <div
+                    style={{ cursor: 'pointer' }}
+                    className="popular-review-description"
+                    onClick={() => {
+                        setCommentOpen(true);
+                    }}
+                >
+                    {description}
                 </div>
+                {commentOpen ? (
+                    <AlertDialogSlide {...{ comment, setCommentOpen }} />
+                ) : (
+                    <></>
+                )}
                 <div className="popular-review-likes-container">
                     <div className="popular-review-likes-icon">
                         {<FavoriteIcon />}
@@ -334,5 +369,39 @@ const Review = ({ reviewData }) => {
         </div>
     );
 };
+
+const Transition = React.forwardRef(function Transition(props, ref) {
+    return <Slide direction="up" ref={ref} {...props} />;
+});
+
+function AlertDialogSlide({ comment, setCommentOpen }) {
+    const [open, setOpen] = React.useState(true);
+
+    const handleClose = () => {
+        setOpen(false);
+        setCommentOpen(false);
+    };
+
+    return (
+        <div>
+            <Dialog
+                open={open}
+                TransitionComponent={Transition}
+                keepMounted
+                onClose={handleClose}
+                aria-describedby="alert-dialog-slide-description"
+            >
+                <DialogContent>
+                    <DialogContentText id="alert-dialog-slide-description">
+                        {comment}
+                    </DialogContentText>
+                </DialogContent>
+                <DialogActions>
+                    <Button onClick={handleClose}>Close</Button>
+                </DialogActions>
+            </Dialog>
+        </div>
+    );
+}
 
 export default MovieSelectedPage;
