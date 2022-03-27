@@ -1,17 +1,17 @@
 .list-item-thumbnail-poster {
-  width: 2.7rem;
-  height: 4rem;
+  width: 4.05rem;
+  height: 6rem;
   object-fit: cover;
-  border-radius: 0.15rem;
+  border-radius: 0.2rem;
   position: relative;
 }
 
 .list-item-thumbnail {
-  width: 5.65rem;
-  height: 8.25rem;
+  width: 8.3rem;
+  height: 12.3rem;
   display: inline-grid;
   grid-template-columns: repeat(2, [colstart] 1fr);
-  grid-gap: 0.20rem;
+  grid-gap: 0.3rem;
   border-radius: 0.1rem;
   justify-self: right;
   align-self: center;
@@ -19,9 +19,10 @@
 
 .list-item {
   display: inline-grid;
-  grid-template-columns: 5.6rem auto;
+  grid-template-columns: 8.4rem auto;
   grid-gap: 1rem;
-  width: 95vw;
+  margin-left: 1rem;
+  margin-right: 1rem;
   margin-top: 0.5rem;
   margin-bottom: 0.5rem;
 }
