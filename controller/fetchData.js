@@ -106,87 +106,57 @@ async function getMediaArt(mediaType, id, artType) {
 
             fullResult = response.data;
 
+            /**
+             * @param {*} arr - array of objects that have 'lang' and 'url' field
+             * @returns url according to language priority
+             */
+            function prioritizedURL(arr) {
+                const langPriority = ['en', '00', ''];
+                for (let i = 0; i < langPriority.length; i++) {
+                    for (let j = 0; j < arr.length; j++) {
+                        if (arr[j].lang == langPriority[i]) {
+                            return arr[j].url;
+                        }
+                    }
+                }
+                return arr[0].url;
+            }
+
             if (fullResult['invalid_fanart']) {
                 result = fullResult['invalid_fanart'];
             }
             if (mediaType.toLowerCase() === 'movies') {
                 if (artType.toLowerCase() === 'poster') {
                     if (fullResult.hasOwnProperty('movieposter')) {
-                        for (
-                            let i = 0;
-                            i < fullResult.movieposter.length;
-                            i++
-                        ) {
-                            if (fullResult.movieposter[i].lang === 'en') {
-                                result = fullResult.movieposter[i].url;
-                                break;
-                            }
-                        }
+                        result = prioritizedURL(fullResult.movieposter);
                     } else {
                         throw new Error('Could not find any posters');
                     }
                 } else if (artType.toLowerCase() === 'logo') {
                     if (fullResult.hasOwnProperty('hdmovielogo')) {
-                        for (
-                            let i = 0;
-                            i < fullResult.hdmovielogo.length;
-                            i++
-                        ) {
-                            if (fullResult.hdmovielogo[i].lang === 'en') {
-                                result = fullResult.hdmovielogo[i].url;
-                                break;
-                            }
-                        }
+                        result = prioritizedURL(fullResult.hdmovielogo);
                     } else if (fullResult.hasOwnProperty('movielogo')) {
-                        for (let i = 0; i < fullResult.movielogo.length; i++) {
-                            if (fullResult.movielogo[i].lang === 'en') {
-                                result = fullResult.movielogo[i].url;
-                                break;
-                            }
-                        }
+                        result = prioritizedURL(fullResult.movielogo);
                     } else {
                         throw new Error('Could not find any logos');
                     }
                 } else if (artType.toLowerCase() === 'clearlogo') {
                     if (fullResult.hasOwnProperty('hdmovieclearlogo')) {
-                        for (
-                            let i = 0;
-                            i < fullResult.hdmovieclearlogo.length;
-                            i++
-                        ) {
-                            if (fullResult.hdmovieclearlogo[i].lang === 'en') {
-                                result = fullResult.hdmovieclearlogo[i].url;
-                                break;
-                            }
-                        }
+                        result = prioritizedURL(fullResult.hdmovieclearlogo);
                     } else if (fullResult.hasOwnProperty('movieclearlogo')) {
-                        for (
-                            let i = 0;
-                            i < fullResult.movieclearlogo.length;
-                            i++
-                        ) {
-                            if (fullResult.movieclearlogo[i].lang === 'en') {
-                                result = fullResult.movieclearlogo[i].url;
-                                break;
-                            }
-                        }
+                        result = prioritizedURL(fullResult.movieclearlogo);
                     } else {
                         throw new Error('Could not find any logos');
                     }
                 } else if (artType.toLowerCase() === 'thumbs') {
                     if (fullResult.hasOwnProperty('moviethumb')) {
-                        for (let i = 0; i < fullResult.moviethumb.length; i++) {
-                            if (fullResult.moviethumb[i].lang === 'en') {
-                                result = fullResult.moviethumb[i].url;
-                                break;
-                            }
-                        }
+                        result = prioritizedURL(fullResult.moviethumb);
                     } else {
                         throw new Error('Could not find any thumbnails');
                     }
                 } else if (artType.toLowerCase() === 'bg') {
                     if (fullResult.hasOwnProperty('moviebackground')) {
-                        result = fullResult.moviebackground[0].url;
+                        result = prioritizedURL(fullResult.moviebackground);
                     } else {
                         // default bg
                         result =
@@ -194,72 +164,29 @@ async function getMediaArt(mediaType, id, artType) {
                     }
                 } else if (artType.toLowerCase() === 'banner') {
                     if (fullResult.hasOwnProperty('moviebanner')) {
-                        for (
-                            let i = 0;
-                            i < fullResult.moviebanner.length;
-                            i++
-                        ) {
-                            if (fullResult.moviebanner[i].lang === 'en') {
-                                result = fullResult.moviebanner[i].url;
-                                break;
-                            }
-                        }
+                        result = prioritizedURL(fullResult.moviebanner);
                     } else {
                         throw new Error('Could not find any banners');
                     }
                 } else if (artType.toLowerCase() === 'disk') {
                     if (fullResult.hasOwnProperty('moviedisk')) {
-                        for (let i = 0; i < fullResult.moviedisk.length; i++) {
-                            if (fullResult.moviedisk[i].lang === 'en') {
-                                result = fullResult.moviedisk[i].url;
-                                break;
-                            }
-                        }
+                        result = prioritizedURL(fullResult.moviedisk);
                     } else {
                         throw new Error('Could not find any disk art');
                     }
                 } else if (artType.toLowerCase() === 'art') {
                     if (fullResult.hasOwnProperty('hdmovieart')) {
-                        for (let i = 0; i < fullResult.hdmovieart.length; i++) {
-                            if (fullResult.hdmovieart[i].lang === 'en') {
-                                result = fullResult.hdmovieart[i].url;
-                                break;
-                            }
-                        }
-                        result = fullResult.hdmovieart[0].url;
+                        result = prioritizedURL(fullResult.hdmovieart);
                     } else if (fullResult.hasOwnProperty('movieart')) {
-                        for (let i = 0; i < fullResult.movieart.length; i++) {
-                            if (fullResult.movieart[i].lang === 'en') {
-                                result = fullResult.movieart[i].url;
-                                break;
-                            }
-                        }
+                        result = prioritizedURL(fullResult.movieart);
                     } else {
                         throw new Error('Could not find any art');
                     }
                 } else if (artType.toLowerCase() === 'clearart') {
                     if (fullResult.hasOwnProperty('hdmovieclearart')) {
-                        for (
-                            let i = 0;
-                            i < fullResult.hdmovieclearart.length;
-                            i++
-                        ) {
-                            if (fullResult.hdmovieclearart[i].lang === 'en') {
-                                result = fullResult.hdmovieclearart[i].url;
-                                break;
-                            }
-                        }
+                        result = prioritizedURL(fullResult.hdmovieclearart);
                     } else if (fullResult.hasOwnProperty('movieclearart')) {
-                        for (
-                            let i = 0;
-                            i < fullResult.movieclearart.length;
-                            i++
-                        ) {
-                            if (fullResult.movieclearart[i].lang === 'en') {
-                                result = fullResult.movieclearart[i].url;
-                                break;
-                            }
-                        }
+                        result = prioritizedURL(fullResult.movieclearart);
                     } else {
                         throw new Error('Could not find any clear art');
                     }
@@ -282,7 +209,7 @@ async function getMediaArt(mediaType, id, artType) {
             throw new Error(`${mediaType} art type: "${artType}" not found`);
         }
     } catch (error) {
-        // console.log(error);
+        console.log(error);
         const invalid_fanart =
             // 'https://cdn.pixabay.com/photo/2017/02/12/21/29/false-2061132_960_720.png';
             'https://images.fanart.tv/fanart/et-the-extra-terrestrial-5cdab3aa028c5.jpg';
