@@ -1,0 +1,58 @@
+.reviewed-movie-lower-stats-container {
+    margin-top: 0.5rem;
+    display: flex;
+    justify-content: center;
+  }
+  
+  .reviewed-movie-item {
+    margin-left: 0.6rem;
+    margin-right: 0.6rem;
+    display: flex;
+  }
+  
+  .reviewed-movie-icon {
+    margin-right: 0.2rem;
+  }
+  
+  .reviewed-movie-number {
+    margin-top: 0.1rem;
+  }
+  
+  .reviewed-movie-image-container {
+    border-radius: 0.5rem;
+    overflow: hidden;
+    border: 0px solid rgb(40, 250, 50);
+    height: 30rem;
+    transition: border 0.15s linear;
+    cursor: pointer;
+  }
+  
+  .reviwed-movie-image-container:hover {
+    border: .3rem solid rgb(40, 250, 50);
+    border-radius: 0.5rem;
+    overflow: hidden;
+    transition: border 0.15s linear;
+  }
+  
+  .reviewed-movie-image {
+    margin-left: -1.1rem;
+    margin-top: 0rem;
+    max-height: 30rem;
+    transition: margin-left 0.15s linear, margin-top 0.15s linear;
+  
+  }
+  
+  .popular-movie-image:hover {
+      margin-left: -1.4rem;
+      margin-top: -0.3rem;
+      transition: margin-left 0.15s linear, margin-top 0.15s linear;
+    }
+  
+  .popular-movie-container {
+    margin-bottom: 1rem;
+    width: 18rem;
+    overflow: hidden;
+    margin-left: 1rem;
+    margin-right: 1rem;
+  }
+  

@@ -12,34 +12,8 @@ import { baseURL } from '../consts/consts.js';
 const JournalPage = ({ user }) => {
     const [currentIndex, setCurrentIndex] = useState(0);
     const [reviewPageOpen, setReviewPageOpen] = useState(false);
-
-    const [JournalReviews, setJournalReview] = useState([
-        {
-            imgLink:
-                'https://m.media-amazon.com/images/M/MV5BYTExZTdhY2ItNGQ1YS00NjJlLWIxMjYtZTI1MzNlMzY0OTk4XkEyXkFqcGdeQXVyMTEyMjM2NDc2._V1_.jpg',
-            title: 'The Batman',
-            movie_review:
-                'This was a really good movie, I thoroughly enjoyed it! I love the Batman'
-        },
-        {
-            imgLink:
-                'https://hips.hearstapps.com/hmg-prod.s3.amazonaws.com/images/d1pklzbuyaab0la-1552597012.jpg',
-            title: 'Avengers Endgame',
-            movie_review: 'Greatest Marvel Movie ever!'
-        },
-        {
-            imgLink:
-                'https://www.joblo.com/wp-content/uploads/2014/11/paddington_bear_ver6_xxlg-1.jpg',
-            title: 'Paddington',
-            movie_review: 'Cute Bear'
-        },
-        {
-            imgLink:
-                'https://m.media-amazon.com/images/M/MV5BOGUwYTU4NGEtNDM4MS00NDRjLTkwNmQtOTkwMWMyMjhmMjdlXkEyXkFqcGdeQXVyMTMxODk2OTU@._V1_.jpg',
-            title: 'Fantastic Mr. Fox',
-            movie_review: 'Foxes'
-        }
-    ]);
+    const [JournalReviews, setJournalReview] = useState([]);
+    const [viewableJournalReviews, setViewableJournalReviews] = useState([]);
 
     //call this function somewhere so it gets executed once when the page loads
     //likely using useEffect()
@@ -58,6 +32,17 @@ const JournalPage = ({ user }) => {
             .then((response) => response.json())
             .then((data) => {
                 console.log(data);
+                var newJournalReviews = [];
+                data.entries.map((data) => {
+                    newJournalReviews.push({
+                        imgLink: data.url,
+                        title: data.movie_title,
+                        movie_review: data.description                     
+                    });
+                });
+             
+                console.log("The NEW ARRAY:", newJournalReviews)
+                setJournalReview(newJournalReviews);
                 //map 'data' to your journal entries here.
             })
             .catch((error) => {
@@ -65,33 +50,47 @@ const JournalPage = ({ user }) => {
             });
     };
 
-    const [threeJournalReviews, setThreeJournalReviews] = useState([
-        [JournalReviews[0]],
-        [JournalReviews[1]],
-        [JournalReviews[2]]
-    ]);
-    const updateThreeJournalReviews = useCallback(() => {
+
+    useEffect(()=>{
+        getJournalEntries();
+    },[user])
+    useEffect(()=>{
+        initializeJournalReviews();
+        console.log(viewableJournalReviews)
+    },[JournalReviews])
+    
+
+    const initializeJournalReviews =() => {
         var newArr = [];
-        for (var i = currentIndex; i < currentIndex + 3; i++) {
+        for (var i = currentIndex; i < currentIndex + 5 && i < JournalReviews.length; i++) {
             newArr.push(JournalReviews[i]);
         }
-        setThreeJournalReviews(newArr);
+        setViewableJournalReviews(newArr);
+    }
+
+    
+    const updateViewableJournalReviews = useCallback(() => {
+        var newArr = [];
+        for (var i = currentIndex; i < currentIndex + 5 && i < JournalReviews.length; i++) {
+            newArr.push(JournalReviews[i]);
+        }
+        setViewableJournalReviews(newArr);
     }, [currentIndex]);
     useEffect(() => {
-        updateThreeJournalReviews();
-    }, [updateThreeJournalReviews]);
+        updateViewableJournalReviews();
+    }, [updateViewableJournalReviews]);
 
     const reviewFactory = () => {
         var journalEntries = [];
-        for (var i = 0; i < threeJournalReviews.length; i++) {
-            var review = threeJournalReviews[i];
+        for (var i = 0; i < viewableJournalReviews.length; i++) {
+            var review = viewableJournalReviews[i];
             journalEntries.push(<JournalReview {...{ review }} />);
         }
 
         return journalEntries;
     };
-
     return (
+
         <div>
             <div className="Journal-Page-Header-Text">
                 <h1 className="display-1 Journal-Review-Text text-primary">
@@ -100,7 +99,7 @@ const JournalPage = ({ user }) => {
                         <span className="text-warning"> Movie </span>
                         <span className="text-success"> Journal </span>
                     </div>
-                    <div className="my-journal-reviews d-inline-flex flex-row justify-content-center p-3">
+                    <div className="reviewed-movie-image-container my-journal-reviews d-inline-flex flex-row justify-content-center" style={{diplay: "flex", flexWrap: "wrap", width: "100%"}}>
                         {reviewFactory()}
                     </div>
                     <div class="d-inline-flex flex-row justify-content-center p-3">
@@ -140,7 +139,7 @@ const JournalPage = ({ user }) => {
                             onClick={() => {
                                 if (
                                     currentIndex + 1 <
-                                    JournalReviews.length - 2
+                                    JournalReviews.length - 4
                                 )
                                     setCurrentIndex(currentIndex + 1);
                             }}
