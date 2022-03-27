@@ -4,12 +4,15 @@ import NewListPage from './NewListPage.js';
 import './styles/ListPage.css';
 import AddCircleIcon from '@mui/icons-material/AddCircle';
 import { baseURL } from '../consts/consts.js';
+import './styles/ListPage.css';
+import CircularProgress from '@mui/material/CircularProgress';
 
 import { useState } from 'react';
 const ListPage = ({ user, loggedIn }) => {
   
   const [listSelected, setListSelected] = useState(null);
   const [newListOpen, setNewListOpen] = useState(false);
+  const [isLoading, setIsLoading] = useState(false); // change to true when you actually do it prop
 
   const data = {
     listItem: [
@@ -64,6 +67,8 @@ const ListPage = ({ user, loggedIn }) => {
       }
     ]
   };
+  
+  const [listEntries, setListEntries] = useState([]);
 
     //call this function somewhere so it gets executed once when the page loads
     //likely using useEffect()
@@ -103,42 +108,60 @@ const ListPage = ({ user, loggedIn }) => {
         );
     };
 
+    const makeQueries = () => {
+      if (listEntries.length == 0) {
+        getListEntries();
+      }
+    }
+
     const openNewList = () => {
         setNewListOpen(true);
     };
 
     return (
-        <div className="list-page-root">
+      <div className="list-page-root">
+        {isLoading ? (
+          <>
+            <CircularProgress
+              fontSize="large"
+              style={{ marginTop: '25%', marginLeft: '48%' }}
+            />
+            {makeQueries()}
+          </>
+        ) : (
+          <>
             {listSelected != null ? (
-                <div>
-                    <ListSelectedPage {...{ listSelected, setListSelected }} />
-                </div>
+              <div>
+                <ListSelectedPage {...{ listSelected, setListSelected }} />
+              </div>
             ) : (
                 <div>
-                    {newListOpen ? (
-                        <div>
-                            <NewListPage
-                                {...{ newListOpen, setNewListOpen, user }}
-                            />
+                  {newListOpen ? (
+                    <div>
+                      <NewListPage
+                        {...{ newListOpen, setNewListOpen, user }}
+                      />
+                    </div>
+                  ) : (
+                    <div className="list-page-home">
+                      {!loggedIn ? (
+                        <></>
+                      ) : (
+                        <div
+                          className="add-list-button"
+                          onClick={openNewList}
+                        >
+                          <AddCircleIcon /> Add List
                         </div>
-                    ) : (
-                        <div className="list-page-home">
-                            {!loggedIn ? (
-                                <></>
-                            ) : (
-                                <div
-                                    className="add-list-button"
-                                    onClick={openNewList}
-                                >
-                                    <AddCircleIcon /> Add List
-                                </div>
-                            )}
-                            <div>{listItemFactory(data)}</div>
-                        </div>
-                    )}
-                </div>
+                      )}
+                      <div>{listItemFactory(data)}</div>
+                    </div>
+                  )}
+              </div>
             )}
-        </div>
+          </>
+        )}
+    </div>
     );
 };
 
