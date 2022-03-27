@@ -21,7 +21,7 @@ const NewListPage = ({ setNewListOpen, user }) => {
     };
     //call this function when the 'submit' button is clicked
     //and some movies are selected and a summary and title is written
-    const postReview = () => {
+    const postList = () => {
         const requestOptions = {
             method: 'POST',
             headers: {
@@ -34,7 +34,7 @@ const NewListPage = ({ setNewListOpen, user }) => {
                 trakt_ids: /*ids here*/ []
             })
         };
-        fetch(`${baseURL}/post-journal-entry`, requestOptions)
+        fetch(`${baseURL}/post-movie-list`, requestOptions)
             .then((response) => response.json())
             .then((data) => {
                 console.log(data);
