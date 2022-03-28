@@ -8,12 +8,14 @@ import Paper from '@mui/material/Paper';
 import Slide from '@mui/material/Slide';
 import FormControlLabel from '@mui/material/FormControlLabel';
 import { baseURL } from '../consts/consts.js';
+import CircularProgress from '@mui/material/CircularProgress';
 
 const JournalPage = ({ user }) => {
     const [currentIndex, setCurrentIndex] = useState(0);
     const [reviewPageOpen, setReviewPageOpen] = useState(false);
     const [JournalReviews, setJournalReview] = useState([]);
     const [viewableJournalReviews, setViewableJournalReviews] = useState([]);
+    const [isLoading, setIsLoading] = useState(true);
 
     const getJournalEntries = () => {
         const requestOptions = {
@@ -28,7 +30,7 @@ const JournalPage = ({ user }) => {
         )
             .then((response) => response.json())
             .then((data) => {
-                var newJournalReviews = [];
+                let newJournalReviews = [];
                 data.entries.map((data) => {
                     newJournalReviews.push({
                         imgLink: data.url,
@@ -38,6 +40,7 @@ const JournalPage = ({ user }) => {
                 });
 
                 setJournalReview(newJournalReviews);
+                setIsLoading(false);
             })
             .catch((error) => {
                 console.log(error);
@@ -53,9 +56,9 @@ const JournalPage = ({ user }) => {
     }, [JournalReviews]);
 
     const initializeJournalReviews = () => {
-        var newArr = [];
+        let newArr = [];
         for (
-            var i = currentIndex;
+            let i = currentIndex;
             i < currentIndex + 4 && i < JournalReviews.length;
             i++
         ) {
@@ -65,9 +68,9 @@ const JournalPage = ({ user }) => {
     };
 
     const updateViewableJournalReviews = useCallback(() => {
-        var newArr = [];
+        let newArr = [];
         for (
-            var i = currentIndex;
+            let i = currentIndex;
             i < currentIndex + 4 && i < JournalReviews.length;
             i++
         ) {
@@ -80,9 +83,9 @@ const JournalPage = ({ user }) => {
     }, [updateViewableJournalReviews]);
 
     const reviewFactory = () => {
-        var journalEntries = [];
-        for (var i = 0; i < viewableJournalReviews.length; i++) {
-            var review = viewableJournalReviews[i];
+        let journalEntries = [];
+        for (let i = 0; i < viewableJournalReviews.length; i++) {
+            let review = viewableJournalReviews[i];
             journalEntries.push(<JournalReview {...{ review }} />);
         }
 
@@ -90,6 +93,17 @@ const JournalPage = ({ user }) => {
     };
     return (
         <div>
+            {isLoading ? (
+                <>
+                <CircularProgress
+                        fontSize="large"
+                        style={{ marginTop: '25%'}}
+                    />
+                    {getJournalEntries()}
+                </>
+            ) : (
+                <>
+                <div>
             <div className="Journal-Page-Header-Text">
                 <h1 className="display-1 Journal-Review-Text text-primary mt-2">
                     <div d-inline-flex flex-row justify-content-center p-2 m-3>
@@ -157,6 +171,10 @@ const JournalPage = ({ user }) => {
                 </h1>
             </div>
         </div>
+                </>
+            )}
+        </div>
+        
     );
 };
 

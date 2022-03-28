@@ -210,7 +210,6 @@ async function getMediaArt(mediaType, id, artType) {
             throw new Error(`${mediaType} art type: "${artType}" not found`);
         }
     } catch (error) {
-        console.log(error);
         const invalid_fanart =
             // 'https://cdn.pixabay.com/photo/2017/02/12/21/29/false-2061132_960_720.png';
             'https://images.fanart.tv/fanart/et-the-extra-terrestrial-5cdab3aa028c5.jpg';
@@ -234,18 +233,22 @@ async function getPopularMovies() {
             // making API request
             let {data: response} = await axios.get(APIquery, config);
             // saving to cache
+            let media_art_promises = []
+            let movie_stats_promises = []
             for (let element of response) {
-                const fanartResponse = await getMediaArt(
-                    'movies',
-                    element.ids.tmdb,
-                    'poster'
-                );
-                let movie_stats = await getMovieStats(element.ids.trakt);
+                media_art_promises.push(getMediaArt('movies', element.ids.tmdb, 'poster'));
+                movie_stats_promises.push(getMovieStats(element.ids.trakt));
+            }
+            const fanartResponses = await Promise.all(media_art_promises);
+            const movie_stats_responses = await Promise.all(movie_stats_promises)
+            let index = 0;
+            for (let element of response) {
                 element['trakt_id'] = element.ids.trakt;
-                element['url'] = fanartResponse;
-                element['watchers'] = movie_stats.watchers;
-                element['no_of_lists'] = movie_stats.lists;
-                element['comments'] = movie_stats.comments;
+                element['url'] = fanartResponses[index];
+                element['watchers'] = movie_stats_responses[index].watchers;
+                element['no_of_lists'] = movie_stats_responses[index].lists;
+                element['comments'] = movie_stats_responses[index].comments;
+                index++;
             }
             redisClient.set(key, JSON.stringify(response), {
                 EX: 604800 // seconds in a week (expiry)
@@ -327,7 +330,6 @@ async function getMovieExtended(id) {
         throw new Error(error);
     }
 }
-
 /**
  * @param {String} movieName
  * @returns
