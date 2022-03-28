@@ -130,7 +130,8 @@ async function getMediaArt(mediaType, id, artType) {
                     if (fullResult.hasOwnProperty('movieposter')) {
                         result = prioritizedURL(fullResult.movieposter);
                     } else {
-                        throw new Error('Could not find any posters');
+                        // default poster
+                        result = 'https://images.fanart.tv/fanart/et-the-extra-terrestrial-5cdab3aa028c5.jpg';
                     }
                 } else if (artType.toLowerCase() === 'logo') {
                     if (fullResult.hasOwnProperty('hdmovielogo')) {
@@ -458,12 +459,16 @@ async function getMostWatchedMovies() {
                         entry.movie.ids.tmdb,
                         'poster'
                     );
+                    let movie_stats = await getMovieStats(entry.movie.ids.trakt);
                     return {
                         // movie info
                         title: entry.movie.title,
                         year: entry.movie.year,
                         url: fanartResponse,
-                        trakt_id: entry.movie.ids.trakt
+                        trakt_id: entry.movie.ids.trakt,
+                        watchers: movie_stats.watchers,
+                        no_of_lists: movie_stats.lists,
+                        no_of_comments: movie_stats.comments
                     };
                 })
             );
