@@ -101,7 +101,7 @@ const JournalPage = ({ user }) => {
                     <div class="d-inline-flex flex-row justify-content-center p-3">
                         <button
                             type="button"
-                            class="btn-outline-info btn m-4 p-3"
+                            class="btn-outline-primary btn m-4 p-3"
                             onClick={() => {
                                 setReviewPageOpen(true);
                             }}
@@ -121,17 +121,17 @@ const JournalPage = ({ user }) => {
                         </div>
                         <button
                             type="button"
-                            class="btn-outline-danger btn m-4 p-3"
+                            class="btn-outline-danger btn m-4 px-5"
                             onClick={() => {
                                 if (currentIndex - 1 >= 0)
                                     setCurrentIndex(currentIndex - 1);
                             }}
                         >
-                            Toggle Back
+                            Back
                         </button>
                         <button
                             type="button"
-                            class="btn-outline-success btn m-4 p-3"
+                            class="btn-outline-success btn m-4 px-5"
                             onClick={() => {
                                 if (
                                     currentIndex + 1 <
@@ -140,7 +140,7 @@ const JournalPage = ({ user }) => {
                                     setCurrentIndex(currentIndex + 1);
                             }}
                         >
-                            Toggle Next
+                           Next
                         </button>
                         
                     </div>
