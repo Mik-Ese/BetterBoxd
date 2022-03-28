@@ -30,7 +30,7 @@ const ListItem = ({listData, setListSelected}) => {
       <div class="list-item-info">
         <div class="list-item-title" onClick={selectList}><b>{listData.listTitle}</b></div>
         <div class="list-item-meta"><b>{listData.user}</b>&nbsp;&nbsp;{listData.movies.length} films</div>
-        <div class="list-item-summary">{listData.description.substring(0, 300)}...</div>
+        <div class="list-item-summary">{listData.description.substring(0, 300)}{listData.description.length>300 ? '...' : ''}</div>
       </div>
     </div>
   );
