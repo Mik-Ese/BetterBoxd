@@ -1,4 +1,4 @@
-import "./styles/listSelectedPage.css";
+import "./styles/ListSelectedPage.css";
 
 import ArrowBackIcon from '@mui/icons-material/ArrowBack';
 

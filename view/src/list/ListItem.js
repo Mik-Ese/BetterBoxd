@@ -1,4 +1,4 @@
-import "./styles/listItem.css";
+import "./styles/ListItem.css";
 
 const ListItem = ({listData, setListSelected}) => {
 

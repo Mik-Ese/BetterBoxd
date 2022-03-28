@@ -1,4 +1,4 @@
-import './styles/listPage.css';
+import './styles/ListPage.css';
 
 import ListItem from './ListItem.js';
 import ListSelectedPage from './ListSelectedPage.js';

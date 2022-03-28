@@ -1,4 +1,4 @@
-import './styles/newListPage.css';
+import './styles/NewListPage.css';
 import MovieSelection from './MovieSelection';
 
 import { useState, useEffect } from 'react';

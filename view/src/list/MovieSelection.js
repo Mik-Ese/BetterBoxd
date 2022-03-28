@@ -1,4 +1,4 @@
-import "./styles/movieSelection.css";
+import "./styles/MovieSelection.css";
 import { useEffect, useState } from "react";
 import DeleteForeverIcon from '@mui/icons-material/DeleteForever';
 
