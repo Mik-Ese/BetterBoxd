@@ -1,19 +1,50 @@
 import './styles/ListPage.css';
-
 import ListItem from './ListItem.js';
 import ListSelectedPage from './ListSelectedPage.js';
 import NewListPage from './NewListPage.js';
 import AddCircleIcon from '@mui/icons-material/AddCircle';
 import { baseURL } from '../consts/consts.js';
 import CircularProgress from '@mui/material/CircularProgress';
+import TextField from '@mui/material/TextField';
+import { useState, useEffect } from 'react';
+const stringSimilarity = require('string-similarity');
 
-import { useState } from 'react';
 const ListPage = ({ user, loggedIn, setMovieSelected }) => {
     const [listSelected, setListSelected] = useState(null);
     const [newListOpen, setNewListOpen] = useState(false);
     const [isLoading, setIsLoading] = useState(true); // change to true when you actually do it prop
     const [listEntries, setListEntries] = useState([]);
+    const [listSearch, setListSearch] = useState('');
+    const [visibleListEntries, setVisibleListEntries] = useState([]);
+    useEffect(() => {
+        if (listSearch === '') {
+            setVisibleListEntries(listEntries);
+        } else {
+            let mappedListEntries = listEntries.map((data) => {
+                return {
+                    listTitle: data.listTitle,
+                    user: data.user,
+                    description: data.description,
+                    movies: data.movies,
+                    similarity: stringSimilarity.compareTwoStrings(
+                        listSearch,
+                        data.listTitle
+                    )
+                };
+            });
+            let sortedListEntries = mappedListEntries.sort(function (a, b) {
+                if (a.similarity < b.similarity) {
+                    return 1;
+                } else return -1;
+            });
+            console.log(sortedListEntries);
+            setVisibleListEntries(sortedListEntries);
+        }
+    }, [listSearch]);
 
+    const changeListSearch = (event) => {
+        setListSearch(event.target.value);
+    };
     const getListEntries = () => {
         const requestOptions = {
             method: 'GET',
@@ -42,6 +73,7 @@ const ListPage = ({ user, loggedIn, setMovieSelected }) => {
                     });
                 });
                 setListEntries(newListItems);
+                setVisibleListEntries(newListItems);
                 setIsLoading(false);
             })
             .catch((error) => {
@@ -52,8 +84,8 @@ const ListPage = ({ user, loggedIn, setMovieSelected }) => {
     const listItemFactory = () => {
         var listItemContents = [];
         listItemContents.push(<hr className="divider" />);
-        for (var i = 0; i < listEntries.length; i++) {
-            var listData = listEntries[i];
+        for (var i = 0; i < visibleListEntries.length; i++) {
+            var listData = visibleListEntries[i];
             listItemContents.push(
                 <ListItem {...{ listData, setListSelected }} />
             );
@@ -91,7 +123,11 @@ const ListPage = ({ user, loggedIn, setMovieSelected }) => {
                     {listSelected != null ? (
                         <div>
                             <ListSelectedPage
-                                {...{ listSelected, setListSelected, setMovieSelected }}
+                                {...{
+                                    listSelected,
+                                    setListSelected,
+                                    setMovieSelected
+                                }}
                             />
                         </div>
                     ) : (
@@ -119,7 +155,25 @@ const ListPage = ({ user, loggedIn, setMovieSelected }) => {
                                             <AddCircleIcon /> Add List
                                         </div>
                                     )}
-                                    <div>{listItemFactory()}</div>
+                                    <div>
+                                        <div className="input-wrapper">
+                                            <TextField
+                                                className="list-title-input"
+                                                id="standard-basic"
+                                                label="Search Lists"
+                                                variant="standard"
+                                                style={{
+                                                    marginTop: '1rem',
+                                                    marginBottom: '1rem',
+                                                    width: '80%'
+                                                }}
+                                                value={listSearch}
+                                                onChange={changeListSearch}
+                                                sx={{ n: 1, width: 400 }}
+                                            />
+                                        </div>
+                                        {listItemFactory()}
+                                    </div>
                                 </div>
                             )}
                         </div>
