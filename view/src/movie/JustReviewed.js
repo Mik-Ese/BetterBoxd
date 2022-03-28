@@ -2,9 +2,9 @@ import { useState } from 'react';
 import './styles/justReviewed.css';
 import { baseURL } from '../consts/consts.js';
 
-const JustReviewed = ({ reviewData, setMovieSelected }) => {
+const JustReviewed = ({ movieData, setMovieSelected }) => {
     const selectMovie = () => {
-        setMovieSelected(reviewData.movieID);
+        setMovieSelected(movieData.movieID);
     };
     return (
         <div className="just-reviewed-container">
@@ -12,7 +12,7 @@ const JustReviewed = ({ reviewData, setMovieSelected }) => {
                 className="just-reviewed-image-container"
                 onClick={selectMovie}
             >
-                <img className="just-reviewed-image" src={reviewData.imgLink} />
+                <img className="just-reviewed-image" src={movieData.imgLink} />
             </div>
         </div>
     );

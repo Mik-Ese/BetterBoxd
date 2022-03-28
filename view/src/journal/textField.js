@@ -2,11 +2,11 @@ import * as React from 'react';
 import Box from '@mui/material/Box';
 import TextField from '@mui/material/TextField';
 
-export default function MultilineTextFields() {
-  const [value, setValue] = React.useState('Controlled');
+export default function MultilineTextFields({description, setDescription}) {
 
   const handleChange = (event) => {
-    setValue(event.target.value);
+    console.log(event.target.value);
+    setDescription(event.target.value);
   };
 
   return (
@@ -25,6 +25,7 @@ export default function MultilineTextFields() {
           label="Your Review"
           placeholder="Placeholder"
           multiline
+          onChange={handleChange}
         />
         
       </div>

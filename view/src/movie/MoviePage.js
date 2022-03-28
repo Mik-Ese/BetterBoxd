@@ -12,83 +12,7 @@ import CircularProgress from '@mui/material/CircularProgress';
 const MoviePage = () => {
     const [movieSelected, setMovieSelected] = useState(null);
     const [searchResultsOpen, setSearchResultsOpen] = useState(false);
-    const [data, setData] = useState({
-        popularMovies: [
-            {
-                imgLink:
-                    'https://cdn.pastemagazine.com/www/system/images/photo_albums/best-movie-posters-2016/large/moonlight-ver2-xlg.jpg?1384968217',
-                numViews: 187000,
-                numLists: 37000,
-                numLikes: 68000,
-                movieID: '1'
-            },
-            {
-                imgLink:
-                    'https://cdn.pastemagazine.com/www/system/images/photo_albums/best-movie-posters-2016/large/moonlight-ver2-xlg.jpg?1384968217',
-                numViews: 187000,
-                numLists: 37000,
-                numLikes: 68000,
-                movieID: '2'
-            },
-            {
-                imgLink:
-                    'https://cdn.pastemagazine.com/www/system/images/photo_albums/best-movie-posters-2016/large/moonlight-ver2-xlg.jpg?1384968217',
-                numViews: 187000,
-                numLists: 37000,
-                numLikes: 68000,
-                movieID: '3'
-            }
-        ],
-        justReviewed: [
-            {
-                imgLink:
-                    'https://cdn.pastemagazine.com/www/system/images/photo_albums/best-movie-posters-2016/large/moonlight-ver2-xlg.jpg?1384968217',
-                movieID: '1'
-            },
-            {
-                imgLink:
-                    'https://cdn.pastemagazine.com/www/system/images/photo_albums/best-movie-posters-2016/large/moonlight-ver2-xlg.jpg?1384968217',
-                movieID: '1'
-            },
-            {
-                imgLink:
-                    'https://cdn.pastemagazine.com/www/system/images/photo_albums/best-movie-posters-2016/large/moonlight-ver2-xlg.jpg?1384968217',
-                movieID: '1'
-            },
-            {
-                imgLink:
-                    'https://cdn.pastemagazine.com/www/system/images/photo_albums/best-movie-posters-2016/large/moonlight-ver2-xlg.jpg?1384968217',
-                movieID: '1'
-            },
-            {
-                imgLink:
-                    'https://cdn.pastemagazine.com/www/system/images/photo_albums/best-movie-posters-2016/large/moonlight-ver2-xlg.jpg?1384968217',
-                movieID: '1'
-            },
-            {
-                imgLink:
-                    'https://cdn.pastemagazine.com/www/system/images/photo_albums/best-movie-posters-2016/large/moonlight-ver2-xlg.jpg?1384968217',
-                movieID: '1'
-            }
-        ],
-        popularReviews: [
-            {
-                imgLink:
-                    'https://cdn.pastemagazine.com/www/system/images/photo_albums/best-movie-posters-2016/large/moonlight-ver2-xlg.jpg?1384968217',
-                title: 'Turning Red',
-                year: '2022',
-                authorImg:
-                    'https://cdn.pastemagazine.com/www/system/images/photo_albums/best-movie-posters-2016/large/moonlight-ver2-xlg.jpg?1384968217',
-                authorName: 'james',
-                numStars: 4,
-                numComments: 18,
-                description:
-                    'miriam talmiriam talking about boysking about boysmiriam talking about boysmiriam talking about boysmiriam talking about boys',
-                numLikes: 6201,
-                movieID: '1'
-            }
-        ]
-    });
+    const [mostWatchedMovies, setMostWatchedMovies] = useState([]);
     const [makingQueries, setMakingQueries] = useState(false);
     const [popularReviews, setPopularReviews] = useState([]);
     const [popularMovies, setPopularMovies] = useState([]);
@@ -120,7 +44,31 @@ const MoviePage = () => {
                 console.log(error);
             });
     };
-
+    const getMostWatchedMovies = () => {
+        const requestOptions = {
+            method: 'GET',
+            headers: {
+                'Content-Type': 'application/json'
+            }
+        };
+        fetch(`${baseURL}/get-most-watched-movies`, requestOptions)
+            .then((response) => response.json())
+            .then((data) => {
+                var newWatchedMovies = [];
+                data.map((data) => {
+                    console.log(data.url);
+                    newWatchedMovies.push({
+                        imgLink: data.url,
+                        movieID: data.trakt_id
+                    });
+                });
+                console.log(newWatchedMovies);
+                setMostWatchedMovies(newWatchedMovies);
+            })
+            .catch((error) => {
+                console.log(error);
+            });
+    };
     const getPopularReviews = () => {
         const requestOptions = {
             method: 'GET',
@@ -131,7 +79,6 @@ const MoviePage = () => {
         fetch(`${baseURL}/trending-movie-reviews`, requestOptions)
             .then((response) => response.json())
             .then((data) => {
-                console.log(data);
                 var newPopReviews = [];
                 data.map((data) => {
                     newPopReviews.push({
@@ -165,15 +112,13 @@ const MoviePage = () => {
     };
 
     const justReviewedFactory = () => {
-        var reviews = [];
-        for (var i = 0; i < data.justReviewed.length; i++) {
-            var reviewData = data.justReviewed[i];
-            reviews.push(
-                <JustReviewed {...{ reviewData, setMovieSelected }} />
-            );
+        var movies = [];
+        for (var i = 0; i < mostWatchedMovies.length && i<6; i++) {
+            var movieData = mostWatchedMovies[i];
+            movies.push(<JustReviewed {...{ movieData, setMovieSelected }} />);
         }
         return (
-            <div className="just-reviewed-components-container">{reviews}</div>
+            <div className="just-reviewed-components-container">{movies}</div>
         );
     };
 
@@ -212,6 +157,7 @@ const MoviePage = () => {
         if (makingQueries === false) {
             getPopularReviews();
             getPopularMovies();
+            getMostWatchedMovies();
             setMakingQueries(true);
         }
     };
@@ -247,7 +193,7 @@ const MoviePage = () => {
                             </div>
                             {popularMovieFactory()}
                             <div className="base-movie-subtitle">
-                                JUST REVIEWED...
+                                MOST WATCHED MOVIES THIS WEEK
                             </div>
                             {justReviewedFactory()}
                             <div className="base-movie-subtitle">

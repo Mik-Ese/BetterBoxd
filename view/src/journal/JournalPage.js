@@ -15,8 +15,6 @@ const JournalPage = ({ user }) => {
     const [JournalReviews, setJournalReview] = useState([]);
     const [viewableJournalReviews, setViewableJournalReviews] = useState([]);
 
-    //call this function somewhere so it gets executed once when the page loads
-    //likely using useEffect()
     const getJournalEntries = () => {
         console.log(user);
         const requestOptions = {
@@ -37,41 +35,46 @@ const JournalPage = ({ user }) => {
                     newJournalReviews.push({
                         imgLink: data.url,
                         title: data.movie_title,
-                        movie_review: data.description                     
+                        movie_review: data.description
                     });
                 });
-             
-                console.log("The NEW ARRAY:", newJournalReviews)
+
+                console.log('The NEW ARRAY:', newJournalReviews);
                 setJournalReview(newJournalReviews);
-                //map 'data' to your journal entries here.
             })
             .catch((error) => {
                 console.log(error);
             });
     };
 
-
-    useEffect(()=>{
+    useEffect(() => {
         getJournalEntries();
-    },[user])
-    useEffect(()=>{
-        initializeJournalReviews();
-        console.log(viewableJournalReviews)
-    },[JournalReviews])
-    
+    }, [user]);
 
-    const initializeJournalReviews =() => {
+    useEffect(() => {
+        initializeJournalReviews();
+        console.log(viewableJournalReviews);
+    }, [JournalReviews]);
+
+    const initializeJournalReviews = () => {
         var newArr = [];
-        for (var i = currentIndex; i < currentIndex + 5 && i < JournalReviews.length; i++) {
+        for (
+            var i = currentIndex;
+            i < currentIndex + 5 && i < JournalReviews.length;
+            i++
+        ) {
             newArr.push(JournalReviews[i]);
         }
         setViewableJournalReviews(newArr);
-    }
+    };
 
-    
     const updateViewableJournalReviews = useCallback(() => {
         var newArr = [];
-        for (var i = currentIndex; i < currentIndex + 5 && i < JournalReviews.length; i++) {
+        for (
+            var i = currentIndex;
+            i < currentIndex + 5 && i < JournalReviews.length;
+            i++
+        ) {
             newArr.push(JournalReviews[i]);
         }
         setViewableJournalReviews(newArr);
@@ -90,7 +93,6 @@ const JournalPage = ({ user }) => {
         return journalEntries;
     };
     return (
-
         <div>
             <div className="Journal-Page-Header-Text">
                 <h1 className="display-1 Journal-Review-Text text-primary">
@@ -99,7 +101,14 @@ const JournalPage = ({ user }) => {
                         <span className="text-warning"> Movie </span>
                         <span className="text-success"> Journal </span>
                     </div>
-                    <div className="reviewed-movie-image-container my-journal-reviews d-inline-flex flex-row justify-content-center" style={{diplay: "flex", flexWrap: "wrap", width: "100%"}}>
+                    <div
+                        className="reviewed-movie-image-container my-journal-reviews d-inline-flex flex-row justify-content-center"
+                        style={{
+                            diplay: 'flex',
+                            flexWrap: 'wrap',
+                            width: '100%'
+                        }}
+                    >
                         {reviewFactory()}
                     </div>
                     <div class="d-inline-flex flex-row justify-content-center p-3">
@@ -116,7 +125,7 @@ const JournalPage = ({ user }) => {
                             {reviewPageOpen ? (
                                 <div>
                                     <AlertDialogSlide
-                                        {...{ setReviewPageOpen, user }}
+                                        {...{ setReviewPageOpen, user, getJournalEntries }}
                                     />
                                 </div>
                             ) : (
