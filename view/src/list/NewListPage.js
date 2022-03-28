@@ -11,7 +11,7 @@ import Divider from '@mui/material/Divider';
 import Popper from '@mui/material/Popper';
 import List from '@mui/material/List';
 
-const NewListPage = ({ setNewListOpen, user }) => {
+const NewListPage = ({ setNewListOpen, user, getListEntries }) => {
     const [listTitle, setListTitle] = useState('');
     const [summary, setSummary] = useState('');
     const [search, setSearch] = useState('');
@@ -30,7 +30,6 @@ const NewListPage = ({ setNewListOpen, user }) => {
     const closeNewList = () => {
         setNewListOpen(false);
     };
-    console.log(selectedMovies);
 
     const addMovieSelection = (searchResults, i) => {
         var movieSelection = {
@@ -150,8 +149,7 @@ const NewListPage = ({ setNewListOpen, user }) => {
         fetch(`${baseURL}/post-movie-list`, requestOptions)
             .then((response) => response.json())
             .then((data) => {
-                console.log(data);
-                //close the tab here now
+                setNewListOpen(false);
             })
             .catch((error) => {
                 console.log(error);
@@ -230,7 +228,23 @@ const NewListPage = ({ setNewListOpen, user }) => {
             <div>
                 <MovieSelection {...{ selectedMovies, setSelectedMovies }} />
             </div>
-            <div onClick={postList}>This is a temp submit button</div>
+            <button
+                type="button"
+                class="btn-outline-success btn m-4 px-5"
+                onClick={() => {
+                    if (selectedMovies.length > 0) {
+                        if (summary !== '') {
+                            if (listTitle !== '') {
+                                postList();
+                                closeNewList();
+                                getListEntries();
+                            }
+                        }
+                    }
+                }}
+            >
+                Submit
+            </button>
         </div>
     );
 };

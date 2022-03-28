@@ -24,7 +24,6 @@ const ListPage = ({ user, loggedIn, setMovieSelected }) => {
         fetch(`${baseURL}/get-all-movie-lists`, requestOptions)
             .then((response) => response.json())
             .then((data) => {
-                console.log(data);
                 var newListItems = [];
                 data.entries.map((data) => {
                     var newMovies = [];
@@ -83,7 +82,7 @@ const ListPage = ({ user, loggedIn, setMovieSelected }) => {
                 <>
                     <CircularProgress
                         fontSize="large"
-                        style={{ marginTop: '25%', marginLeft: '48%' }}
+                        style={{ marginTop: '25%' }}
                     />
                     {makeQueries()}
                 </>
@@ -103,7 +102,8 @@ const ListPage = ({ user, loggedIn, setMovieSelected }) => {
                                         {...{
                                             newListOpen,
                                             setNewListOpen,
-                                            user
+                                            user,
+                                            getListEntries
                                         }}
                                     />
                                 </div>

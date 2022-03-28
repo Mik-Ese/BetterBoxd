@@ -27,7 +27,6 @@ const MoviePage = ({ movieSelected, setMovieSelected }) => {
             .then((response) => response.json())
             .then((data) => {
                 var newPopMovies = [];
-                console.log(data);
                 data.map((data) => {
                     newPopMovies.push({
                         imgLink: data.url,
@@ -54,7 +53,6 @@ const MoviePage = ({ movieSelected, setMovieSelected }) => {
         fetch(`${baseURL}/get-popular-movies`, requestOptions)
             .then((response) => response.json())
             .then((data) => {
-                console.log(data);
                 var newWatchedMovies = [];
                 data.map((data) => {
                     newWatchedMovies.push({

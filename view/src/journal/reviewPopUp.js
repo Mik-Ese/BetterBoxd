@@ -124,8 +124,6 @@ export default function AlertDialogSlide({
         fetch(`${baseURL}/post-journal-entry`, requestOptions)
             .then((response) => response.json())
             .then((data) => {
-                console.log(data);
-                //close the tab here now
             })
             .catch((error) => {
                 console.log(error);

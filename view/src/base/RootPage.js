@@ -18,7 +18,6 @@ const RootPage = () => {
     const [user, setUser] = useState(null);
     const [movieSelected, setMovieSelected] = useState(null);
     useEffect(() => {
-        console.log(movieSelected);
         if(movieSelected===null){
         }
         else{
