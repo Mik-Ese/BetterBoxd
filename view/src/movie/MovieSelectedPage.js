@@ -28,7 +28,7 @@ const MovieSelectedPage = ({ movieSelected, setMovieSelected }) => {
         description: '',
         views: '',
         lists: '',
-        likes: '',
+        comments: '',
         cast: [],
         reviews: [],
         ratings: []
@@ -50,9 +50,7 @@ const MovieSelectedPage = ({ movieSelected, setMovieSelected }) => {
             .then((data) => {
                 let director = 'No Director';
                 var cast = [];
-                console.log(data.people.directing.length);
                 for (var i = 0; i < data.people.directing.length; i++) {
-                    console.log(data.people.directing);
                     if (data.people.directing[i].job === 'Director') {
                         director = data.people.directing[i].person.name;
                     }
@@ -80,7 +78,7 @@ const MovieSelectedPage = ({ movieSelected, setMovieSelected }) => {
                     description: data.movieExtended.overview,
                     views: data.stats.watchers,
                     lists: data.stats.lists,
-                    likes: data.stats.votes,
+                    comments: data.stats.comments,
                     cast: cast,
                     reviews: data.comments.map((comment) => {
                         return {
@@ -157,7 +155,13 @@ const MovieSelectedPage = ({ movieSelected, setMovieSelected }) => {
                                 className="movie-selected-page-back-button"
                                 onClick={unselectMovie}
                             >
-                                <ArrowBackIcon style={{fontSize: "3rem", color: "white", stroke: "black"}}/>
+                                <ArrowBackIcon
+                                    style={{
+                                        fontSize: '3rem',
+                                        color: 'white',
+                                        stroke: 'black'
+                                    }}
+                                />
                             </div>
                         </div>
                         <div className="movie-selected-page-content">
@@ -173,19 +177,31 @@ const MovieSelectedPage = ({ movieSelected, setMovieSelected }) => {
                                         <VisibilityIcon />
                                     </div>
                                     <div className="movie-selected-page-detail-number">
-                                        {Math.round(data.views / 1000) / 10}k
+                                        {data.views > 1000
+                                            ? Math.round(data.views / 100) /
+                                                  10 +
+                                              'k'
+                                            : data.views}
                                     </div>
                                     <div className="movie-selected-page-icon">
                                         <AutoAwesomeMosaicIcon />
                                     </div>
                                     <div classNmae="movie-selected-page-detail-number">
-                                        {Math.round(data.lists / 1000) / 10}k
+                                        {data.lists > 1000
+                                            ? Math.round(data.lists / 100) /
+                                                  10 +
+                                              'k'
+                                            : data.lists}
                                     </div>
                                     <div className="movie-selected-page-icon">
-                                        <FavoriteIcon />
+                                        <ModeCommentIcon />
                                     </div>
                                     <div classNmae="movie-selected-page-detail-number">
-                                        {Math.round(data.likes / 1000) / 10}k
+                                        {data.comments > 1000
+                                            ? Math.round(data.comments / 100) /
+                                                  10 +
+                                              'k'
+                                            : data.comments}
                                     </div>
                                 </div>
                             </div>

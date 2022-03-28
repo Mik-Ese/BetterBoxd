@@ -16,7 +16,6 @@ const JournalPage = ({ user }) => {
     const [viewableJournalReviews, setViewableJournalReviews] = useState([]);
 
     const getJournalEntries = () => {
-        console.log(user);
         const requestOptions = {
             method: 'GET',
             headers: {
@@ -29,7 +28,6 @@ const JournalPage = ({ user }) => {
         )
             .then((response) => response.json())
             .then((data) => {
-                console.log(data);
                 var newJournalReviews = [];
                 data.entries.map((data) => {
                     newJournalReviews.push({
@@ -39,7 +37,6 @@ const JournalPage = ({ user }) => {
                     });
                 });
 
-                console.log('The NEW ARRAY:', newJournalReviews);
                 setJournalReview(newJournalReviews);
             })
             .catch((error) => {
@@ -53,7 +50,6 @@ const JournalPage = ({ user }) => {
 
     useEffect(() => {
         initializeJournalReviews();
-        console.log(viewableJournalReviews);
     }, [JournalReviews]);
 
     const initializeJournalReviews = () => {

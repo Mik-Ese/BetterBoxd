@@ -130,7 +130,8 @@ async function getMediaArt(mediaType, id, artType) {
                     if (fullResult.hasOwnProperty('movieposter')) {
                         result = prioritizedURL(fullResult.movieposter);
                     } else {
-                        throw new Error('Could not find any posters');
+                        // default poster
+                        result = 'https://images.fanart.tv/fanart/et-the-extra-terrestrial-5cdab3aa028c5.jpg';
                     }
                 } else if (artType.toLowerCase() === 'logo') {
                     if (fullResult.hasOwnProperty('hdmovielogo')) {
@@ -220,27 +221,11 @@ async function getMediaArt(mediaType, id, artType) {
     }
 }
 
-async function getPopularMovies(period) {
-    if (
-        period !== 'weekly' &&
-        period !== 'monthly' &&
-        period !== 'daily' &&
-        period !== 'yearly' &&
-        period !== 'all'
-    ) {
-        return 'invalid parameter';
-    }
-    let expiry = 0;
-    if (period.toLowerCase() === 'weekly') {
-        expiry = 604800;
-    }
-    if (period.toLowerCase() === 'monthly') {
-        expiry = 2592000;
-    }
-    const APIquery = `https://api.trakt.tv/movies/watched/${period}`;
+async function getPopularMovies() {
+    const APIquery = `https://api.trakt.tv/movies/popular`;
 
     try {
-        const key = `popularMovies${period.toLowerCase()}`; // cache key
+        const key = `popularMovies`; // cache key
         // checking cache
         const cacheResponse = await redisClient.get(key);
         if (cacheResponse) {
@@ -252,15 +237,18 @@ async function getPopularMovies(period) {
             for (let element of response) {
                 const fanartResponse = await getMediaArt(
                     'movies',
-                    element.movie.ids.tmdb,
+                    element.ids.tmdb,
                     'poster'
                 );
-                element['trakt_id'] = element.movie.ids.trakt;
+                let movie_stats = await getMovieStats(element.ids.trakt);
+                element['trakt_id'] = element.ids.trakt;
                 element['url'] = fanartResponse;
-                // console.log(element)
+                element['watchers'] = movie_stats.watchers;
+                element['no_of_lists'] = movie_stats.lists;
+                element['comments'] = movie_stats.comments;
             }
             redisClient.set(key, JSON.stringify(response), {
-                EX: expiry // seconds in a week (expiry)
+                EX: 604800 // seconds in a week (expiry)
                 // NX: true    // Only set the key if it does not already exist
             });
 
@@ -376,7 +364,7 @@ async function getMovieSearchResults(movieName) {
 
             // saving to cache
             redisClient.set(key, JSON.stringify(result), {
-                EX: expiry
+                EX: 604800
             });
 
             return result;
@@ -437,8 +425,23 @@ async function getTrendingMovieReviews() {
         throw new Error(error);
     }
 }
-async function getMostWatchedMovies() {
-    let expiry = 604800; // 1 week
+async function getMostWatchedMovies(period) {
+    if (
+        period !== 'weekly' &&
+        period !== 'monthly' &&
+        period !== 'daily' &&
+        period !== 'yearly' &&
+        period !== 'all'
+    ) {
+        return 'invalid parameter';
+    }
+    let expiry = 0;
+    if (period.toLowerCase() === 'weekly') {
+        expiry = 604800;
+    }
+    if (period.toLowerCase() === 'monthly') {
+        expiry = 2592000;
+    }
     const APIquery = `https://api.trakt.tv/movies/watched/weekly`;
     try {
         const key = `getMostWatchedMovies`; // cache key
@@ -458,12 +461,16 @@ async function getMostWatchedMovies() {
                         entry.movie.ids.tmdb,
                         'poster'
                     );
+                    let movie_stats = await getMovieStats(entry.movie.ids.trakt);
                     return {
                         // movie info
                         title: entry.movie.title,
                         year: entry.movie.year,
                         url: fanartResponse,
-                        trakt_id: entry.movie.ids.trakt
+                        trakt_id: entry.movie.ids.trakt,
+                        watchers: movie_stats.watchers,
+                        no_of_lists: movie_stats.lists,
+                        no_of_comments: movie_stats.comments
                     };
                 })
             );

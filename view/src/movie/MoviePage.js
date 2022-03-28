@@ -24,16 +24,17 @@ const MoviePage = () => {
                 'Content-Type': 'application/json'
             }
         };
-        fetch(`${baseURL}/get-popular-movies?period=weekly`, requestOptions)
+        fetch(`${baseURL}/get-most-watched-movies`, requestOptions)
             .then((response) => response.json())
             .then((data) => {
                 var newPopMovies = [];
+                console.log(data);
                 data.map((data) => {
                     newPopMovies.push({
                         imgLink: data.url,
-                        numViews: data.watcher_count,
-                        numLists: 3,
-                        numLikes: 3,
+                        numViews: data.watchers,
+                        numLists: data.no_of_lists,
+                        numLikes: data.no_of_comments,
                         movieID: data.trakt_id
                     });
                 });
@@ -51,18 +52,17 @@ const MoviePage = () => {
                 'Content-Type': 'application/json'
             }
         };
-        fetch(`${baseURL}/get-most-watched-movies`, requestOptions)
+        fetch(`${baseURL}/get-popular-movies`, requestOptions)
             .then((response) => response.json())
             .then((data) => {
+                console.log(data);
                 var newWatchedMovies = [];
                 data.map((data) => {
-                    console.log(data.url);
                     newWatchedMovies.push({
                         imgLink: data.url,
                         movieID: data.trakt_id
                     });
                 });
-                console.log(newWatchedMovies);
                 setMostWatchedMovies(newWatchedMovies);
             })
             .catch((error) => {
@@ -113,7 +113,7 @@ const MoviePage = () => {
 
     const justReviewedFactory = () => {
         var movies = [];
-        for (var i = 0; i < mostWatchedMovies.length && i<6; i++) {
+        for (var i = 0; i < mostWatchedMovies.length && i < 6; i++) {
             var movieData = mostWatchedMovies[i];
             movies.push(<JustReviewed {...{ movieData, setMovieSelected }} />);
         }
