@@ -27,7 +27,6 @@ const LoginPage = ({ setLoggedIn, setLoggingIn, setUser }) => {
         )
             .then((response) => response.json())
             .then((data) => {
-                console.log(data);
                 if (data.status === 'good') {
                     setLoggedIn(true);
                     setLoggingIn(false);

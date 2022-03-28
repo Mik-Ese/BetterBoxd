@@ -5,7 +5,6 @@ import TextField from '@mui/material/TextField';
 export default function MultilineTextFields({description, setDescription}) {
 
   const handleChange = (event) => {
-    console.log(event.target.value);
     setDescription(event.target.value);
   };
 

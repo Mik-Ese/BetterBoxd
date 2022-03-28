@@ -34,16 +34,15 @@ const NewListPage = ({ setNewListOpen, user }) => {
     const addMovieSelection = (searchResults, i) => {
         var movieSelection = {
             url: searchResults[i].url,
-            movieID: searchResults[i].movieID,
-        }
+            movieID: searchResults[i].movieID
+        };
         for (var i = 0; i < selectedMovies.length; i++) {
             if (selectedMovies[i].movieID === movieSelection.movieID) {
-                console.log("here");
                 return;
             }
         }
-        setSelectedMovies((oldState) => [...oldState,movieSelection])
-    }
+        setSelectedMovies((oldState) => [...oldState, movieSelection]);
+    };
 
     useEffect(() => {
         const delayDebounceFn = setTimeout(() => {
@@ -81,16 +80,16 @@ const NewListPage = ({ setNewListOpen, user }) => {
         fetch(`${baseURL}/movie-search?movieName=${search}`, requestOptions)
             .then((response) => response.json())
             .then((data) => {
-                var results = [];    
+                var results = [];
                 data.map((data) => {
                     results.push({
                         title: data.title,
                         year: data.year,
                         movieID: data.trakt_id,
-                        url: data.poster,
+                        url: data.poster
                     });
                 });
-                setSearchResults(results);     
+                setSearchResults(results);
             })
             .catch((error) => {});
     };
@@ -102,13 +101,12 @@ const NewListPage = ({ setNewListOpen, user }) => {
                 <div className="search-bar-search-result-item-container">
                     <ListItem disablePadding>
                         <ListItemButton
-                            onClick={
-                                (function(searchResults, i) {
-                                    return function() {
-                                      addMovieSelection(searchResults, i);
-                                    }
-                                  })(searchResults, i)
-                            }
+                            onClick={(function (searchResults, i) {
+                                return function () {
+                                    setSearchResultsOpen(false);
+                                    addMovieSelection(searchResults, i);
+                                };
+                            })(searchResults, i)}
                         >
                             <div className="search-bar-search-result-title">
                                 {searchResults[i].title}
@@ -154,8 +152,16 @@ const NewListPage = ({ setNewListOpen, user }) => {
     //             console.log(error);
     //         });
     // };
+    const closeSearchResults = (props) => {
+        if (
+            props.target.className !==
+            'MuiInput-input MuiInputBase-input css-1x51dt5-MuiInputBase-input-MuiInput-input'
+        ) {
+            setSearchResultsOpen(false);
+        }
+    };
     return (
-        <div>
+        <div onClick={closeSearchResults}>
             <div className="icon-bar">
                 <div className="back-arrow" onClick={closeNewList}>
                     <ArrowBackIcon />
@@ -216,7 +222,7 @@ const NewListPage = ({ setNewListOpen, user }) => {
                 </div>
             </Popper>
             <div>
-                <MovieSelection {...{ selectedMovies, setSelectedMovies }}/>
+                <MovieSelection {...{ selectedMovies, setSelectedMovies }} />
             </div>
         </div>
     );
