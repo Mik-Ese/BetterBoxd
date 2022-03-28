@@ -60,7 +60,7 @@ const JournalPage = ({ user }) => {
         var newArr = [];
         for (
             var i = currentIndex;
-            i < currentIndex + 5 && i < JournalReviews.length;
+            i < currentIndex + 4 && i < JournalReviews.length;
             i++
         ) {
             newArr.push(JournalReviews[i]);
@@ -72,7 +72,7 @@ const JournalPage = ({ user }) => {
         var newArr = [];
         for (
             var i = currentIndex;
-            i < currentIndex + 5 && i < JournalReviews.length;
+            i < currentIndex + 4 && i < JournalReviews.length;
             i++
         ) {
             newArr.push(JournalReviews[i]);
@@ -95,26 +95,17 @@ const JournalPage = ({ user }) => {
     return (
         <div>
             <div className="Journal-Page-Header-Text">
-                <h1 className="display-1 Journal-Review-Text text-primary">
-                    <div d-inline-flex flex-row justify-content-center p-3 m-5>
-                        <span className="text-primary"> Your </span>{' '}
-                        <span className="text-warning"> Movie </span>
-                        <span className="text-success"> Journal </span>
+                <h1 className="display-1 Journal-Review-Text text-primary mt-2">
+                    <div d-inline-flex flex-row justify-content-center p-2 m-3>
+                        <span className="text-dark"> Your </span>{' '}
+                        <span className="text-dark"> Movie </span>
+                        <span className="text-dark"> Journal  &#127871;</span>
                     </div>
-                    <div
-                        className="reviewed-movie-image-container my-journal-reviews d-inline-flex flex-row justify-content-center"
-                        style={{
-                            diplay: 'flex',
-                            flexWrap: 'wrap',
-                            width: '100%'
-                        }}
-                    >
-                        {reviewFactory()}
-                    </div>
+        
                     <div class="d-inline-flex flex-row justify-content-center p-3">
                         <button
                             type="button"
-                            class="btn-lg btn btn-primary m-4 p-3"
+                            class="btn-outline-info btn m-4 p-3"
                             onClick={() => {
                                 setReviewPageOpen(true);
                             }}
@@ -134,7 +125,7 @@ const JournalPage = ({ user }) => {
                         </div>
                         <button
                             type="button"
-                            class="btn-lg btn btn-danger m-4 p-3"
+                            class="btn-outline-danger btn m-4 p-3"
                             onClick={() => {
                                 if (currentIndex - 1 >= 0)
                                     setCurrentIndex(currentIndex - 1);
@@ -144,17 +135,28 @@ const JournalPage = ({ user }) => {
                         </button>
                         <button
                             type="button"
-                            class="btn-lg btn btn-success m-4 p-3"
+                            class="btn-outline-success btn m-4 p-3"
                             onClick={() => {
                                 if (
                                     currentIndex + 1 <
-                                    JournalReviews.length - 4
+                                    JournalReviews.length - 3
                                 )
                                     setCurrentIndex(currentIndex + 1);
                             }}
                         >
                             Toggle Next
                         </button>
+                        
+                    </div>
+                    <div
+                        className="reviewed-movie-image-container my-journal-reviews d-inline-flex flex-row justify-content-center"
+                        style={{
+                            diplay: 'flex',
+                            flexWrap: 'wrap',
+                            width: '100%'
+                        }}
+                    >
+                        {reviewFactory()}
                     </div>
                 </h1>
             </div>
