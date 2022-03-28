@@ -56,8 +56,7 @@ router.get('/get-movie-poster', async (req, res) => {
 });
 
 router.get('/get-popular-movies', async (req, res) => {
-    const { period } = req.query;
-    const data = await fetchData.getPopularMovies(period);
+    const data = await fetchData.getPopularMovies();
     res.send(data);
 });
 
@@ -79,7 +78,7 @@ router.get('/get-movie-page', async (req, res) => {
 });
 
 router.get('/get-most-watched-movies', async(req, res) => {
-    const data = await fetchData.getMostWatchedMovies();
+    const data = await fetchData.getMostWatchedMovies("weekly");
     res.send(data);
 })
 
