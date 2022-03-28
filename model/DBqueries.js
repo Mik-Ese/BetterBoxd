@@ -185,6 +185,7 @@ async function postJournalEntry(entry) {
             description: entry.description,
         };
         entries.push(j);
+        promises = []
     }
 
     return { entries: entries, status: status };
