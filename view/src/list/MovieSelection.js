@@ -1,39 +1,29 @@
-import "./styles/MovieSelection.css";
+import "./styles/movieSelection.css";
 import { useEffect, useState } from "react";
 import DeleteForeverIcon from '@mui/icons-material/DeleteForever';
 
-const MovieSelection = () => {
-  const images = [
-    "https://m.media-amazon.com/images/M/MV5BNGNhMDIzZTUtNTBlZi00MTRlLWFjM2ItYzViMjE3YzI5MjljXkEyXkFqcGdeQXVyNzkwMjQ5NzM@._V1_.jpg", 
-    "https://m.media-amazon.com/images/M/MV5BOGE2NWUwMDItMjA4Yi00N2Y3LWJjMzEtMDJjZTMzZTdlZGE5XkEyXkFqcGdeQXVyODk4OTc3MTY@._V1_.jpg",
-    "https://m.media-amazon.com/images/M/MV5BMTYwOTEwNjAzMl5BMl5BanBnXkFtZTcwODc5MTUwMw@@._V1_FMjpg_UX1000_.jpg",
-    "https://m.media-amazon.com/images/M/MV5BMTQ0MTE3OTUwMl5BMl5BanBnXkFtZTcwODg5NjgwNw@@._V1_.jpg",
-    "https://m.media-amazon.com/images/M/MV5BOTMyMjEyNzIzMV5BMl5BanBnXkFtZTgwNzIyNjU0NzE@._V1_.jpg"
-  ]
+const MovieSelection = ({ selectedMovies, setSelectedMovies }) => {
 
-  const [imagePaths, setImagePaths] = useState([]);
-
-  const removeImage = (imagePath) => {
-    setImagePaths((oldState) => oldState.filter((item) => item !== imagePath));
+  const removeMovieSelection = (movieID) => {
+    setSelectedMovies(
+      (oldState) => oldState.filter((item) => item.movieID !== movieID)
+    );
   }
 
-  useEffect(() => {
-    setImagePaths(images);
-  }, []);
-
-  const movieSelectionFactory = (imagePaths) => {
+  const movieSelectionFactory = (selectedMovies) => {
     var movieSelectionContents = [];
-    for (var i = 0; i < imagePaths.length; i++) {
-      var imagePath = imagePaths[i];
+    for (var i = 0; i < selectedMovies.length; i++) {
+      var url = selectedMovies[i].url;
+      var movieID = selectedMovies[i].movieID;
       movieSelectionContents.push(
       <div className="movie-poster-wrapper">
-        <img className="movie-poster" src={imagePath}/>
+        <img className="movie-poster" src={url}/>
         <div className="delete-poster" onClick={
-          (function(imagePath) {
+          (function(movieID) {
             return function() {
-              removeImage(imagePath);
+              removeMovieSelection(movieID);
             }
-          })(imagePath)
+          })(movieID)
         }><DeleteForeverIcon /></div>
       </div>
       );
@@ -43,7 +33,7 @@ const MovieSelection = () => {
 
   return (
     <div>
-      {movieSelectionFactory(imagePaths)}
+      {movieSelectionFactory(selectedMovies)}
     </div>
   );
 };
