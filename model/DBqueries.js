@@ -11,7 +11,7 @@ const fetchData = require('../controller/fetchData');
  * @returns the user object posted, along with a status
  */
 async function postUser(user) {
-    var status = 'good';
+    let status = 'good';
 
     if (await User.findOne({ username: user.username })) {
         status = 'another user with that username already exists';
@@ -20,9 +20,9 @@ async function postUser(user) {
         status = 'another user with that email already exists';
         return { user: null, status: status };
     }
-
+    let res;
     try {
-        var res = await User.create(user);
+        res = await User.create(user);
     } catch (error) {
         console.log(error);
         status = error;
@@ -40,8 +40,9 @@ async function postUser(user) {
  * @returns The user with that id, along with a status of the response
  */
 async function loginUser(username, password) {
+    let user;
     try {
-        var user = await User.findOne({
+        user = await User.findOne({
             username: username
         });
     } catch (e) {
@@ -69,10 +70,10 @@ async function loginUser(username, password) {
  * @returns the user's journal entries
  */
 async function getJournalEntries(user_id) {
-    var status = 'good';
-
+    let status = 'good';
+    let res;
     try {
-        var res = await JournalEntry.find({
+        res = await JournalEntry.find({
             user_id: user_id
         });
     } catch (e) {
@@ -84,21 +85,25 @@ async function getJournalEntries(user_id) {
     }
 
     const entries = [];
+    let promises = []
     for (entry of res) {
-        let tmdb_id = (await fetchData.getMovieExtended(entry.trakt_id)).ids
-            .tmdb;
-        let movie_title = (await fetchData.getMovieExtended(entry.trakt_id)).title
+        promises.push(fetchData.getMovieExtended(entry.trakt_id));
+    }
+    const response = await Promise.all(promises);
+    let index = 0;
+    for(entry of res){
         let j = {
             user_id: entry.user_id,
-            movie_title: movie_title,
+            movie_title: response[index].title,
             trakt_id: entry.trakt_id,
             description: entry.description,
             no_likes: entry.no_likes,
             no_comments: entry.no_comments,
-            created_at: entry.created_at
+            created_at: entry.created_at,
+            url: response[index].url
         };
-        j.url = await fetchData.getMediaArt('movies', tmdb_id, 'poster');
         entries.push(j);
+        index++;
     }
 
     return { entries: entries, status: status };
@@ -109,10 +114,10 @@ async function getJournalEntries(user_id) {
  * @returns the list object posted, along with a status
  */
 async function postList(list) {
-    var status = 'good';
-
+    let status = 'good';
+    let res;
     try {
-        var res = await MovieList.create(list);
+        res = await MovieList.create(list);
     } catch (error) {
         console.log(error);
         status = error;
@@ -129,10 +134,10 @@ async function postList(list) {
  * @returns the journal entry posted, along with a status
  */
 async function postJournalEntry(entry) {
-    var status = 'good';
-
+    let status = 'good';
+    let res;
     try {
-        var res = await JournalEntry.create(entry);
+        res = await JournalEntry.create(entry);
     } catch (error) {
         console.log(error);
         status = error;
@@ -147,10 +152,10 @@ async function postJournalEntry(entry) {
  * @returns all database's user movie lists
  */
  async function getMovieLists() {
-    var status = 'good';
-
+    let status = 'good';
+    let res;
     try {
-        var res = await MovieList.find({});
+        res = await MovieList.find({});
     } catch (e) {
         console.log(e);
         return {
@@ -158,16 +163,18 @@ async function postJournalEntry(entry) {
             status: e
         };
     }
-
+    let promises = []
     const entries = [];
     for (entry of res) {
         let new_trakt_ids = [];
         for(let i = 0; i<entry.trakt_ids.length; i++){
+            promises.push(fetchData.getMovieExtended(entry.trakt_ids[i]))
+        }
+        let results = await Promise.all(promises);
+        for(let i = 0; i<entry.trakt_ids.length; i++){
             let obj = {}
-            let tmdb_id = (await fetchData.getMovieExtended(entry.trakt_ids[i])).ids
-            .tmdb;
             obj.trakt_id = entry.trakt_ids[i];
-            obj.url = await fetchData.getMediaArt('movies', tmdb_id, 'poster');
+            obj.url = results[i].url
             new_trakt_ids.push(obj);
         }
         let user_list_name = await User.find({_id: entry.user_id})
@@ -187,10 +194,10 @@ async function postJournalEntry(entry) {
  * @returns the user's journal entries
  */
 async function getUserMovieLists(user_id) {
-    var status = 'good';
-
+    let status = 'good';
+    let res;
     try {
-        var res = await MovieList.find({user_id:user_id});
+        res = await MovieList.find({user_id:user_id});
     } catch (e) {
         console.log(e);
         return {
@@ -225,9 +232,6 @@ async function getUserMovieLists(user_id) {
 
 
 module.exports = {
-    // fetchUser,
-    // fetchUserReviews,
-    // postUserReview,
     postUser,
     loginUser,
     postList,
