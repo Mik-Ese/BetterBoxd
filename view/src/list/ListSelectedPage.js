@@ -1,7 +1,5 @@
-import "./styles/ListSelectedPage.css";
+import "./styles/listSelectedPage.css";
 
-import FavoriteIcon from '@mui/icons-material/Favorite';
-import ModeCommentIcon from '@mui/icons-material/ModeComment';
 import ArrowBackIcon from '@mui/icons-material/ArrowBack';
 
 const ListSelectedPage = ({ listSelected, setListSelected }) => {
@@ -14,7 +12,7 @@ const ListSelectedPage = ({ listSelected, setListSelected }) => {
     for (var i = 0; i < listSelected.movies.length; i++) {
       var imagePath = listSelected.movies[i].url;
       moviePosterContents.push(
-      <img className="movie-poster" src={imagePath}/>
+        <img className="movie-poster" src={imagePath}/>
       );
     }
     return <div className="movie-list-posters">{moviePosterContents}</div>;

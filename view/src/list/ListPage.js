@@ -1,10 +1,10 @@
+import './styles/listPage.css';
+
 import ListItem from './ListItem.js';
 import ListSelectedPage from './ListSelectedPage.js';
 import NewListPage from './NewListPage.js';
-import './styles/ListPage.css';
 import AddCircleIcon from '@mui/icons-material/AddCircle';
 import { baseURL } from '../consts/consts.js';
-import './styles/ListPage.css';
 import CircularProgress from '@mui/material/CircularProgress';
 
 import { useState } from 'react';
@@ -144,7 +144,7 @@ const ListPage = ({ user, loggedIn }) => {
                     </div>
                   ) : (
                     <div className="list-page-home">
-                      {!loggedIn ? (
+                      {loggedIn ? ( //change back later
                         <></>
                       ) : (
                         <div
