@@ -9,8 +9,7 @@ import './styles/baseMovieStyles.css';
 import { baseURL } from '../consts/consts.js';
 import CircularProgress from '@mui/material/CircularProgress';
 
-const MoviePage = () => {
-    const [movieSelected, setMovieSelected] = useState(null);
+const MoviePage = ({ movieSelected, setMovieSelected }) => {
     const [searchResultsOpen, setSearchResultsOpen] = useState(false);
     const [mostWatchedMovies, setMostWatchedMovies] = useState([]);
     const [makingQueries, setMakingQueries] = useState(false);

@@ -8,67 +8,10 @@ import { baseURL } from '../consts/consts.js';
 import CircularProgress from '@mui/material/CircularProgress';
 
 import { useState } from 'react';
-const ListPage = ({ user, loggedIn }) => {
+const ListPage = ({ user, loggedIn, setMovieSelected }) => {
     const [listSelected, setListSelected] = useState(null);
     const [newListOpen, setNewListOpen] = useState(false);
-    const [isLoading, setIsLoading] = useState(false); // change to true when you actually do it prop
-
-    const data = {
-        listItem: [
-            {
-                listTitle: 'The Title',
-                user: 'username123',
-                description:
-                    'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Risus quis varius quam quisque id. Sit amet justo donec enim diam vulputate ut. Ultricies tristique nulla aliquet enim tortor at auctor urna nunc. Nam libero justo laoreet sit amet cursus sit. Ullamcorper velit sed ullamcorper morbi. Ullamcorper eget nulla facilisi etiam dignissim diam. Sed ullamcorper morbi tincidunt ornare massa eget. Tincidunt ornare massa eget egestas purus viverra accumsan. Cras ornare arcu dui vivamus. Ultrices mi tempus imperdiet nulla malesuada pellentesque. Sit amet porttitor eget dolor morbi non. Metus aliquam eleifend mi in nulla. Amet mauris commodo quis imperdiet massa tincidunt.',
-                movies: [
-                    {
-                        movieTitle: 'Shrek',
-                        url: 'https://m.media-amazon.com/images/M/MV5BOGZhM2FhNTItODAzNi00YjA0LWEyN2UtNjJlYWQzYzU1MDg5L2ltYWdlL2ltYWdlXkEyXkFqcGdeQXVyMTQxNzMzNDI@._V1_.jpg',
-                        movieID: ''
-                    },
-                    {
-                        movieTitle: 'Shrek 2',
-                        url: 'https://m.media-amazon.com/images/M/MV5BMDJhMGRjN2QtNDUxYy00NGM3LThjNGQtMmZiZTRhNjM4YzUxL2ltYWdlL2ltYWdlXkEyXkFqcGdeQXVyMTQxNzMzNDI@._V1_.jpg',
-                        movieID: ''
-                    }
-                ]
-            },
-            {
-                listTitle: 'Another Title',
-                user: 'username456',
-                description:
-                    'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Risus quis varius quam quisque id. Sit amet justo donec enim diam vulputate ut. Ultricies tristique nulla aliquet enim tortor at auctor urna nunc. Nam libero justo laoreet sit amet cursus sit. Ullamcorper velit sed ullamcorper morbi. Ullamcorper eget nulla facilisi etiam dignissim diam. Sed ullamcorper morbi tincidunt ornare massa eget. Tincidunt ornare massa eget egestas purus viverra accumsan. Cras ornare arcu dui vivamus. Ultrices mi tempus imperdiet nulla malesuada pellentesque. Sit amet porttitor eget dolor morbi non. Metus aliquam eleifend mi in nulla. Amet mauris commodo quis imperdiet massa tincidunt.',
-                movies: [
-                    {
-                        movieTitle: 'Pulp Fiction',
-                        url: 'https://m.media-amazon.com/images/M/MV5BNGNhMDIzZTUtNTBlZi00MTRlLWFjM2ItYzViMjE3YzI5MjljXkEyXkFqcGdeQXVyNzkwMjQ5NzM@._V1_.jpg',
-                        movieID: ''
-                    },
-                    {
-                        movieTitle: 'The Batman',
-                        url: 'https://m.media-amazon.com/images/M/MV5BOGE2NWUwMDItMjA4Yi00N2Y3LWJjMzEtMDJjZTMzZTdlZGE5XkEyXkFqcGdeQXVyODk4OTc3MTY@._V1_.jpg',
-                        movieID: ''
-                    },
-                    {
-                        movieTitle: 'Avatar',
-                        url: 'https://m.media-amazon.com/images/M/MV5BMTYwOTEwNjAzMl5BMl5BanBnXkFtZTcwODc5MTUwMw@@._V1_FMjpg_UX1000_.jpg',
-                        movieID: ''
-                    },
-                    {
-                        movieTitle: 'We Bought a Zoo',
-                        url: 'https://m.media-amazon.com/images/M/MV5BMTQ0MTE3OTUwMl5BMl5BanBnXkFtZTcwODg5NjgwNw@@._V1_.jpg',
-                        movieID: ''
-                    },
-                    {
-                        movieTitle: 'Zootopia',
-                        url: 'https://m.media-amazon.com/images/M/MV5BOTMyMjEyNzIzMV5BMl5BanBnXkFtZTgwNzIyNjU0NzE@._V1_.jpg',
-                        movieID: ''
-                    }
-                ]
-            }
-        ]
-    };
-
+    const [isLoading, setIsLoading] = useState(true); // change to true when you actually do it prop
     const [listEntries, setListEntries] = useState([]);
 
     const getListEntries = () => {
@@ -82,18 +25,36 @@ const ListPage = ({ user, loggedIn }) => {
             .then((response) => response.json())
             .then((data) => {
                 console.log(data);
-                //map 'data' to your list entries here.
+                var newListItems = [];
+                data.entries.map((data) => {
+                    var newMovies = [];
+                    data.trakt_ids.map((data) => {
+                        newMovies.push({
+                            movieTitle: 'to be implemented',
+                            url: data.url,
+                            movieID: data.trakt_id
+                        });
+                    });
+                    newListItems.push({
+                        listTitle: data.title,
+                        user: data.username,
+                        description: data.description,
+                        movies: newMovies
+                    });
+                });
+                setListEntries(newListItems);
+                setIsLoading(false);
             })
             .catch((error) => {
                 console.log(error);
             });
     };
 
-    const listItemFactory = (data) => {
+    const listItemFactory = () => {
         var listItemContents = [];
         listItemContents.push(<hr className="divider" />);
-        for (var i = 0; i < data.listItem.length; i++) {
-            var listData = data.listItem[i];
+        for (var i = 0; i < listEntries.length; i++) {
+            var listData = listEntries[i];
             listItemContents.push(
                 <ListItem {...{ listData, setListSelected }} />
             );
@@ -131,7 +92,7 @@ const ListPage = ({ user, loggedIn }) => {
                     {listSelected != null ? (
                         <div>
                             <ListSelectedPage
-                                {...{ listSelected, setListSelected }}
+                                {...{ listSelected, setListSelected, setMovieSelected }}
                             />
                         </div>
                     ) : (
@@ -148,7 +109,7 @@ const ListPage = ({ user, loggedIn }) => {
                                 </div>
                             ) : (
                                 <div className="list-page-home">
-                                    {loggedIn ? ( //change back later
+                                    {!loggedIn ? ( //change back later
                                         <></>
                                     ) : (
                                         <div
@@ -158,7 +119,7 @@ const ListPage = ({ user, loggedIn }) => {
                                             <AddCircleIcon /> Add List
                                         </div>
                                     )}
-                                    <div>{listItemFactory(data)}</div>
+                                    <div>{listItemFactory()}</div>
                                 </div>
                             )}
                         </div>

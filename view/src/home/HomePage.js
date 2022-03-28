@@ -12,9 +12,9 @@ const HomePage = ({ setSigningUp }) => {
       />
       <div className="home-page-content">
         <div className="home-page-welcome-text-container">
-          <div className="home-page-welcome-text">Welcome to BetterBoxd.</div>
+          <div className="home-page-welcome-text">Welcome to BetterBoxd. Browse</div>
           <div className="home-page-welcome-text">
-            Browse movies, and keep
+            movies, make lists, and keep
           </div>
           <div className="home-page-welcome-text">notes on your favourites.</div>
         </div>

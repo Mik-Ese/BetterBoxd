@@ -30,6 +30,7 @@ const NewListPage = ({ setNewListOpen, user }) => {
     const closeNewList = () => {
         setNewListOpen(false);
     };
+    console.log(selectedMovies);
 
     const addMovieSelection = (searchResults, i) => {
         var movieSelection = {
@@ -127,31 +128,36 @@ const NewListPage = ({ setNewListOpen, user }) => {
         return list;
     };
 
-    // //call this function when the 'submit' button is clicked
-    // //and some movies are selected and a summary and title is written
-    // const postList = () => {
-    //     const requestOptions = {
-    //         method: 'POST',
-    //         headers: {
-    //             'Content-Type': 'application/json'
-    //         },
-    //         body: JSON.stringify({
-    //             description: /*description here,*/ 'temp',
-    //             user_id: user._id,
-    //             title: /*title here*/ 'title',
-    //             trakt_ids: /*ids here*/ []
-    //         })
-    //     };
-    //     fetch(`${baseURL}/post-movie-list`, requestOptions)
-    //         .then((response) => response.json())
-    //         .then((data) => {
-    //             console.log(data);
-    //             //close the tab here now
-    //         })
-    //         .catch((error) => {
-    //             console.log(error);
-    //         });
-    // };
+    //call this function when the 'submit' button is clicked
+    //and some movies are selected and a summary and title is written
+    const postList = () => {
+        var trakt_ids = [];
+        selectedMovies.map((data) => {
+            trakt_ids.push(data.movieID);
+        });
+        const requestOptions = {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({
+                description: summary,
+                user_id: user._id,
+                title: listTitle,
+                trakt_ids: trakt_ids
+            })
+        };
+        fetch(`${baseURL}/post-movie-list`, requestOptions)
+            .then((response) => response.json())
+            .then((data) => {
+                console.log(data);
+                //close the tab here now
+            })
+            .catch((error) => {
+                console.log(error);
+            });
+    };
+
     const closeSearchResults = (props) => {
         if (
             props.target.className !==
@@ -224,6 +230,7 @@ const NewListPage = ({ setNewListOpen, user }) => {
             <div>
                 <MovieSelection {...{ selectedMovies, setSelectedMovies }} />
             </div>
+            <div onClick={postList}>This is a temp submit button</div>
         </div>
     );
 };

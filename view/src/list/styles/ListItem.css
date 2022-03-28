@@ -18,7 +18,7 @@
 }
 
 .list-item {
-  display: inline-grid;
+  display: flex;
   grid-template-columns: 8.4rem auto;
   grid-gap: 1rem;
   margin-left: 1rem;
@@ -29,6 +29,7 @@
 
 .list-item-info {
   display: inline-block;
+  margin-left: .3rem;
   text-align: left;
 }
 

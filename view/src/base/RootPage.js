@@ -3,7 +3,7 @@ import JournalPage from '../journal/JournalPage';
 import MoviePage from '../movie/MoviePage';
 import HomePage from '../home/HomePage';
 import ListPage from '../list/ListPage';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import LoginPage from '../login/LoginPage';
 import SignupPage from '../login/SignupPage';
 
@@ -16,7 +16,16 @@ const RootPage = () => {
     const [loggingIn, setLoggingIn] = useState(false);
     const [signingUp, setSigningUp] = useState(false);
     const [user, setUser] = useState(null);
-
+    const [movieSelected, setMovieSelected] = useState(null);
+    useEffect(() => {
+        console.log(movieSelected);
+        if(movieSelected===null){
+        }
+        else{
+            setListPageOpen(false);
+            setMoviePageOpen(true);
+        }
+    }, [movieSelected])
     return (
         <div>
             <NavBar
@@ -55,7 +64,7 @@ const RootPage = () => {
                                 <></>
                             )}
                             {listPageOpen ? (
-                                <ListPage {...{ loggedIn, user, loggedIn }} />
+                                <ListPage {...{ loggedIn, user, loggedIn, setMovieSelected}} />
                             ) : (
                                 <></>
                             )}
@@ -64,7 +73,7 @@ const RootPage = () => {
                             ) : (
                                 <></>
                             )}
-                            {moviePageOpen ? <MoviePage /> : <></>}
+                            {moviePageOpen ? <MoviePage {...{movieSelected, setMovieSelected}}/> : <></>}
                         </>
                     )}
                 </>
