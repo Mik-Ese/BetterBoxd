@@ -90,7 +90,7 @@ const LoginPage = ({ setSigningUp, setUser, setLoggedIn }) => {
                     <div className="email-input-wrapper">
                         <TextField
                             className="password-input"
-                            id="standard-basic"
+                            id="standard-basic-signup-email"
                             label="Email Address"
                             variant="standard"
                             onChange={onEmailChange}
@@ -99,7 +99,7 @@ const LoginPage = ({ setSigningUp, setUser, setLoggedIn }) => {
                     <div className="username-input-wrapper">
                         <TextField
                             className="username-input"
-                            id="standard-basic"
+                            id="standard-basic-signup-username"
                             label="Username"
                             variant="standard"
                             onChange={onUsernameChange}
@@ -108,7 +108,7 @@ const LoginPage = ({ setSigningUp, setUser, setLoggedIn }) => {
                     <div className="password-input-wrapper">
                         <TextField
                             className="password-input"
-                            id="standard-basic"
+                            id="standard-basic-signup-password"
                             type="password"
                             label="Password"
                             variant="standard"
@@ -118,7 +118,7 @@ const LoginPage = ({ setSigningUp, setUser, setLoggedIn }) => {
                     <div className="confirm-password-input-wrapper">
                         <TextField
                             className="password-input"
-                            id="standard-basic"
+                            id="standard-basic-signup-password-confirm"
                             type="password"
                             label="Confirm Password"
                             error={!doPasswordsMatch}

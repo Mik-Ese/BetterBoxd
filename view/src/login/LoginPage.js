@@ -58,7 +58,7 @@ const LoginPage = ({ setLoggedIn, setLoggingIn, setUser }) => {
                     <div className="username-input-wrapper">
                         <TextField
                             className="username-input"
-                            id="standard-basic"
+                            id="standard-basic-username-password"
                             label="Username"
                             variant="standard"
                             onChange={onUsernameChange}
@@ -67,7 +67,7 @@ const LoginPage = ({ setLoggedIn, setLoggingIn, setUser }) => {
                     <div className="password-input-wrapper">
                         <TextField
                             className="password-input"
-                            id="standard-basic"
+                            id="standard-basic-login-password"
                             type="password"
                             label="Password"
                             variant="standard"
@@ -76,7 +76,15 @@ const LoginPage = ({ setLoggedIn, setLoggingIn, setUser }) => {
                     </div>
 
                     {didFail ? (
-                        <div style={{ marginTop: '0rem', marginBottom: '1rem', fontSize: '1.2rem', fontWeight: 500, color: 'red' }}>
+                        <div
+                            style={{
+                                marginTop: '0rem',
+                                marginBottom: '1rem',
+                                fontSize: '1.2rem',
+                                fontWeight: 500,
+                                color: 'red'
+                            }}
+                        >
                             Please try again
                         </div>
                     ) : (

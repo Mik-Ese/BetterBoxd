@@ -177,7 +177,7 @@ const NewListPage = ({ setNewListOpen, user, getListEntries }) => {
             <div className="input-wrapper">
                 <TextField
                     className="list-title-input"
-                    id="standard-basic"
+                    id="standard-basic-list-title"
                     label="List Title"
                     variant="standard"
                     value={listTitle}
@@ -201,7 +201,7 @@ const NewListPage = ({ setNewListOpen, user, getListEntries }) => {
             <div className="movie-search-input" onClick={openSearchResults}>
                 <TextField
                     className="search-input"
-                    id="standard-basic"
+                    id="standard-basic-list-search"
                     label="Search a Movie to Add"
                     variant="standard"
                     value={search}
