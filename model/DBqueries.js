@@ -166,16 +166,21 @@ async function postJournalEntry(entry) {
     let promises = []
     const entries = [];
     for (entry of res) {
-        let new_trakt_ids = [];
         for(let i = 0; i<entry.trakt_ids.length; i++){
             promises.push(fetchData.getMovieExtended(entry.trakt_ids[i]))
         }
-        let results = await Promise.all(promises);
+    }
+    let results = await Promise.all(promises);
+    for(entry of res){
+        let new_trakt_ids = [];
         for(let i = 0; i<entry.trakt_ids.length; i++){
             let obj = {}
             obj.trakt_id = entry.trakt_ids[i];
             obj.url = results[i].url
             new_trakt_ids.push(obj);
+        }
+        for(let i = 0; i<entry.trakt_ids.length; i++){
+            results.shift();
         }
         let user_list_name = await User.find({_id: entry.user_id})
         let j = {
@@ -185,7 +190,6 @@ async function postJournalEntry(entry) {
             description: entry.description,
         };
         entries.push(j);
-        promises = []
     }
 
     return { entries: entries, status: status };

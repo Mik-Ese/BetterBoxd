@@ -36,10 +36,12 @@ export default function AlertDialogSlide({
     const handleClose = () => {
         if (description !== '') {
             if (movieSelected !== null) {
-                postReview();
-                getJournalEntries();
-                setOpen(false);
-                setReviewPageOpen(false);
+                postReview().then((value) => {
+                    console.log(value)
+                    getJournalEntries();
+                    setOpen(false);
+                    setReviewPageOpen(false);
+                });
             }
         }
     };
@@ -128,6 +130,9 @@ export default function AlertDialogSlide({
             .catch((error) => {
                 console.log(error);
             });
+            return new Promise((resolve, reject) => {
+                resolve("sucessfully posted");
+            })
     };
 
     return (

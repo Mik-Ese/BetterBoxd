@@ -154,6 +154,9 @@ const NewListPage = ({ setNewListOpen, user, getListEntries }) => {
             .catch((error) => {
                 console.log(error);
             });
+        return new Promise((resolve, reject) => {
+                resolve("sucessfully posted");
+            })
     };
 
     const closeSearchResults = (props) => {
@@ -235,9 +238,10 @@ const NewListPage = ({ setNewListOpen, user, getListEntries }) => {
                     if (selectedMovies.length > 0) {
                         if (summary !== '') {
                             if (listTitle !== '') {
-                                postList();
-                                closeNewList();
-                                getListEntries();
+                                postList().then((value) => {
+                                    closeNewList();
+                                    getListEntries();
+                                })
                             }
                         }
                     }
