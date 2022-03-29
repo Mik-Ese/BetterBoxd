@@ -40,7 +40,8 @@ const RootPage = () => {
                     moviePageOpen,
                     loggedIn,
                     setLoggingIn,
-                    setSigningUp
+                    setSigningUp,
+                    user
                 }}
             />
             {loggingIn ? (

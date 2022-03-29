@@ -72,6 +72,7 @@ const ListPage = ({ user, loggedIn, setMovieSelected }) => {
                         movies: newMovies
                     });
                 });
+                newListItems = newListItems.reverse();
                 setListEntries(newListItems);
                 setVisibleListEntries(newListItems);
                 setIsLoading(false);
