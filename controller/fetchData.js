@@ -13,7 +13,6 @@ const redisClient = redis.createClient(
 
 const config = {
     headers: {
-        Authorization: `Bearer ${credentials.accessToken}`,
         'Content-type': 'application/json',
         'trakt-api-version': '2',
         'trakt-api-key': credentials.clientId
