@@ -18,7 +18,7 @@ services:
             - FANART_KEY=bfb7ffd7bab1e6e5c16919fc2c6ff6ad
             - MONGO_URI=mongodb+srv://betterboxd:movie@main.6pjwu.mongodb.net/BetterBoxd?retryWrites=true&w=majority
         depends_on:
-            - bb-redis
+            - cache
     bb-view:
         image: betterboxd-view:1.0
         ports:
