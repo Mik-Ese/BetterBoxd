@@ -2,24 +2,25 @@ const express = require('express');
 const app = express();
 const axios = require('axios');
 const redis = require('redis');
-const credentials = require('../credentials');
 const APIqueries = require('./api/APIqueries');
 
-// const redisClient = redis.createClient('localhost', 6379);
-const redisClient = redis.createClient(
-    credentials.redisAddress ? credentials.redisAddress : 'localhost',
-    6379
-);
+require('dotenv').config({ path: '../.env' });
+
+const redisClient = redis.createClient({
+    host: process.env.REDIS_HOST,
+    port: process.env.REDIS_PORT
+});
 
 const config = {
     headers: {
         'Content-type': 'application/json',
         'trakt-api-version': '2',
-        'trakt-api-key': credentials.clientId
+        'trakt-api-key': process.env.CLIENT_ID
     }
 };
 
 (async () => {
+    console.log(`using address: "${process.env.REDIS_HOST}" to connect`);
     redisClient.on('ready', function () {
         console.log('Redis Client ready');
     });
@@ -86,7 +87,7 @@ async function getMediaArt(mediaType, id, artType) {
     }
     let expiry = 86400; // 1 day (default)
     const APIquery = APIqueries.genArtQuery(
-        credentials.fanartKey,
+        process.env.FANART_KEY,
         mediaType,
         id
     );
@@ -130,7 +131,8 @@ async function getMediaArt(mediaType, id, artType) {
                         result = prioritizedURL(fullResult.movieposter);
                     } else {
                         // default poster
-                        result = 'https://images.fanart.tv/fanart/et-the-extra-terrestrial-5cdab3aa028c5.jpg';
+                        result =
+                            'https://images.fanart.tv/fanart/et-the-extra-terrestrial-5cdab3aa028c5.jpg';
                     }
                 } else if (artType.toLowerCase() === 'logo') {
                     if (fullResult.hasOwnProperty('hdmovielogo')) {
@@ -230,16 +232,20 @@ async function getPopularMovies() {
             return JSON.parse(cacheResponse);
         } else {
             // making API request
-            let {data: response} = await axios.get(APIquery, config);
+            let { data: response } = await axios.get(APIquery, config);
             // saving to cache
-            let media_art_promises = []
-            let movie_stats_promises = []
+            let media_art_promises = [];
+            let movie_stats_promises = [];
             for (let element of response) {
-                media_art_promises.push(getMediaArt('movies', element.ids.tmdb, 'poster'));
+                media_art_promises.push(
+                    getMediaArt('movies', element.ids.tmdb, 'poster')
+                );
                 movie_stats_promises.push(getMovieStats(element.ids.trakt));
             }
             const fanartResponses = await Promise.all(media_art_promises);
-            const movie_stats_responses = await Promise.all(movie_stats_promises)
+            const movie_stats_responses = await Promise.all(
+                movie_stats_promises
+            );
             let index = 0;
             for (let element of response) {
                 element['trakt_id'] = element.ids.trakt;
@@ -280,7 +286,7 @@ async function getMovieExtended(id) {
                 }
             });
             if (found === false) {
-                const {data: response} = await axios.get(APIquery, config);
+                const { data: response } = await axios.get(APIquery, config);
                 const fanartResponse = await getMediaArt(
                     'movies',
                     response.ids.tmdb,
@@ -304,7 +310,7 @@ async function getMovieExtended(id) {
             }
         } else {
             // making API request
-            const {data: response} = await axios.get(APIquery, config);
+            const { data: response } = await axios.get(APIquery, config);
             const fanartResponse = await getMediaArt(
                 'movies',
                 response.ids.tmdb,
@@ -462,7 +468,9 @@ async function getMostWatchedMovies(period) {
                         entry.movie.ids.tmdb,
                         'poster'
                     );
-                    let movie_stats = await getMovieStats(entry.movie.ids.trakt);
+                    let movie_stats = await getMovieStats(
+                        entry.movie.ids.trakt
+                    );
                     return {
                         // movie info
                         title: entry.movie.title,

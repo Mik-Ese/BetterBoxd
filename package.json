@@ -1,0 +1,16 @@
+{
+    "name": "betterboxd",
+    "version": "1.0.0",
+    "description": "movie review web app that utilizes LetterBoxd API",
+    "main": "app.js",
+    "scripts": {
+        "model": "cd model && npm start",
+        "controller": "cd controller && npm start",
+        "start": "concurrently \"npm run model\" \"npm run controller\""
+    },
+    "authors": "Mik-Ese, fmhossai, ethangillengg, cheyennegoh, Arne-Hilao, maxbotham, Lucas",
+    "license": "",
+    "dependencies": {
+        "concurrently": "^7.0.0"
+    }
+}

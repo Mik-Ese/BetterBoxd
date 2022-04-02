@@ -1,9 +1,9 @@
 const express = require('express');
 const app = express();
 const { MongoClient, ServerApiVersion } = require('mongodb');
-const credentials = require('../controller/credentials');
+require('dotenv').config({ path: '../.env' });
 
-const uri = credentials.mongo_uri;
+const uri = process.env.MONGO_URI;
 const client = new MongoClient(uri, {
     useNewUrlParser: true,
     useUnifiedTopology: true,
