@@ -6,7 +6,7 @@ services:
         ports:
             - 6379:6379
     bb-model-controller:
-        image: betterboxd-model-controller:1.0
+        image: mik01/betterboxd-model-controller:1.0
         ports:
             - 3001:3001
         environment:
@@ -20,6 +20,6 @@ services:
         depends_on:
             - redis
     bb-view:
-        image: betterboxd-view:1.0
+        image: mik01/betterboxd-view:1.0
         ports:
             - 3000:3000
