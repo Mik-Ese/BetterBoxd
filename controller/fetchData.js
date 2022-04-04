@@ -6,9 +6,13 @@ const APIqueries = require('./api/APIqueries');
 
 require('dotenv').config({ path: '../.env' });
 
+// const redisClient = redis.createClient({
+//     host: process.env.REDIS_HOST,
+//     port: process.env.REDIS_PORT
+// });
+
 const redisClient = redis.createClient({
-    host: process.env.REDIS_HOST,
-    port: process.env.REDIS_PORT
+    url: `redis://@${process.env.REDIS_HOST}:${process.env.REDIS_PORT}`
 });
 
 const config = {
@@ -21,6 +25,7 @@ const config = {
 
 (async () => {
     console.log(`using address: "${process.env.REDIS_HOST}" to connect`);
+    console.log(`using address: "${process.env.REDIS_PORT}" to connect`);
     redisClient.on('ready', function () {
         console.log('Redis Client ready');
     });
