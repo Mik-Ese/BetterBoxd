@@ -1,5 +1,3 @@
-/*require('dotenv').config({path: '../.env'});
-
-let baseURL = process.env.BASE_URL;*/
-const baseURL = 'http://35.232.150.228:3001/api';
-export {baseURL};
+//const baseURL = process.env.REACT_APP_BASE_URL;
+const baseURL = 'http://34.122.187.15:3001/api';
+export { baseURL };
