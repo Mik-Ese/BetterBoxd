@@ -12,9 +12,11 @@ require('dotenv').config({ path: '../.env' });
 app.use(express.json());
 app.use(express.urlencoded());
 
-app.use(cors());
+app.use(cors({
+    origin: process.env.CORS_URL || '*',
+}));
 app.use('/api/', APIRoutes);
 
-const PORT = process.env.PORT || 3001;
+const PORT = process.env.EXPRESS_PORT || 3001;
 
 app.listen(PORT, console.log(`Server started on port ${PORT}`));
