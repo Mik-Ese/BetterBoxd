@@ -6,3 +6,4 @@ credentials.js
 model/test.js
 .env
 betterboxd.yaml
+build
