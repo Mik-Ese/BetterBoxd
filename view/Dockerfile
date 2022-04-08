@@ -4,6 +4,8 @@ WORKDIR /app
 
 COPY ./package*.json .
 
+ENV REACT_APP_URL INSERT_IP_ADDRESS_HERE
+
 RUN npm install
 
 COPY . .
