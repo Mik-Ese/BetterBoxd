@@ -14,7 +14,7 @@ import DeleteIcon from '@mui/icons-material/Delete';
 import MultilineTextFields from './textField';
 import SearchAppBar from './search';
 import { baseURL } from '../consts/consts.js';
-
+let searchID = 1;
 const Transition = React.forwardRef(function Transition(props, ref) {
     return <Slide direction="up" ref={ref} {...props} />;
 });
@@ -37,8 +37,6 @@ export default function AlertDialogSlide({
         if (description !== '') {
             if (movieSelected !== null) {
                 postReview().then((value) => {
-                    console.log(value)
-                    getJournalEntries();
                     setOpen(false);
                     setReviewPageOpen(false);
                 });
@@ -48,12 +46,13 @@ export default function AlertDialogSlide({
 
     useEffect(() => {
         const delayDebounceFn = setTimeout(() => {
-            makeSearch();
-        }, 150);
+            searchID++;
+            makeSearch(searchID);
+        }, 50);
         return () => clearTimeout(delayDebounceFn);
     }, [search]);
 
-    const makeSearch = () => {
+    const makeSearch = (id) => {
         const requestOptions = {
             method: 'GET',
             headers: {
@@ -71,7 +70,9 @@ export default function AlertDialogSlide({
                         movieID: data.trakt_id
                     });
                 });
-                setSearchResults(results);
+                if (id === searchID) {
+                    setSearchResults(results);
+                }
             })
             .catch((error) => {});
     };
@@ -126,13 +127,14 @@ export default function AlertDialogSlide({
         fetch(`${baseURL}/post-journal-entry`, requestOptions)
             .then((response) => response.json())
             .then((data) => {
+                getJournalEntries();
             })
             .catch((error) => {
                 console.log(error);
             });
-            return new Promise((resolve, reject) => {
-                resolve("sucessfully posted");
-            })
+        return new Promise((resolve, reject) => {
+            resolve('sucessfully posted');
+        });
     };
 
     return (

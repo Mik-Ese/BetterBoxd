@@ -18,13 +18,12 @@ const RootPage = () => {
     const [user, setUser] = useState(null);
     const [movieSelected, setMovieSelected] = useState(null);
     useEffect(() => {
-        if(movieSelected===null){
-        }
-        else{
+        if (movieSelected === null) {
+        } else {
             setListPageOpen(false);
             setMoviePageOpen(true);
         }
-    }, [movieSelected])
+    }, [movieSelected]);
     return (
         <div>
             <NavBar
@@ -64,7 +63,14 @@ const RootPage = () => {
                                 <></>
                             )}
                             {listPageOpen ? (
-                                <ListPage {...{ loggedIn, user, loggedIn, setMovieSelected}} />
+                                <ListPage
+                                    {...{
+                                        loggedIn,
+                                        user,
+                                        loggedIn,
+                                        setMovieSelected
+                                    }}
+                                />
                             ) : (
                                 <></>
                             )}
@@ -73,7 +79,13 @@ const RootPage = () => {
                             ) : (
                                 <></>
                             )}
-                            {moviePageOpen ? <MoviePage {...{movieSelected, setMovieSelected}}/> : <></>}
+                            {moviePageOpen ? (
+                                <MoviePage
+                                    {...{ movieSelected, setMovieSelected }}
+                                />
+                            ) : (
+                                <></>
+                            )}
                         </>
                     )}
                 </>

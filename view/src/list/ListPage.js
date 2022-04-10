@@ -37,7 +37,6 @@ const ListPage = ({ user, loggedIn, setMovieSelected }) => {
                     return 1;
                 } else return -1;
             });
-            console.log(sortedListEntries);
             setVisibleListEntries(sortedListEntries);
         }
     }, [listSearch]);
