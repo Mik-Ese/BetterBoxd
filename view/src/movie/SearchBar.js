@@ -9,7 +9,7 @@ import Popper from '@mui/material/Popper';
 import './styles/searchBar.css';
 import Divider from '@mui/material/Divider';
 import { baseURL } from '../consts/consts.js';
-
+let searchID = 1;
 const SearchBar = ({
     searchResultsOpen,
     setSearchResultsOpen,
@@ -18,11 +18,11 @@ const SearchBar = ({
     const [search, setSearch] = useState('');
     const [anchorEl, setAnchorEl] = useState(null);
     const [searchResults, setSearchResults] = useState([]);
-
     useEffect(() => {
         const delayDebounceFn = setTimeout(() => {
-            makeSearch();
-        }, 150);
+            searchID++;
+            makeSearch(searchID);
+        }, 50);
 
         return () => clearTimeout(delayDebounceFn);
     }, [search]);
@@ -45,7 +45,7 @@ const SearchBar = ({
         }
     };
 
-    const makeSearch = () => {
+    const makeSearch = (id) => {
         const requestOptions = {
             method: 'GET',
             headers: {
@@ -63,7 +63,9 @@ const SearchBar = ({
                         movieID: data.trakt_id
                     });
                 });
-                setSearchResults(results);
+                if (id === searchID) {
+                    setSearchResults(results);
+                }
             })
             .catch((error) => {});
     };

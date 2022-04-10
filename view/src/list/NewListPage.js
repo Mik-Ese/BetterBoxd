@@ -10,7 +10,7 @@ import ListItemButton from '@mui/material/ListItemButton';
 import Divider from '@mui/material/Divider';
 import Popper from '@mui/material/Popper';
 import List from '@mui/material/List';
-
+let searchID = 1;
 const NewListPage = ({ setNewListOpen, user, getListEntries }) => {
     const [listTitle, setListTitle] = useState('');
     const [summary, setSummary] = useState('');
@@ -46,8 +46,9 @@ const NewListPage = ({ setNewListOpen, user, getListEntries }) => {
 
     useEffect(() => {
         const delayDebounceFn = setTimeout(() => {
-            makeSearch();
-        }, 150);
+            searchID++;
+            makeSearch(searchID);
+        }, 50);
 
         return () => clearTimeout(delayDebounceFn);
     }, [search]);
@@ -70,7 +71,7 @@ const NewListPage = ({ setNewListOpen, user, getListEntries }) => {
         }
     };
 
-    const makeSearch = () => {
+    const makeSearch = (id) => {
         const requestOptions = {
             method: 'GET',
             headers: {
@@ -89,7 +90,9 @@ const NewListPage = ({ setNewListOpen, user, getListEntries }) => {
                         url: data.poster
                     });
                 });
-                setSearchResults(results);
+                if (id === searchID) {
+                    setSearchResults(results);
+                }
             })
             .catch((error) => {});
     };
@@ -149,14 +152,15 @@ const NewListPage = ({ setNewListOpen, user, getListEntries }) => {
         fetch(`${baseURL}/post-movie-list`, requestOptions)
             .then((response) => response.json())
             .then((data) => {
+                getListEntries();
                 setNewListOpen(false);
             })
             .catch((error) => {
                 console.log(error);
             });
         return new Promise((resolve, reject) => {
-                resolve("sucessfully posted");
-            })
+            resolve('sucessfully posted');
+        });
     };
 
     const closeSearchResults = (props) => {
@@ -240,8 +244,7 @@ const NewListPage = ({ setNewListOpen, user, getListEntries }) => {
                             if (listTitle !== '') {
                                 postList().then((value) => {
                                     closeNewList();
-                                    getListEntries();
-                                })
+                                });
                             }
                         }
                     }

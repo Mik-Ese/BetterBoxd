@@ -1,6 +1,6 @@
 const mongoose = require('mongoose');
-const credentials = require('../../credentials');
+require('dotenv').config({ path: '../.env' });
 
-const connection = mongoose.createConnection(credentials.mongo_uri);
+const connection = mongoose.createConnection(process.env.MONGO_URI);
 
 module.exports = connection;

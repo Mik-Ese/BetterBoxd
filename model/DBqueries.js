@@ -3,8 +3,6 @@ const JournalEntry = require('./schemas/journalEntry.schema');
 const MovieList = require('./schemas/movieList.schema');
 const bcrypt = require('bcryptjs');
 const fetchData = require('../controller/fetchData');
-// const UserReview = require('./schemas/userReview.schema');
-// const UserRating = require('./schemas/userRating.schema');
 
 /**
  * @param {*} user - the user to post
@@ -85,13 +83,13 @@ async function getJournalEntries(user_id) {
     }
 
     const entries = [];
-    let promises = []
+    let promises = [];
     for (entry of res) {
         promises.push(fetchData.getMovieExtended(entry.trakt_id));
     }
     const response = await Promise.all(promises);
     let index = 0;
-    for(entry of res){
+    for (entry of res) {
         let j = {
             user_id: entry.user_id,
             movie_title: response[index].title,
@@ -151,7 +149,7 @@ async function postJournalEntry(entry) {
 /**
  * @returns all database's user movie lists
  */
- async function getMovieLists() {
+async function getMovieLists() {
     let status = 'good';
     let res;
     try {
@@ -163,31 +161,31 @@ async function postJournalEntry(entry) {
             status: e
         };
     }
-    let promises = []
+    let promises = [];
     const entries = [];
     for (entry of res) {
-        for(let i = 0; i<entry.trakt_ids.length; i++){
-            promises.push(fetchData.getMovieExtended(entry.trakt_ids[i]))
+        for (let i = 0; i < entry.trakt_ids.length; i++) {
+            promises.push(fetchData.getMovieExtended(entry.trakt_ids[i]));
         }
     }
     let results = await Promise.all(promises);
-    for(entry of res){
+    for (entry of res) {
         let new_trakt_ids = [];
-        for(let i = 0; i<entry.trakt_ids.length; i++){
-            let obj = {}
+        for (let i = 0; i < entry.trakt_ids.length; i++) {
+            let obj = {};
             obj.trakt_id = entry.trakt_ids[i];
-            obj.url = results[i].url
+            obj.url = results[i].url;
             new_trakt_ids.push(obj);
         }
-        for(let i = 0; i<entry.trakt_ids.length; i++){
+        for (let i = 0; i < entry.trakt_ids.length; i++) {
             results.shift();
         }
-        let user_list_name = await User.find({_id: entry.user_id})
+        let user_list_name = await User.find({ _id: entry.user_id });
         let j = {
             title: entry.title,
             username: user_list_name[0].username,
             trakt_ids: new_trakt_ids,
-            description: entry.description,
+            description: entry.description
         };
         entries.push(j);
     }
@@ -202,7 +200,7 @@ async function getUserMovieLists(user_id) {
     let status = 'good';
     let res;
     try {
-        res = await MovieList.find({user_id:user_id});
+        res = await MovieList.find({ user_id: user_id });
     } catch (e) {
         console.log(e);
         return {
@@ -214,10 +212,10 @@ async function getUserMovieLists(user_id) {
     const entries = [];
     for (entry of res) {
         let new_trakt_ids = [];
-        for(let i = 0; i<entry.trakt_ids.length; i++){
-            let obj = {}
-            let tmdb_id = (await fetchData.getMovieExtended(entry.trakt_ids[i])).ids
-            .tmdb;
+        for (let i = 0; i < entry.trakt_ids.length; i++) {
+            let obj = {};
+            let tmdb_id = (await fetchData.getMovieExtended(entry.trakt_ids[i]))
+                .ids.tmdb;
             obj.trakt_id = entry.trakt_ids[i];
             obj.url = await fetchData.getMediaArt('movies', tmdb_id, 'poster');
             new_trakt_ids.push(obj);
@@ -226,7 +224,7 @@ async function getUserMovieLists(user_id) {
             title: entry.title,
             user_id: entry.user_id,
             trakt_ids: new_trakt_ids,
-            description: entry.description,
+            description: entry.description
         };
         j.url = await fetchData.getMediaArt('movies', tmdb_id, 'poster');
         entries.push(j);
@@ -234,7 +232,6 @@ async function getUserMovieLists(user_id) {
 
     return { entries: entries, status: status };
 }
-
 
 module.exports = {
     postUser,

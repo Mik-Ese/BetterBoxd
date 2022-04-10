@@ -15,7 +15,10 @@ const NavBar = ({
 }) => {
     const logOut = () => {
         setLoggedIn(false);
+        setHomePageOpen(true);
+        setMoviePageOpen(false);
         setJournalPageOpen(false);
+        setListPageOpen(false);
     };
     const openHomePage = () => {
         setHomePageOpen(true);
@@ -149,14 +152,17 @@ const NavBar = ({
                     <form class="d-flex">
                         {loggedIn ? (
                             <>
-                                <div style={{
-                                  marginTop: '.35rem',
-                                  fontSize: '1rem',
-                                  fontWeight: '400',
-                                  marginRight: '1rem',
-                                  marginLeft: '.5rem'
-
-                                }}>{user !== null ? user.username : ''}</div>
+                                <div
+                                    style={{
+                                        marginTop: '.35rem',
+                                        fontSize: '1rem',
+                                        fontWeight: '400',
+                                        marginRight: '1rem',
+                                        marginLeft: '.5rem'
+                                    }}
+                                >
+                                    {user !== null ? user.username : ''}
+                                </div>
 
                                 <div
                                     class="btn btn-outline-success"
